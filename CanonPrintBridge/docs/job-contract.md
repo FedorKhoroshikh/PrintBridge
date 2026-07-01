@@ -1,22 +1,22 @@
-# Контракт очереди печати (the "API")
+# Print queue contract (the "API")
 
-Связь между WPF-приложением (Win11) и сторожем (XP) — это файлы в общей папке.
-Никакого сетевого API: манифест `job.json` **и есть** контракт, язык-независимый и
-переживающий границу VM.
+The link between the WPF application (Win11) and the watcher (XP) is files in a shared folder.
+No network API: the `job.json` manifest **is** the contract, language-independent and
+surviving the VM boundary.
 
-## Расположение
+## Location
 
-| Сторона | Путь |
+| Side | Path |
 |---|---|
-| Win11 (хост) | `C:\Virtualization\Shared\Queue\` |
-| XP (гость) | `\\vboxsvr\Shared\Queue\` |
+| Win11 (host) | `C:\Virtualization\Shared\Queue\` |
+| XP (guest) | `\\vboxsvr\Shared\Queue\` |
 
-Подпапки (создаются автоматически):
-- `Queue\` — входящие: `<id>.pdf` + `<id>.job.json`
-- `Queue\status\` — статусы: `<id>.status.json`
-- `Queue\printed\` — отработанные PDF переносятся сюда
+Subfolders (created automatically):
+- `Queue\` — incoming: `<id>.pdf` + `<id>.job.json`
+- `Queue\status\` — statuses: `<id>.status.json`
+- `Queue\printed\` — processed PDFs are moved here
 
-## `<id>.job.json` — задание (пишет WPF, читает сторож)
+## `<id>.job.json` — job (written by WPF, read by the watcher)
 
 ```json
 {
@@ -31,47 +31,47 @@
 }
 ```
 
-| Поле | Значения | Смысл |
+| Field | Values | Meaning |
 |---|---|---|
-| `id` | `ггггммдд-ччммсс-xxxx` | уникальный id задания |
-| `file` | имя файла | `<id>.pdf` в той же папке |
-| `copies` | целое ≥ 1 | число копий (`Nx` в SumatraPDF) |
-| `paper` | `A4` \| `A5` \| `B5` | выбирает очередь `Canon LBP-1120 <paper>` в XP |
-| `scale` | `fit` \| `noscale` \| `shrink` | масштаб (прямо в `-print-settings`) |
-| `pages` | `""` или `1-4,7` | пусто = все страницы |
-| `duplex` | `none` \| `manual` | ручная двусторонняя (у LBP-1120 нет авто-дуплекса) |
-| `createdAt` | ISO-8601 | время создания |
+| `id` | `yyyymmdd-hhmmss-xxxx` | unique job id |
+| `file` | file name | `<id>.pdf` in the same folder |
+| `copies` | integer ≥ 1 | number of copies (`Nx` in SumatraPDF) |
+| `paper` | `A4` \| `A5` \| `B5` | selects the `Canon LBP-1120 <paper>` queue in XP |
+| `scale` | `fit` \| `noscale` \| `shrink` | scale (passed directly into `-print-settings`) |
+| `pages` | `""` or `1-4,7` | empty = all pages |
+| `duplex` | `none` \| `manual` | manual duplex (the LBP-1120 has no auto-duplex) |
+| `createdAt` | ISO-8601 | creation time |
 
-> LBP-1120 чёрно-белый, поэтому опции цвета нет.
+> The LBP-1120 is black-and-white, so there is no color option.
 
-## `status\<id>.status.json` — статус (пишет сторож, читает WPF)
+## `status\<id>.status.json` — status (written by the watcher, read by WPF)
 
 ```json
 { "id": "...", "state": "printing", "message": "even pages", "updatedAt": "..." }
 ```
 
-Машина состояний:
+State machine:
 
 ```
 queued ─► printing ─►[ awaiting-flip ─► printing ]─► done
                                                   └─► error
 ```
 
-| `state` | Значение |
+| `state` | Meaning |
 |---|---|
-| `queued` | задание принято (резерв; сторож обычно сразу `printing`) |
-| `printing` | идёт печать |
-| `awaiting-flip` | напечатаны нечётные; ждём переворота стопки (ручной дуплекс) |
-| `done` | успех |
-| `error` | ошибка (см. `message`) |
+| `queued` | job accepted (reserved; the watcher usually goes straight to `printing`) |
+| `printing` | printing in progress |
+| `awaiting-flip` | odd pages printed; waiting for the stack to be flipped (manual duplex) |
+| `done` | success |
+| `error` | error (see `message`) |
 
-## Сигнал продолжения (ручной дуплекс)
+## Continue signal (manual duplex)
 
-После переворота стопки WPF создаёт пустой файл `Queue\<id>.continue`.
-Сторож его видит, удаляет и печатает чётные страницы.
+After the stack is flipped, WPF creates an empty file `Queue\<id>.continue`.
+The watcher sees it, deletes it, and prints the even pages.
 
-## Атомарность
+## Atomicity
 
-Обе стороны пишут через `*.tmp` + переименование, чтобы другая сторона
-никогда не прочитала наполовину записанный файл. PDF кладётся **до** `job.json`,
-поэтому к моменту появления манифеста файл гарантированно на месте.
+Both sides write via `*.tmp` + rename, so that the other side
+never reads a half-written file. The PDF is placed **before** `job.json`,
+so by the time the manifest appears the file is guaranteed to be in place.

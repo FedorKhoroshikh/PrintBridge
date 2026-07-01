@@ -1,97 +1,97 @@
-# Claude Design — вводная (intro / overview)
+# Claude Design — intro / overview
 
-Короткий обзор для самостоятельного изучения. По состоянию на середину 2026.
-Внизу — источники. Дальше по тексту помечено, что важно именно для нашего кейса (WPF).
-
----
-
-## 1. Что это
-
-**Claude Design** — продукт **Anthropic Labs**: режим внутри Claude, где ты в диалоге
-создаёшь визуальные артефакты — **прототипы интерфейсов, макеты, слайды, one-pager’ы** —
-по текстовому описанию («prompt-to-prototype»). Это не отдельное приложение, а часть Claude.ai.
-
-Под капотом генерирует **реальный фронтенд-код**: HTML/CSS/JavaScript и React. То есть
-результат — не картинка, а работающая веб-страница/компонент, которую можно кликать и
-экспортировать. (Позиционируется как «конкурент Figma» для быстрой визуализации идей,
-в первую очередь для **не-дизайнеров**: основателей, продактов, маркетологов.)
-
-## 2. Доступ
-
-- **Research preview**, планы **Pro, Max, Team, Enterprise**. Доступ **включён в план** и
-  расходует **лимиты подписки** (можно продолжить сверх лимитов, включив *extra usage*).
-- **Enterprise: выключено по умолчанию** — админ включает в **Organization settings**.
-  → Проверь, что фича у тебя включена.
-- Модель — **Claude Opus 4.7** (vision-модель). Запуск — **17 апреля 2026**;
-  позже — интеграции (GitHub-импорт дизайн-систем, `/design-sync`, on-canvas editing).
-
-## 3. Где открыть
-
-- Прямой адрес: **`claude.ai/design`** (внутри Claude.ai; по вторичным источникам — также
-  иконка палитры в левой панели).
-
-## 4. Как начать проект (4 способа ввода)
-
-1. **Текстовый prompt** — описал, что нужно, Claude собрал первую версию.
-2. **Загрузка файлов** — изображения и документы (DOCX, PPTX, XLSX). ← сюда кладём наш
-   `design-brief.md` и скриншот твоего прототипа.
-3. **Указать на кодовую базу** — Claude читает код и подстраивается.
-4. **Web capture** — «захватить» элементы с существующего сайта, чтобы прототип был похож
-   на реальный продукт.
-
-## 5. Как дорабатывать
-
-- **Инлайн-комментарии** к конкретным элементам.
-- **Прямое редактирование текста** на макете.
-- **«Ручки» (adjustment knobs)** — живая правка отступов, цвета, раскладки.
-- Затем попросить Claude **применить изменения по всему макету** сразу.
-
-## 6. Design system / онбординг
-
-При онбординге Claude читает кодовую базу и дизайн-файлы команды и строит **дизайн-систему**
-(цвета, типографика, компоненты), которая затем автоматически применяется ко всем проектам.
-Для одиночного бытового проекта это не обязательно.
-
-## 7. Экспорт и шаринг
-
-- Внутренний **URL** в рамках организации; сохранить как **папку**.
-- Экспорт в **Canva, PDF, PPTX, standalone HTML**.
-- **Интерактивные прототипы** — статичные макеты превращаются в кликабельные (проходишь по
-  экранам без единой строки кода).
-- Совместная работа: приватно / просмотр по ссылке / доступ на редактирование.
-
-→ Для нас: экспортируешь **standalone HTML** (или PDF/скриншоты) и отдаёшь мне как **референс**.
-
-## 8. Интеграция с Claude Code
-
-- **Handoff в Claude Code**: когда дизайн готов, Claude упаковывает всё в **handoff-bundle**,
-  который передаётся в Claude Code одной инструкцией (чтобы не пересобирать «со скриншотов»).
-- Позже (обновление, вторичные источники ~июнь 2026): импорт дизайн-систем из **GitHub**,
-  редактирование прямо на канвасе, команда **`/design-sync`** — подтягивает библиотеку
-  компонентов организации в Claude Design.
-
-## 9. ⚠️ Важно для нашего кейса (WPF)
-
-- Claude Design выдаёт **веб-код (HTML/CSS/JS/React)** — на **WPF/XAML это не ложится
-  напрямую**. Поэтому в нашем процессе он нужен как **генератор визуальных референсов**
-  (раскладка, иерархия, отступы, look&feel, паттерны), а **не** как источник финального кода.
-- Практический поток: `design-brief.md` + скриншот твоего прототипа → в Claude Design →
-  получаешь варианты → экспортируешь **HTML/скриншоты** → отдаёшь мне → я перекладываю в
-  WPF/XAML (тема WPF-UI/Fluent).
-- В брифе намеренно прописано «это десктопное WPF-приложение, одно окно, мыслить контролами
-  WPF» — чтобы он не выдал веб-лендинг, а предложил desktop-раскладку.
-- Handoff «Claude Design → Claude Code» рассчитан на **веб-фронтенд**; для WPF он не даст
-  готового кода, но экспортированные макеты всё равно полезны как референс.
-
-## 10. Оговорки
-
-- **Research preview** — фичи/поведение могут меняться; требуется платный план.
-- Ориентирован на **веб/не-дизайнеров**; для десктопа (WPF) — только как визуальный вход.
-- Точные форматы/шаги могли обновиться после написания — сверяйся с интерфейсом `claude.ai/design`.
+A short overview for independent study. As of mid-2026.
+Sources at the bottom. Throughout the text it is marked what specifically matters for our case (WPF).
 
 ---
 
-## Источники
+## 1. What it is
+
+**Claude Design** is an **Anthropic Labs** product: a mode inside Claude where, through a dialog, you
+create visual artifacts — **UI prototypes, mockups, slides, one-pagers** —
+from a text description ("prompt-to-prototype"). It's not a standalone app but a part of Claude.ai.
+
+Under the hood it generates **real frontend code**: HTML/CSS/JavaScript and React. That is,
+the result is not a picture but a working web page/component you can click and
+export. (Positioned as a "Figma competitor" for quickly visualizing ideas,
+primarily for **non-designers**: founders, product managers, marketers.)
+
+## 2. Access
+
+- **Research preview**, plans **Pro, Max, Team, Enterprise**. Access is **included in the plan** and
+  consumes your **subscription limits** (you can continue beyond the limits by enabling *extra usage*).
+- **Enterprise: off by default** — the admin enables it in **Organization settings**.
+  → Check that the feature is enabled for you.
+- The model — **Claude Opus 4.7** (a vision model). Launched — **April 17, 2026**;
+  later — integrations (GitHub import of design systems, `/design-sync`, on-canvas editing).
+
+## 3. Where to open it
+
+- Direct address: **`claude.ai/design`** (inside Claude.ai; per secondary sources — also
+  a palette icon in the left panel).
+
+## 4. How to start a project (4 input methods)
+
+1. **Text prompt** — you describe what you need, Claude assembles the first version.
+2. **File upload** — images and documents (DOCX, PPTX, XLSX). ← this is where we put our
+   `design-brief.md` and a screenshot of your prototype.
+3. **Point at a codebase** — Claude reads the code and adapts.
+4. **Web capture** — "capture" elements from an existing site so the prototype resembles
+   the real product.
+
+## 5. How to refine
+
+- **Inline comments** on specific elements.
+- **Direct text editing** on the mockup.
+- **Adjustment knobs** — live editing of spacing, color, layout.
+- Then ask Claude to **apply the changes across the whole mockup** at once.
+
+## 6. Design system / onboarding
+
+During onboarding Claude reads the team's codebase and design files and builds a **design system**
+(colors, typography, components), which is then applied automatically to all projects.
+For a single household project this is not required.
+
+## 7. Export and sharing
+
+- An internal **URL** within the organization; save as a **folder**.
+- Export to **Canva, PDF, PPTX, standalone HTML**.
+- **Interactive prototypes** — static mockups turn into clickable ones (you walk through
+  the screens without a single line of code).
+- Collaboration: private / view by link / edit access.
+
+→ For us: you export **standalone HTML** (or PDF/screenshots) and hand it to me as a **reference**.
+
+## 8. Integration with Claude Code
+
+- **Handoff to Claude Code**: when the design is ready, Claude packages everything into a **handoff bundle**,
+  which is passed to Claude Code in a single instruction (so as not to rebuild "from screenshots").
+- Later (an update, secondary sources ~June 2026): importing design systems from **GitHub**,
+  editing directly on the canvas, the **`/design-sync`** command — pulls the organization's
+  component library into Claude Design.
+
+## 9. ⚠️ Important for our case (WPF)
+
+- Claude Design produces **web code (HTML/CSS/JS/React)** — which **does not map onto WPF/XAML
+  directly**. So in our process it's needed as a **generator of visual references**
+  (layout, hierarchy, spacing, look&feel, patterns), and **not** as a source of final code.
+- Practical flow: `design-brief.md` + a screenshot of your prototype → into Claude Design →
+  you get variants → export **HTML/screenshots** → hand them to me → I port them into
+  WPF/XAML (WPF-UI/Fluent theme).
+- The brief deliberately states "this is a desktop WPF application, a single window, think in WPF
+  controls" — so that it doesn't produce a web landing page but proposes a desktop layout.
+- The "Claude Design → Claude Code" handoff is meant for a **web frontend**; for WPF it won't give
+  ready code, but the exported mockups are still useful as a reference.
+
+## 10. Caveats
+
+- **Research preview** — features/behavior may change; a paid plan is required.
+- Oriented toward **web/non-designers**; for the desktop (WPF) — only as a visual entry point.
+- Exact formats/steps may have been updated after writing — check against the `claude.ai/design` interface.
+
+---
+
+## Sources
 
 - [Introducing Claude Design by Anthropic Labs — Anthropic](https://www.anthropic.com/news/claude-design-anthropic-labs)
 - [How to Use Claude Design (Tosea.ai)](https://tosea.ai/blog/claude-design-complete-guide)

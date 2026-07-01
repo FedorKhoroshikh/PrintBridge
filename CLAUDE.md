@@ -1,59 +1,59 @@
 # CLAUDE.md — Canon Print Bridge
 
-Репозиторий одного проекта: **Canon Print Bridge** — печать на Canon LASER SHOT
-LBP-1120 (host-based CAPT, нет x64-драйвера) с Windows 11 через гостевую Windows XP
-в VirtualBox. Приложение на Win11 выбирает PDF + параметры, реальная печать идёт
-в XP автоматически через файловую очередь в общей папке.
+Single-project repository: **Canon Print Bridge** — printing on the Canon LASER SHOT
+LBP-1120 (host-based CAPT, no x64 driver) from Windows 11 via a Windows XP guest
+in VirtualBox. The app on Win11 selects a PDF + parameters; the actual printing happens
+in XP automatically through a file-based queue in a shared folder.
 
-Корень репозитория — `T:\Dev\`. Основной код — в `CanonPrintBridge/`.
+The repository root is `T:\Dev\`. The main code is in `CanonPrintBridge/`.
 
-## Раскладка
+## Layout
 
-| Путь | Что |
+| Path | What |
 |---|---|
-| `CanonPrintBridge/` | решение .NET 8 (`net8.0-windows`, WPF) |
-| `CanonPrintBridge/src/CanonPrintBridge/` | WPF-приложение (Win11-сторона) |
-| `CanonPrintBridge/xp-watcher/` | сторож `watcher.vbs` + разовая настройка XP |
-| `CanonPrintBridge/docs/` | контракты и спецификации (см. ниже) |
-| `CanonPrintBridge/README.md` | обзор и сборка |
-| `CanonPrintBridge/STATUS.md` | текущий статус и фактическая среда (host+XP) |
-| `printer-xp-icon.ico` | иконка приложения (embedded resource) |
+| `CanonPrintBridge/` | .NET 8 solution (`net8.0-windows`, WPF) |
+| `CanonPrintBridge/src/CanonPrintBridge/` | WPF application (Win11 side) |
+| `CanonPrintBridge/xp-watcher/` | watcher `watcher.vbs` + one-time XP setup |
+| `CanonPrintBridge/docs/` | contracts and specs (see below) |
+| `CanonPrintBridge/README.md` | overview and build |
+| `CanonPrintBridge/STATUS.md` | current status and actual environment (host+XP) |
+| `printer-xp-icon.ico` | application icon (embedded resource) |
 
-Документы в `docs/`:
-- `job-contract.md` — файловый контракт `job.json` / `status.json` (это и есть «API»).
-- `ui-spec.md` — UI/UX-спецификация и вводные по look&feel (задача редизайна).
-- `implementation-plan.md` — план имплементации редизайна.
+Documents in `docs/`:
+- `job-contract.md` — file contract `job.json` / `status.json` (this is the "API").
+- `ui-spec.md` — UI/UX spec and look&feel brief (the redesign task).
+- `implementation-plan.md` — redesign implementation plan.
 
-## Сборка / публикация
+## Build / publish
 
 ```powershell
 dotnet build CanonPrintBridge/CanonPrintBridge.sln -c Release
-# single-file (см. implementation-plan.md, фаза «single exe»):
+# single-file (see implementation-plan.md, "single exe" phase):
 dotnet publish CanonPrintBridge/src/CanonPrintBridge -c Release -r win-x64 --self-contained `
   -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
 ```
 
-Готовый exe после build: `CanonPrintBridge/src/CanonPrintBridge/bin/Release/net8.0-windows/CanonPrintBridge.exe`.
+Resulting exe after build: `CanonPrintBridge/src/CanonPrintBridge/bin/Release/net8.0-windows/CanonPrintBridge.exe`.
 
-## Фактическая среда (host + XP), вне кода
+## Actual environment (host + XP), outside the code
 
-Полностью — в `CanonPrintBridge/STATUS.md`. Кратко:
-- VM VirtualBox: **`Microelectronics`** (XP). `VBoxManage`: `C:\Program Files\Oracle\VirtualBox\VBoxManage.exe`.
-- USB-фильтр «Canon CAPT» (VendorId `04a9`, ProductId `262b`) → принтер захватывается сам при старте VM.
-- XP-очередь печати: **`Canon LBP-1120 A4`** (A5/B5 пока не создавались).
-- Сторож в XP: `C:\CanonBridge\watcher.vbs`, автозапуск в Автозагрузке профиля `User`, автологин.
-- Мост-папка: хост `C:\Virtualization\Shared\Queue\` ↔ гость `\\vboxsvr\Shared\Queue`.
-- Лаунчер VM: `Printer_Canon_lbp_1120\Print-Canon.ps1` (в корне репо; сборка копирует его рядом с exe, `LauncherPath` относительный — портируемость).
+Full details in `CanonPrintBridge/STATUS.md`. In brief:
+- VirtualBox VM: **`Microelectronics`** (XP). `VBoxManage`: `C:\Program Files\Oracle\VirtualBox\VBoxManage.exe`.
+- USB filter "Canon CAPT" (VendorId `04a9`, ProductId `262b`) → the printer is captured automatically when the VM starts.
+- XP print queue: **`Canon LBP-1120 A4`** (A5/B5 not created yet).
+- Watcher in XP: `C:\CanonBridge\watcher.vbs`, auto-started from the Startup folder of the `User` profile, autologin.
+- Bridge folder: host `C:\Virtualization\Shared\Queue\` ↔ guest `\\vboxsvr\Shared\Queue`.
+- VM launcher: `Printer_Canon_lbp_1120\Print-Canon.ps1` (in the repo root; the build copies it next to the exe, `LauncherPath` is relative — portability).
 
-## Ограничения железа LBP-1120
+## LBP-1120 hardware limitations
 
-Только ч/б; двусторонняя — только ручная; формат — через отдельные XP-очереди, а не флаги драйвера.
+Black & white only; duplex — manual only; paper size — via separate XP queues, not driver flags.
 
-## Грабли (не повторять)
+## Gotchas (do not repeat)
 
-- **PowerShell 5.1**: `.ps1` читается в ANSI/1251 — кириллица без BOM ломает парсер →
-  лаунчер держим **ASCII-only**. `$ErrorActionPreference='Stop'` превращает stderr от
-  VBoxManage в терминирующую ошибку → в лаунчере `'Continue'` + `2>$null`.
-- **`watcher.vbs`**: комментарии — только английские (cscript/XP плохо едят non-ASCII в исходнике).
-- Часы гостевой XP сбиты → таймстемпы `updatedAt` в статусах врать могут; свежесть считать по
-  mtime файлов на **хосте**, а не по времени внутри XP.
+- **PowerShell 5.1**: `.ps1` is read as ANSI/1251 — Cyrillic without a BOM breaks the parser →
+  keep the launcher **ASCII-only**. `$ErrorActionPreference='Stop'` turns stderr from
+  VBoxManage into a terminating error → in the launcher use `'Continue'` + `2>$null`.
+- **`watcher.vbs`**: comments — English only (cscript/XP handle non-ASCII in the source poorly).
+- The guest XP clock is off → the `updatedAt` timestamps in statuses may lie; judge freshness by the
+  mtime of files on the **host**, not by the time inside XP.

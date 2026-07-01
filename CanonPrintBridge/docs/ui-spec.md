@@ -1,25 +1,25 @@
-# UI/UX-спецификация — редизайн окна Canon Print Bridge
+# UI/UX specification — Canon Print Bridge window redesign
 
-Документ фиксирует **итоговую конкретику UI** — заполняется после проработки дизайна.
-Непредписывающие вводные — в `design-brief.md`; выбор паттернов раскладки отдан
-claude design. Разделы §2–§8 ниже — **исходный черновой макет владельца** (кандидат);
-будут переписаны под решения, выбранные по референсам. В силе остаются жёсткие
-требования: §4 (индикаторы), §7 (завершение печати), §8 (preview через готовый вьюер),
-§9 (look&feel). Реализация — по `implementation-plan.md`.
+This document captures the **final concrete UI details** — filled in after the design work.
+The non-prescriptive inputs are in `design-brief.md`; the choice of layout patterns is handed
+to Claude Design. Sections §2–§8 below are the **owner's original draft mockup** (a candidate);
+they will be rewritten to match the decisions chosen from the references. The hard
+requirements remain in force: §4 (indicators), §7 (print completion), §8 (preview through a ready-made viewer),
+§9 (look&feel). The implementation follows `implementation-plan.md`.
 
-## 1. Назначение и контекст
+## 1. Purpose and context
 
-Однооконное WPF-приложение (Win11). Пользователь — один (Фёдор), сценарий бытовой:
-изредка распечатать PDF на старом Canon LBP-1120 через XP-VM. Значит: минимум шагов,
-крупные цели, честные индикаторы состояния, никаких модальных дебрей.
+A single-window WPF application (Win11). There is a single user (Fedor), a domestic scenario:
+occasionally print a PDF to the old Canon LBP-1120 through the XP VM. So: minimal steps,
+large targets, honest status indicators, no modal thickets.
 
-Целевой look&feel: чистый, светлый, «Fluent-ish» под Win11 — воздух, спокойная
-типографика (Segoe UI), один акцентный цвет для главного действия, статусы —
-цветными кружками. Никакого визуального шума и лишних рамок.
+Target look&feel: clean, light, "Fluent-ish" for Win11 — airy, calm
+typography (Segoe UI), a single accent color for the main action, statuses as
+colored dots. No visual noise or extra frames.
 
-## 2. Раскладка
+## 2. Layout
 
-Окно — **split container** (две колонки, разделитель — `GridSplitter`):
+The window is a **split container** (two columns, the divider is a `GridSplitter`):
 
 ```
 ┌───────────────────────────┬──────────────────────────┐
@@ -44,98 +44,98 @@ claude design. Разделы §2–§8 ниже — **исходный черн
 └───────────────────────────┴──────────────────────────┘
 ```
 
-- По умолчанию правая панель **скрыта**, окно узкое (как сейчас, ~470px).
-- Кнопка-иконка в правом верхнем углу левой колонки разворачивает/сворачивает Preview;
-  при разворачивании окно расширяется, `GridSplitter` позволяет менять пропорцию.
-- Левая колонка сверху вниз: зона файла → индикаторы состояния → кнопки действий →
-  Параметры → строка прогресса → Журнал (как в текущем окне, плюс индикаторы и preview-кнопка).
+- By default the right panel is **hidden**, the window is narrow (as it is now, ~470px).
+- The icon button in the top-right corner of the left column expands/collapses the Preview;
+  when expanding, the window widens, and the `GridSplitter` lets you change the proportion.
+- The left column from top to bottom: file zone → status indicators → action buttons →
+  Parameters → progress row → Log (as in the current window, plus the indicators and the preview button).
 
-## 3. Зона выбора файла
+## 3. File selection zone
 
-- Крупная пунктирная drop-зона с текстом «Выберите файл или перетащите».
-- Клик по зоне = открыть диалог выбора (эквивалент нынешней «Обзор…»).
-- Drag&drop PDF — как сейчас. После выбора: показать имя файла (и, если preview открыт,
-  отрисовать документ справа).
-- Валидация как сейчас: только существующий `*.pdf`.
+- A large dashed drop zone with the text «Выберите файл или перетащите» (Select a file or drag it here).
+- Clicking the zone = open the selection dialog (equivalent to the current «Обзор…» (Browse…)).
+- Drag&drop of a PDF — as it is now. After selection: show the file name (and, if the preview is open,
+  render the document on the right).
+- Validation as it is now: only an existing `*.pdf`.
 
-## 4. Индикаторы состояния (три кружка)
+## 4. Status indicators (three dots)
 
-Три независимых сигнала, каждый — цветной кружок + подпись. Опрос — по таймеру
-(polling, ~2–3 c). Цвета: **зелёный** = ок, **жёлтый** = переходное/загрузка,
-**серый** = неизвестно/выключено, **красный** = было ок и отвалилось / ошибка.
+Three independent signals, each — a colored dot + label. Polling is on a timer
+(polling, ~2–3 s). Colors: **green** = ok, **yellow** = transitional/loading,
+**grey** = unknown/off, **red** = was ok and dropped out / error.
 
-| Индикатор | Зелёный (ок) | Жёлтый | Серый / Красный |
+| Indicator | Green (ok) | Yellow | Grey / Red |
 |---|---|---|---|
-| **Виртуальная машина** | `VBoxManage list runningvms` содержит `Microelectronics` | — | серый: не запущена; красный: была запущена и пропала |
-| **Образ ОС (Windows XP)** | heartbeat сторожа свежий (XP загрузилась, залогинена, сторож жив) | VM запущена, но heartbeat ещё не появился (грузится) | серый: VM не запущена; красный: heartbeat протух (XP/сторож упал) |
-| **Принтер `<name>`** | сторож видит принтер онлайн (WMI) | — | серый: неизвестно; красный: принтер отвалился (USB потерян / offline) |
+| **Virtual Machine** | `VBoxManage list runningvms` contains `Microelectronics` | — | grey: not running; red: was running and disappeared |
+| **OS image (Windows XP)** | the watcher heartbeat is fresh (XP booted, logged in, watcher alive) | VM running, but the heartbeat has not appeared yet (booting) | grey: VM not running; red: heartbeat went stale (XP/watcher crashed) |
+| **Printer `<name>`** | the watcher sees the printer online (WMI) | — | grey: unknown; red: printer dropped out (USB lost / offline) |
 
-Ключевые требования (из постановки):
-- **(п.3)** «Образ ОС» зелёный только когда XP **реально** загрузилась и сторож жив —
-  а не пока VM грузится. Источник — heartbeat, не факт «VM running».
-- **(п.7)** Если VM/XP убили руками — индикаторы гаснут в красный, «Печать» блокируется.
-- **(п.2)** «Печать» **disabled**, пока принтер не активен (все три условия печати не зелёные).
+Key requirements (from the statement of work):
+- **(item 3)** "OS image" is green only when XP has **actually** booted and the watcher is alive —
+  not while the VM is booting. The source is the heartbeat, not the fact that "VM running".
+- **(item 7)** If the VM/XP were killed by hand — the indicators go red, "Print" is blocked.
+- **(item 2)** "Print" is **disabled** while the printer is not active (all three print conditions not green).
 
-Условие доступности «Печать» = VM running **и** heartbeat свежий **и** принтер онлайн
-**и** выбран PDF. Иначе — кнопка неактивна с тултипом-подсказкой, чего не хватает.
+The "Print" availability condition = VM running **and** heartbeat fresh **and** printer online
+**and** a PDF selected. Otherwise — the button is disabled with a hint tooltip for what is missing.
 
-Технически heartbeat — файл, который сторож переписывает каждый цикл; свежесть меряется
-по **mtime на хосте** (часы XP сбиты). Контракт heartbeat — в `implementation-plan.md`
-(раздел про `bridge.health.json`) и после реализации переносится в `job-contract.md`.
+Technically the heartbeat is a file that the watcher rewrites every cycle; freshness is measured
+by **mtime on the host** (the XP clock is off). The heartbeat contract is in `implementation-plan.md`
+(the section about `bridge.health.json`) and, after implementation, moves to `job-contract.md`.
 
-## 5. Кнопки действий
+## 5. Action buttons
 
-- **«Запустить принтер (VM)»** — поднимает VM **фоново (headless)**, окна не появляются.
-  Во время загрузки индикаторы отражают прогресс (VM жёлт → зелён, ОС серый → жёлтый → зелёный).
-- **«Печать»** — доступна только при готовности (см. §4). Показывает прогресс и таймер.
-- **«Завершить работу»** — корректно гасит фоновую VM/XP (ACPI-shutdown) и откатывает UI
-  в исходное состояние: preview закрыт, индикаторы серые, операция сброшена.
+- **«Запустить принтер (VM)» (Start printer (VM))** — brings the VM up **in the background (headless)**, no windows appear.
+  During boot the indicators reflect progress (VM yellow → green, OS grey → yellow → green).
+- **«Печать» (Print)** — available only when ready (see §4). Shows the progress and timer.
+- **«Завершить работу» (Shut down)** — properly powers off the background VM/XP (ACPI shutdown) and resets the UI
+  to its initial state: preview closed, indicators grey, the operation reset.
 
-## 6. Параметры печати
+## 6. Print parameters
 
-Текущий набор: Формат, Копии, Масштаб, Страницы, Ручная двусторонняя.
+The current set: Paper size, Copies, Scale, Pages, Manual duplex.
 
-- **(п.5)** Неработающее/непроверенное — **disable** (не удалять), с тултипом-пояснением:
-  - **Формат** — заблокировать на `A4` (в XP есть только очередь `Canon LBP-1120 A4`).
-    Разблокировать, когда будут созданы очереди A5/B5. Тултип: «A5/B5 — после создания очередей в XP».
-  - Копии, Масштаб, Страницы — **работают**, оставить активными.
-  - **Ручная двусторонняя — убрана из UI** (решение владельца); логику дуплекса в стороже
-    сохраняем на будущее, просто не показываем.
-- **Страницы** оставляем; размещение (инлайн vs «Дополнительно») — по итогам дизайна.
+- **(item 5)** Anything non-working/unverified — **disable** (do not remove), with an explanatory tooltip:
+  - **Paper size** — lock to `A4` (in XP there is only the `Canon LBP-1120 A4` queue).
+    Unlock when the A5/B5 queues have been created. Tooltip: «A5/B5 — после создания очередей в XP» (A5/B5 — after creating the queues in XP).
+  - Copies, Scale, Pages — **work**, keep active.
+  - **Manual duplex — removed from the UI** (owner's decision); we keep the duplex logic in the watcher
+    for the future, we just don't show it.
+- **Pages** we keep; placement (inline vs "Advanced") — per the design outcome.
 
-## 7. Строка прогресса и таймер
+## 7. Progress row and timer
 
-Как в текущей версии: индикаторная `ProgressBar` + текст справа
-(`Печать… 0:03` во время, `Готово за 0:03` по завершении).
+As in the current version: an indeterminate `ProgressBar` + text on the right
+(`Печать… 0:03` during, `Готово за 0:03` on completion).
 
-**(п.4)** «Готово» должно появляться, когда принтер **реально** закончил печать, а не когда
-SumatraPDF отдал задание в спулер. Источник правды — сторож: он дожидается опустошения
-очереди спулера XP и только тогда пишет `done`. Приложение показывает «Готово» по `done`.
+**(item 4)** "Done" should appear when the printer has **actually** finished printing, not when
+SumatraPDF handed the job to the spooler. The source of truth is the watcher: it waits for the
+XP spooler queue to drain and only then writes `done`. The app shows "Done" upon `done`.
 
-## 8. Preview (правая панель)
+## 8. Preview (right panel)
 
-- **(п.1, п.6)** Не городить свою отрисовку PDF — переиспользовать **готовый вьюер**.
-  Выбранный подход: **WebView2** (встроенный PDF-просмотрщик Edge/Chromium) с указанием
-  на локальный файл. Даёт прокрутку/зум/страницы бесплатно.
-- Панель — правая часть split container, разворачивается кнопкой-иконкой (§2).
-- При смене выбранного файла preview перерисовывается. Пустое состояние — плейсхолдер «Preview».
-- Fallback: если среды WebView2 нет — кнопка «Открыть во внешнем вьюере» (shell-open).
+- **(item 1, item 6)** Do not build a custom PDF rendering — reuse a **ready-made viewer**.
+  The chosen approach: **WebView2** (Edge/Chromium's built-in PDF viewer) pointed
+  at a local file. Gives scrolling/zoom/pages for free.
+- The panel is the right part of the split container, expanded by an icon button (§2).
+- When the selected file changes, the preview is re-rendered. The empty state — a "Preview" placeholder.
+- Fallback: if there is no WebView2 runtime — a "Open in external viewer" button (shell-open).
 
-## 9. Look&feel (вводные для дизайна)
+## 9. Look&feel (inputs for design)
 
-- **Шрифт:** Segoe UI (UI), Consolas (журнал, таймер, тех. подписи).
-- **Акцент:** один цвет для «Печать» (например, синий Win11 `#0067C0`), остальные кнопки нейтральные.
-- **Статус-кружки:** зелёный `#2FA84F`, жёлтый `#E5B72B`, серый `#B8B8B8`, красный `#D64545`.
-- **Отступы:** щедрые (16px внешние, 8–10px между блоками), крупная drop-зона.
-- **Границы:** минимум; GroupBox можно заменить на лёгкие заголовки-разделители.
-- **Состояния:** у каждого интерактивного элемента честный disabled-вид + тултип-причина.
-- **Иконка приложения:** `printer-xp-icon.ico` (embedded), в заголовке окна и на таскбаре.
+- **Font:** Segoe UI (UI), Consolas (log, timer, technical captions).
+- **Accent:** a single color for "Print" (for example, the Win11 blue `#0067C0`), the other buttons neutral.
+- **Status dots:** green `#2FA84F`, yellow `#E5B72B`, grey `#B8B8B8`, red `#D64545`.
+- **Spacing:** generous (16px outer, 8–10px between blocks), a large drop zone.
+- **Borders:** minimal; GroupBox can be replaced with light divider headings.
+- **States:** every interactive element has an honest disabled look + a reason tooltip.
+- **App icon:** `printer-xp-icon.ico` (embedded), in the window title and on the taskbar.
 
-## 10. Про проработку дизайна инструментами «claude design»
+## 10. On design development with the "Claude Design" tools
 
-Инструменты генеративного дизайна Claude ориентированы на веб (HTML/CSS/React) и не
-ложатся на WPF/XAML — их вывод пришлось бы переписывать вручную. Поэтому рекомендация:
-**отдельный дизайн-инструмент здесь не нужен**; эта спецификация (§2–§9) и есть «файл
-вводных». Реализуем прямо в XAML с аккуратным `ResourceDictionary` (стили, цвета, кисти).
-Если захочется быстрых визуальных вариантов — можно набросать статичные мокапы, но
-пайплайн «design → код» для десктопа выигрыша не даёт.
+Claude's generative design tools are web-oriented (HTML/CSS/React) and do not
+map onto WPF/XAML — their output would have to be rewritten by hand. Hence the recommendation:
+**a separate design tool is not needed here**; this specification (§2–§9) is itself the "inputs
+file". We implement directly in XAML with a tidy `ResourceDictionary` (styles, colors, brushes).
+If quick visual variants are desired — you can sketch static mockups, but the "design → code"
+pipeline gives no benefit for desktop.

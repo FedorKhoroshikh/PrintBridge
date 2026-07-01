@@ -1,52 +1,52 @@
-# Промпт для claude.ai/design
+# Prompt for claude.ai/design
 
-Вставить в новый проект Claude Design **вместе с двумя вложениями**:
+Paste into a new Claude Design project **together with two attachments**:
 
-1. **`design-brief.md`** — полный бриф (требования, ограничения, открытые решения).
-2. **Скриншот текущего чернового прототипа** (`M:\Downloads\Screeshots\new-ui.png`) —
-   **только как референс текущего состояния**; раскладку можно и нужно улучшать/переделывать.
+1. **`design-brief.md`** — the full brief (requirements, constraints, open decisions).
+2. **A screenshot of the current draft prototype** (`new-ui.png`) —
+   **only as a reference of the current state**; the layout can and should be improved/reworked.
 
-> Почему так, а не пиксельным макетом: чем детальнее прескриптивный набросок, тем сильнее он
-> «якорит» инструмент и он просто повторяет наше любительское видение. Даём **содержимое и
-> ограничения**, а раскладку — на откуп хорошим паттернам проектирования.
+> Why this way rather than a pixel-perfect mockup: the more detailed and prescriptive the sketch, the more it
+> "anchors" the tool and it simply repeats our amateur vision. We give **content and
+> constraints**, and leave the layout to good design patterns.
 
 ---
 
-## Текст промпта (копировать ниже)
+## Prompt text (copy below)
 
-Спроектируй интерфейс десктопного приложения под **Windows 11**. Это утилита печати на старый
-принтер через фоновую виртуальную машину. Все требования, инвентарь содержимого, состояния и
-ограничения — в приложённом **`design-brief.md`**; прочитай его целиком.
+Design the interface of a desktop application for **Windows 11**. It's a utility for printing to an old
+printer through a background virtual machine. All requirements, content inventory, states and
+constraints are in the attached **`design-brief.md`**; read it in full.
 
-**Формат вывода (важно):**
-- Это **не веб-лендинг**, а **одно ресайзабельное десктоп-окно** Windows 11 в стиле **Fluent**.
-  Плотность и паттерны — как у нативной настольной утилиты, а не сайта.
-- Результат будет переложен в **WPF/XAML**, поэтому предлагай раскладки, выразимые стандартными
-  десктоп-контролами: `Grid`/`DockPanel`, `GridSplitter`, `Expander`, `TabControl`/страницы,
-  `ComboBox`, кнопки, `ProgressBar`, индикаторы-кружки, всплывающие панели/отдельные окна.
-- Язык интерфейса — **русский**. Основная тема — светлая Fluent (тёмная — опционально).
+**Output format (important):**
+- This is **not a web landing page** but **a single resizable desktop window** for Windows 11 in the **Fluent** style.
+  The density and patterns should be those of a native desktop utility, not a website.
+- The result will be ported into **WPF/XAML**, so propose layouts expressible with standard
+  desktop controls: `Grid`/`DockPanel`, `GridSplitter`, `Expander`, `TabControl`/pages,
+  `ComboBox`, buttons, `ProgressBar`, circle status indicators, popup panels/separate windows.
+- The UI language is **Russian**. The primary theme is light Fluent (dark — optional).
 
-**Подход:**
-- **Не копируй** приложённый черновой скриншот — это лишь текущее грубое видение. Реши **сам, по
-  хорошим принципам проектирования**, что где расположить, какие контролы использовать, что
-  вынести в доп. окна/страницы, что сделать сворачиваемым.
-- Работай **от содержимого и состояний** (бриф §2–§4): выбор файла; три индикатора состояния
-  (VM / Образ ОС / Принтер) с состояниями ok/загрузка/выключено/потерян; действия (запустить
-  принтер, печать, завершить работу); параметры (формат — залочен на A4, копии, масштаб,
-  страницы); прогресс + таймер; журнал; preview PDF; экран настроек.
-- **Открытые решения (бриф §6) — за тобой:** одна форма или навигация; где и как показывать
-  preview; куда прятать «продвинутое» и журнал; как оформить настройки; модалки vs
-  инлайн-баннеры; где живут индикаторы.
-- Где уместно — используй **иконки** (Segoe Fluent Icons) в действиях (печать / выключение /
-  открыть / настройки / preview) и в статусах. У приложения уже есть иконка окна.
+**Approach:**
+- **Do not copy** the attached draft screenshot — it's only the current rough vision. Decide **yourself, by
+  good design principles**, what goes where, which controls to use, what to move
+  into additional windows/pages, what to make collapsible.
+- Work **from the content and states** (brief §2–§4): file selection; three status indicators
+  (VM / OS image / Printer) with states ok/loading/off/lost; actions (start the
+  printer, print, shut down); parameters (paper size — locked to A4, copies, scale,
+  pages); progress + timer; log; PDF preview; settings screen.
+- **Open decisions (brief §6) — up to you:** one form or navigation; where and how to show
+  the preview; where to hide the "advanced" stuff and the log; how to lay out the settings; modals vs
+  inline banners; where the indicators live.
+- Where appropriate — use **icons** (Segoe Fluent Icons) in actions (print / shutdown /
+  open / settings / preview) and in statuses. The app already has a window icon.
 
-**Ограничения (из брифа, соблюдать):** только ч/б; формат только A4 (пока); ручной двусторонней
-печати в UI нет; VM работает в фоне (окном VM не управляем — только индикаторы); «Готово» — только
-по факту завершения печати; preview — через готовый встроенный вьюер (не своя отрисовка).
+**Constraints (from the brief, to be observed):** black & white only; paper size only A4 (for now); manual duplex
+printing is not in the UI; the VM runs in the background (we don't manage the VM window — only indicators); «Готово» — only
+upon the fact of print completion; preview — through a ready built-in viewer (not our own rendering).
 
-**Что хочу на выходе:**
-1. Главное окно — 1–2 варианта раскладки (состояния «preview скрыт» и «preview открыт»).
-2. Экран/диалог настроек.
-3. Раскадровка состояний: индикаторы (ok / загрузка / выключено / потерян); «Печать» disabled
-   с тултипом-причиной; идёт печать (прогресс + таймер); готово; ошибка; пустое состояние.
-4. Короткое **обоснование** ключевых решений (почему такая структура, где preview, где журнал).
+**What I want as output:**
+1. Main window — 1–2 layout variants (states "preview hidden" and "preview open").
+2. Settings screen/dialog.
+3. State storyboard: indicators (ok / loading / off / lost); «Печать» disabled
+   with a reason tooltip; printing in progress (progress + timer); done; error; empty state.
+4. A short **rationale** for the key decisions (why this structure, where the preview, where the log).

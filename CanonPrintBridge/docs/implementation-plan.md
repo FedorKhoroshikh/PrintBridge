@@ -1,36 +1,36 @@
-# План имплементации — редизайн Canon Print Bridge
+# Implementation plan — Canon Print Bridge redesign
 
-Постановка — в `ui-spec.md`. Здесь: контракты, пофайловые изменения, порядок фаз, риски.
-Фазы упорядочены по зависимостям и так, чтобы каждую можно было проверить отдельно.
+The problem statement is in `ui-spec.md`. Here: contracts, per-file changes, phase order, risks.
+Phases are ordered by dependencies and so that each can be verified separately.
 
-## Обзор фаз
+## Phase overview
 
-| # | Фаза | Зачем (пункты постановки) | Затрагивает |
+| # | Phase | Why (problem-statement items) | Affects |
 |---|---|---|---|
-| 0 | Инфраструктура (git, docs) | подготовка | сделано в этом заходе |
-| 1 | Heartbeat + health-контракт | п.2, 3, 7 (индикаторы) | `watcher.vbs`, `docs/job-contract.md` |
-| 2 | Настоящее завершение печати | п.4 («Готово» раньше времени) | `watcher.vbs` |
-| 3 | Опрос состояния в приложении | п.2, 3, 7 | новый сервис + `MainWindow` |
-| 4 | Три индикатора + гейтинг «Печать» | п.2, 3, 7 | `MainWindow.xaml(.cs)` |
-| 5 | Preview (WebView2 + split) | п.1, 6 | `csproj`, `MainWindow.xaml(.cs)` |
-| 6 | Гейтинг параметров | п.5 | `MainWindow.xaml` |
-| 7 | Визуальный редизайн (стили) | look&feel | `MainWindow.xaml`, `App.xaml` |
-| 8 | Иконка приложения | импл-2 | `csproj`, `MainWindow.xaml` |
-| 9 | Single-file publish | импл-1 | `csproj`, publish-скрипт |
-| 10 | Фоновый запуск (headless) + «Завершить работу» | фон, teardown | лаунчер/`AppConfig`, `MainWindow` |
-| 11 | Экран настроек (проект сейчас, реализация позже) | переносимость | новый `Window` + `AppConfig` |
+| 0 | Infrastructure (git, docs) | preparation | done in this pass |
+| 1 | Heartbeat + health contract | items 2, 3, 7 (status indicators) | `watcher.vbs`, `docs/job-contract.md` |
+| 2 | Real print completion | item 4 («Готово» too early) | `watcher.vbs` |
+| 3 | State polling in the app | items 2, 3, 7 | new service + `MainWindow` |
+| 4 | Three status indicators + gating «Печать» | items 2, 3, 7 | `MainWindow.xaml(.cs)` |
+| 5 | Preview (WebView2 + split) | items 1, 6 | `csproj`, `MainWindow.xaml(.cs)` |
+| 6 | Parameter gating | item 5 | `MainWindow.xaml` |
+| 7 | Visual redesign (styles) | look&feel | `MainWindow.xaml`, `App.xaml` |
+| 8 | App icon | impl-2 | `csproj`, `MainWindow.xaml` |
+| 9 | Single-file publish | impl-1 | `csproj`, publish script |
+| 10 | Headless startup + «Завершить работу» | background, teardown | launcher/`AppConfig`, `MainWindow` |
+| 11 | Settings screen (design now, implementation later) | portability | new `Window` + `AppConfig` |
 
-Фазы 1–2 (сторона XP) независимы от 3–8 (сторона WPF) и могут идти параллельно.
-Рекомендуемый порядок сборки-проверки: 1 → 2 → 3 → 4 → 6 → 5 → 7 → 8 → 9.
+Phases 1–2 (XP side) are independent of 3–8 (WPF side) and can proceed in parallel.
+Recommended build-verify order: 1 → 2 → 3 → 4 → 6 → 5 → 7 → 8 → 9.
 
 ---
 
-## Фаза 1 — Heartbeat + health-контракт
+## Phase 1 — Heartbeat + health contract
 
-**Идея.** Сторож каждый цикл переписывает файл здоровья. Приложение читает его и
-меряет свежесть по **mtime на хосте** (часы XP недостоверны).
+**Idea.** The watcher rewrites a health file every cycle. The app reads it and
+measures freshness by **mtime on the host** (XP's clock is unreliable).
 
-**Новый контракт** — `Queue\status\bridge.health.json` (пишет сторож, читает WPF):
+**New contract** — `Queue\status\bridge.health.json` (written by the watcher, read by WPF):
 
 ```json
 {
@@ -41,185 +41,185 @@
 }
 ```
 
-- Файл перезаписывается атомарно (`*.tmp` + rename), как статусы.
-- `printerPresent` — сторож опрашивает WMI: `Win32_Printer WHERE Name LIKE 'Canon LBP-1120%'`,
-  считает онлайн, если запись есть и `WorkOffline = False`.
-- `tick` — для диагностики; на решения не влияет (свежесть = mtime на хосте).
+- The file is rewritten atomically (`*.tmp` + rename), like the statuses.
+- `printerPresent` — the watcher queries WMI: `Win32_Printer WHERE Name LIKE 'Canon LBP-1120%'`,
+  considers it online if a record exists and `WorkOffline = False`.
+- `tick` — for diagnostics; does not affect decisions (freshness = mtime on the host).
 
-**Изменения в `watcher.vbs`:**
-- В главный цикл (после/до сканирования заданий) добавить `WriteHealth`.
-- `WriteHealth` — пишет `bridge.health.json` с `watcher=true` и результатом `PrinterOnline()`.
-- `PrinterOnline()` — WMI-запрос через `GetObject("winmgmts:")`, вернуть True/False + имя.
-- Держать частоту записи ≈ раз в цикл (`POLL_MS = 2000`) — приложению хватит.
-- Комментарии — английские (ограничение cscript/XP, см. CLAUDE.md).
+**Changes in `watcher.vbs`:**
+- Add `WriteHealth` to the main loop (after/before scanning jobs).
+- `WriteHealth` — writes `bridge.health.json` with `watcher=true` and the result of `PrinterOnline()`.
+- `PrinterOnline()` — a WMI query via `GetObject("winmgmts:")`, returns True/False + name.
+- Keep the write frequency ≈ once per cycle (`POLL_MS = 2000`) — enough for the app.
+- Comments — in English (cscript/XP limitation, see CLAUDE.md).
 
-**Обновить `docs/job-contract.md`:** добавить раздел про `bridge.health.json`.
+**Update `docs/job-contract.md`:** add a section about `bridge.health.json`.
 
-**Проверка:** запустить VM; убедиться, что файл появляется и mtime обновляется каждые ~2 c;
-выдернуть USB-принтер в меню VirtualBox → `printerPresent` становится `false`.
-
----
-
-## Фаза 2 — Настоящее завершение печати (п.4)
-
-**Причина бага.** `RunPrint` = `sh.Run(cmd, 0, True)` ждёт **выхода** SumatraPDF, а тот
-завершается, отдав задание в спулер Windows, — до физической печати. `done` пишется рано.
-
-**Решение.** После возврата SumatraPDF ждать опустошения очереди спулера принтера, затем `done`.
-
-- Новая `WaitForSpoolDrain(printerName, timeoutS)`:
-  - опрашивать `Win32_PrintJob` (фильтр по имени принтера) раз в ~1–2 c;
-  - выйти, когда заданий 0 и держится 0 короткий «settle» (~2 c);
-  - таймаут (например 180 c) → не блокироваться вечно (тогда `done`, но с пометкой в `message`).
-- Вызвать после успешного `RunPrint` (для дуплекса — после второго прохода).
-- ⚠️ Оговорка: для CAPT физический вывод может отставать от опустошения спулера на пару секунд
-  (принтер host-based, свой статус-монитор). Опустошение спулера — лучший доступный сигнал;
-  это честно фиксируем в комментарии и в `job-contract.md`.
-
-**Проверка:** печать многостраничного PDF — `done` появляется после реального схода последней
-страницы (в пределах пары секунд), а не сразу.
+**Verification:** start the VM; make sure the file appears and its mtime updates every ~2 s;
+unplug the USB printer in the VirtualBox menu → `printerPresent` becomes `false`.
 
 ---
 
-## Фаза 3 — Опрос состояния в приложении
+## Phase 2 — Real print completion (item 4)
 
-**Новый сервис** `Services/HealthService.cs`:
-- `bool IsVmRunning()` — запустить `VBoxManage list runningvms`, искать имя VM
-  (имя VM и путь VBoxManage — вынести в `AppConfig`: `VmName`, `VBoxManagePath`).
-- `GuestHealth ReadHealth()` — прочитать `bridge.health.json`; вернуть `printerPresent`,
-  `printerName` и **возраст по mtime на хосте** (`File.GetLastWriteTime`).
-- Свежесть: heartbeat считается живым, если моложе порога (например 8 c при POLL 2 c).
+**Cause of the bug.** `RunPrint` = `sh.Run(cmd, 0, True)` waits for SumatraPDF to **exit**, but it
+finishes after handing the job to the Windows spooler — before physical printing. `done` is written early.
 
-**Модель состояния** (enum на каждый индикатор): `Ok / Booting / Off / Lost`.
-- VM: running → есть; переход из «был running» в «нет» на глазах приложения → `Lost` (красный).
-- ОС: VM running + heartbeat свежий → `Ok`; VM running + heartbeat нет/протух → `Booting`/`Lost`.
-- Принтер: heartbeat свежий + `printerPresent` → `Ok`; свежий + не present → `Lost`; иначе `Off`.
+**Solution.** After SumatraPDF returns, wait for the printer's spooler queue to drain, then `done`.
 
-`AppConfig` расширить полями `VmName` (`Microelectronics`), `VBoxManagePath`
-(`C:\Program Files\Oracle\VirtualBox\VBoxManage.exe`) с текущими значениями по умолчанию.
+- New `WaitForSpoolDrain(printerName, timeoutS)`:
+  - poll `Win32_PrintJob` (filtered by printer name) once every ~1–2 s;
+  - exit when there are 0 jobs and 0 has held for a short "settle" (~2 s);
+  - timeout (e.g. 180 s) → don't block forever (then `done`, but with a note in `message`).
+- Call it after a successful `RunPrint` (for duplex — after the second pass).
+- ⚠️ Caveat: for CAPT the physical output may lag the spooler drain by a couple of seconds
+  (the printer is host-based, with its own status monitor). Spooler drain is the best available signal;
+  record this honestly in a comment and in `job-contract.md`.
 
-**Проверка:** юнит-логика переходов; ручной прогон (запуск/остановка VM, выдёргивание USB).
-
----
-
-## Фаза 4 — Индикаторы + гейтинг «Печать» (п.2, 3, 7)
-
-- `DispatcherTimer` (~2–3 c) дёргает `HealthService`, обновляет три кружка (цвет + тултип).
-- Кружки — три `Ellipse` + подписи в левой колонке (см. `ui-spec.md §4`).
-- `PrintButton.IsEnabled` = VM `Ok` && ОС `Ok` && Принтер `Ok` && выбран PDF.
-  Иначе disabled + тултип с причиной (чего не хватает).
-- Не конфликтовать с уже существующим таймером печати (`_tick`): это отдельный таймер статуса,
-  работает всегда, пока окно открыто.
-
-**Проверка:** убить VM руками во время простоя → кружки краснеют, «Печать» гаснет (п.7).
+**Verification:** print a multi-page PDF — `done` appears after the last page actually comes out
+(within a couple of seconds), not immediately.
 
 ---
 
-## Фаза 5 — Preview (п.1, 6)
+## Phase 3 — State polling in the app
 
-- Пакет: `Microsoft.Web.WebView2` (NuGet). Требует WebView2 Runtime (на Win11 обычно есть).
-- Разметка: корневой `Grid` с тремя колонками — левая (управление, фикс. мин. ширина),
-  `GridSplitter`, правая (`WebView2`). Правая по умолчанию свёрнута (Width=0), окно узкое.
-- Кнопка-иконка (правый верх левой колонки) — toggle: разворачивает правую колонку и
-  расширяет окно; повторный клик сворачивает.
-- При `SetPdf` — если preview открыт, `webView.Source = new Uri(pdfPath)` (Edge отрисует PDF).
-- Fallback: нет WebView2 Runtime → прятать панель, показывать кнопку «Открыть во внешнем вьюере»
-  (`Process.Start` с `UseShellExecute`).
-- ⚠️ Для single-file (фаза 9) у WebView2 есть нативные библиотеки — нужен
-  `IncludeNativeLibrariesForSelfExtract=true`; проверить, что распакованный лоадер находится.
+**New service** `Services/HealthService.cs`:
+- `bool IsVmRunning()` — run `VBoxManage list runningvms`, look for the VM name
+  (VM name and VBoxManage path — move into `AppConfig`: `VmName`, `VBoxManagePath`).
+- `GuestHealth ReadHealth()` — read `bridge.health.json`; return `printerPresent`,
+  `printerName` and **age by mtime on the host** (`File.GetLastWriteTime`).
+- Freshness: a heartbeat is considered alive if younger than a threshold (e.g. 8 s at POLL 2 s).
 
-**Проверка:** выбрать PDF, открыть preview — документ виден, прокрутка/зум работают.
+**State model** (an enum per indicator): `Ok / Booting / Off / Lost`.
+- VM: running → present; a transition from "was running" to "gone" while the app watches → `Lost` (red).
+- OS: VM running + fresh heartbeat → `Ok`; VM running + no/stale heartbeat → `Booting`/`Lost`.
+- Printer: fresh heartbeat + `printerPresent` → `Ok`; fresh + not present → `Lost`; otherwise `Off`.
 
----
+Extend `AppConfig` with fields `VmName` (`Microelectronics`), `VBoxManagePath`
+(`C:\Program Files\Oracle\VirtualBox\VBoxManage.exe`) with the current values as defaults.
 
-## Фаза 6 — Гейтинг параметров (п.5)
-
-- **Формат:** заблокировать выбор на `A4` (`IsEnabled=false` или оставить только A4),
-  тултип «A5/B5 — после создания очередей в XP». Разблокировать позднее.
-- Копии/Масштаб/Страницы — рабочие, оставить.
-- **Ручная двусторонняя — убрать из UI** (решение владельца); логику дуплекса в стороже
-  (`awaiting-flip` / `.continue`) НЕ удалять — оставить на будущее.
-- Размещение «Страницы» (инлайн vs `Expander` «Дополнительно») — по итогам дизайна.
+**Verification:** unit-test the transition logic; a manual run (start/stop VM, unplug USB).
 
 ---
 
-## Фаза 7 — Визуальный редизайн (look&feel)
+## Phase 4 — Status indicators + gating «Печать» (items 2, 3, 7)
 
-- **Тема:** подключить Fluent-библиотеку **WPF-UI** (Win11-вид «из коробки»); проверить
-  совместимость с single-file (фаза 9) и WebView2. Fallback — сток WPF + свой ResourceDictionary.
-- `App.xaml`: `ResourceDictionary` со стилями (цвета-кисти статусов, акцент кнопки «Печать»,
-  типографика, отступы) — по `ui-spec.md §9`.
-- Переверстать `MainWindow.xaml` в целевую раскладку (§2): drop-зона, кружки, кнопки,
-  параметры, прогресс, журнал; заменить тяжёлые GroupBox на лёгкие разделители.
-- Сохранить все существующие хендлеры и логику; менять только представление.
+- A `DispatcherTimer` (~2–3 s) calls `HealthService`, updates the three circles (color + tooltip).
+- The circles — three `Ellipse` + captions in the left column (see `ui-spec.md §4`).
+- `PrintButton.IsEnabled` = VM `Ok` && OS `Ok` && Printer `Ok` && a PDF is selected.
+  Otherwise disabled + a tooltip with the reason (what is missing).
+- Do not conflict with the existing print timer (`_tick`): this is a separate status timer,
+  running the whole time the window is open.
 
----
-
-## Фаза 8 — Иконка (импл-2)
-
-- Скопировать/переместить `printer-xp-icon.ico` в `src/CanonPrintBridge/Assets/`.
-- `csproj`: `<ApplicationIcon>Assets\printer-xp-icon.ico</ApplicationIcon>` (иконка exe) +
-  добавить как `<Resource>`; в `MainWindow.xaml` — `Icon="Assets/printer-xp-icon.ico"`
-  (иконка окна/таскбара).
+**Verification:** kill the VM by hand while idle → the circles turn red, «Печать» goes off (item 7).
 
 ---
 
-## Фаза 9 — Single-file publish (импл-1)
+## Phase 5 — Preview (items 1, 6)
 
-- `csproj`/publish-профиль:
+- Package: `Microsoft.Web.WebView2` (NuGet). Requires the WebView2 Runtime (usually present on Win11).
+- Layout: a root `Grid` with three columns — left (controls, fixed min width),
+  `GridSplitter`, right (`WebView2`). The right one is collapsed by default (Width=0), the window is narrow.
+- An icon button (top-right of the left column) — a toggle: expands the right column and
+  widens the window; clicking again collapses it.
+- On `SetPdf` — if the preview is open, `webView.Source = new Uri(pdfPath)` (Edge renders the PDF).
+- Fallback: no WebView2 Runtime → hide the panel, show an «Открыть во внешнем вьюере» button
+  (`Process.Start` with `UseShellExecute`).
+- ⚠️ For single-file (phase 9) WebView2 has native libraries — you need
+  `IncludeNativeLibrariesForSelfExtract=true`; verify that the extracted loader is found.
+
+**Verification:** pick a PDF, open the preview — the document is visible, scroll/zoom work.
+
+---
+
+## Phase 6 — Parameter gating (item 5)
+
+- **Paper size:** lock the choice to `A4` (`IsEnabled=false` or leave only A4),
+  tooltip "A5/B5 — after the queues are created in XP". Unlock later.
+- Copies/Scale/Pages — working, keep them.
+- **Manual duplex — remove from the UI** (owner's decision); do NOT delete the duplex logic
+  in the watcher (`awaiting-flip` / `.continue`) — keep it for the future.
+- Placement of "Pages" (inline vs an «Дополнительно» `Expander`) — per the design outcome.
+
+---
+
+## Phase 7 — Visual redesign (look&feel)
+
+- **Theme:** wire up the Fluent library **WPF-UI** (Win11 look out of the box); verify
+  compatibility with single-file (phase 9) and WebView2. Fallback — stock WPF + our own ResourceDictionary.
+- `App.xaml`: a `ResourceDictionary` with styles (status color brushes, accent for the «Печать» button,
+  typography, spacing) — per `ui-spec.md §9`.
+- Re-lay out `MainWindow.xaml` into the target layout (§2): drop zone, circles, buttons,
+  parameters, progress, log; replace heavy GroupBoxes with lightweight separators.
+- Preserve all existing handlers and logic; change only the presentation.
+
+---
+
+## Phase 8 — Icon (impl-2)
+
+- Copy/move `printer-xp-icon.ico` into `src/CanonPrintBridge/Assets/`.
+- `csproj`: `<ApplicationIcon>Assets\printer-xp-icon.ico</ApplicationIcon>` (exe icon) +
+  add it as a `<Resource>`; in `MainWindow.xaml` — `Icon="Assets/printer-xp-icon.ico"`
+  (window/taskbar icon).
+
+---
+
+## Phase 9 — Single-file publish (impl-1)
+
+- `csproj`/publish profile:
   `dotnet publish -c Release -r win-x64 --self-contained -p:PublishSingleFile=true`
   `-p:IncludeNativeLibrariesForSelfExtract=true -o publish`.
-- Дать также framework-dependent вариант (меньше размер) как опцию.
-- `appsettings.json`: дефолты уже зашиты в `AppConfig` — single-file запустится и без внешнего
-  файла; при желании переопределить — класть `appsettings.json`/`appsettings.local.json` рядом.
-- Добавить в `README.md` команду публикации и заметку про WebView2 Runtime.
-- **Проверка:** запустить полученный один exe на чистом профиле; убедиться, что preview
-  (WebView2) и запуск VM работают.
+- Also provide a framework-dependent variant (smaller size) as an option.
+- `appsettings.json`: defaults are already baked into `AppConfig` — single-file will start even without an external
+  file; if you want to override — put `appsettings.json`/`appsettings.local.json` next to it.
+- Add the publish command and a note about the WebView2 Runtime to `README.md`.
+- **Verification:** run the resulting single exe on a clean profile; make sure the preview
+  (WebView2) and VM startup work.
 
 ---
 
-## Фаза 10 — Фоновый запуск (headless) + «Завершить работу»
+## Phase 10 — Headless startup + «Завершить работу»
 
-**Headless-старт.** Сейчас лаунчер поднимает VM `--type gui` и вызывается через видимое
-окно PowerShell. Цель — чтобы **ничего не мелькало**:
-- Запускать VM `--type headless` (VirtualBox грузит XP в фоне; USB-фильтр и сторож работают
-  как обычно — сессия автологина есть, просто не показывается хосту).
-- **Предпочтительно:** приложение вызывает `VBoxManage` **напрямую** (скрытый процесс,
-  `CreateNoWindow`), без промежуточного окна PowerShell. Тогда исчезает и консоль лаунчера.
-  Лаунчер `Print-Canon.ps1` остаётся как запасной/ручной путь (можно перевести на headless).
-- GUI-режим сохранить как опцию для отладки (флаг/настройка).
-- Лаунчер `Print-Canon.ps1` перенесён в репозиторий (`Printer_Canon_lbp_1120\`) и
-  **копируется в output сборки** рядом с exe; `LauncherPath` теперь относительный
-  (портируемость). Правки headless вносить в этот скрипт (или заменить прямым вызовом).
+**Headless start.** Currently the launcher brings the VM up `--type gui` and is invoked through a visible
+PowerShell window. The goal is for **nothing to flicker**:
+- Start the VM `--type headless` (VirtualBox loads XP in the background; the USB filter and watcher work
+  as usual — the autologin session is there, it just isn't shown to the host).
+- **Preferably:** the app invokes `VBoxManage` **directly** (a hidden process,
+  `CreateNoWindow`), without an intermediate PowerShell window. Then the launcher console disappears too.
+  The `Print-Canon.ps1` launcher remains as a fallback/manual path (can be switched to headless).
+- Keep GUI mode as an option for debugging (a flag/setting).
+- The `Print-Canon.ps1` launcher has been moved into the repository (`Printer_Canon_lbp_1120\`) and is
+  **copied to the build output** next to the exe; `LauncherPath` is now relative
+  (portability). Make the headless edits in this script (or replace it with a direct call).
 
-**«Завершить работу».** Новое действие: корректно погасить VM и откатить UI.
-- `VBoxManage controlvm <VM> acpipowerbutton` — мягкое ACPI-выключение XP (чисто);
-  fallback/таймаут → `savestate` или `poweroff`.
-- После останова: индикаторы → серые (`Off`), preview закрыть, статус/таймер сбросить,
-  «Печать» — disabled. UI в исходном состоянии.
-- Имя VM и путь VBoxManage берутся из `AppConfig` (см. фаза 3).
+**«Завершить работу».** A new action: cleanly power down the VM and reset the UI.
+- `VBoxManage controlvm <VM> acpipowerbutton` — a soft ACPI shutdown of XP (clean);
+  fallback/timeout → `savestate` or `poweroff`.
+- After the stop: indicators → gray (`Off`), close the preview, reset status/timer,
+  «Печать» — disabled. UI in its initial state.
+- The VM name and VBoxManage path are taken from `AppConfig` (see phase 3).
 
-**Проверка:** «Запустить» → в диспетчере есть `VBoxHeadless`, окон нет, печать работает;
-«Завершить» → XP гаснет чисто, индикаторы серые, UI сброшен.
+**Verification:** «Запустить» → `VBoxHeadless` is in Task Manager, no windows, printing works;
+«Завершить» → XP shuts down cleanly, indicators gray, UI reset.
 
 ---
 
-## Фаза 11 — Экран настроек (проект сейчас, реализация позже)
+## Phase 11 — Settings screen (design now, implementation later)
 
-- Отдельное окно/диалог (или страница, если будет навигация) для правки `AppConfig`:
+- A separate window/dialog (or a page, if there is navigation) for editing `AppConfig`:
   `QueueRoot`, `VBoxManagePath`, `VmName`, `LauncherPath`.
-- Сохранение в `appsettings.json` (или `appsettings.local.json`) рядом с exe.
-- Нужен для будущей переносимости на другую машину (см. `STATUS.md`).
-- **Дизайн — в этой итерации; код — отдельной фазой позже** (по решению владельца).
+- Saving to `appsettings.json` (or `appsettings.local.json`) next to the exe.
+- Needed for future portability to another machine (see `STATUS.md`).
+- **Design — in this iteration; code — as a separate phase later** (owner's decision).
 
 ---
 
-## Риски и оговорки
+## Risks and caveats
 
-- **CAPT-задержка вывода** (фаза 2): опустошение спулера ≠ момент схода последней страницы;
-  расхождение ~секунды. Приемлемо; зафиксировано в контракте.
-- **WebView2 Runtime** (фаза 5): при отсутствии — деградация к внешнему вьюеру, не падение.
-- **WMI в XP** (фазы 1–2): `Win32_PrintJob`/`Win32_Printer` должны быть доступны; если нет —
-  fallback для завершения печати: небольшая пауза после SumatraPDF (хуже, но не блокирует).
-- **Пути в конфиге** машинно-зависимы (тема переносимости — отдельно, в `STATUS.md`).
-- **PowerShell 5.1 / non-ASCII** — правила из `CLAUDE.md` соблюдать при любой правке скриптов.
+- **CAPT output delay** (phase 2): spooler drain ≠ the moment the last page comes out;
+  the discrepancy is ~seconds. Acceptable; recorded in the contract.
+- **WebView2 Runtime** (phase 5): if absent — degrade to an external viewer, not a crash.
+- **WMI in XP** (phases 1–2): `Win32_PrintJob`/`Win32_Printer` must be available; if not —
+  a fallback for print completion: a small pause after SumatraPDF (worse, but not blocking).
+- **Paths in the config** are machine-specific (the portability topic is separate, in `STATUS.md`).
+- **PowerShell 5.1 / non-ASCII** — follow the rules from `CLAUDE.md` on any script edit.
