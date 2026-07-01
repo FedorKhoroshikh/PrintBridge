@@ -18,6 +18,12 @@ public sealed class AppConfig
     /// </summary>
     public string LauncherPath { get; set; } = "Print-Canon.ps1";
 
+    /// <summary>Name of the VirtualBox VM that hosts the Windows XP print guest.</summary>
+    public string VmName { get; set; } = "Microelectronics";
+
+    /// <summary>Full path to VBoxManage.exe (used for status polling and shutdown).</summary>
+    public string VBoxManagePath { get; set; } = @"C:\Program Files\Oracle\VirtualBox\VBoxManage.exe";
+
     public static AppConfig Load()
     {
         var cfg = LoadRaw();
@@ -26,11 +32,13 @@ public sealed class AppConfig
         return cfg;
     }
 
+    private static string ConfigPath => Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+
     private static AppConfig LoadRaw()
     {
         try
         {
-            var path = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+            var path = ConfigPath;
             if (File.Exists(path))
             {
                 var cfg = JsonSerializer.Deserialize<AppConfig>(
@@ -44,5 +52,12 @@ public sealed class AppConfig
             // fall through to defaults
         }
         return new AppConfig();
+    }
+
+    /// <summary>Writes the current settings to appsettings.json next to the exe.</summary>
+    public void Save()
+    {
+        var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(ConfigPath, json);
     }
 }
