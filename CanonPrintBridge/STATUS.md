@@ -28,7 +28,7 @@
 | USB-фильтр | «Canon CAPT», VendorId `04a9`, ProductId `262b` |
 | XP-очередь печати | `Canon LBP-1120 A4` (по умолчанию A4; A5/B5 пока не создавались) |
 | Сторож в XP | `C:\CanonBridge\watcher.vbs` + ярлык в Автозагрузке профиля `User` |
-| Лаунчер | `T:\Program Files\Utils\Printer_Canon_lbp_1120\Print-Canon.ps1` (папка `lbp`) |
+| Лаунчер | `Printer_Canon_lbp_1120\Print-Canon.ps1` (в корне репо; копируется в output рядом с exe, `LauncherPath` относительный) |
 
 ## Грабли, уже устранённые (не повторять)
 

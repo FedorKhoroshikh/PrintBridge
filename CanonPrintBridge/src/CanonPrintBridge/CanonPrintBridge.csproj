@@ -15,6 +15,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <!-- VM launcher: lives at repo root, ships next to the exe (portable). -->
+    <None Include="..\..\..\Printer_Canon_lbp_1120\Print-Canon.ps1" Link="Print-Canon.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

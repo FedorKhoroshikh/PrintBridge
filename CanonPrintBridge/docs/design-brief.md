@@ -20,7 +20,9 @@
   `GridSplitter`, `Expander`, `TabControl` или `Frame`+`Page` (если нужна навигация),
   `GroupBox`, `ComboBox`, `TextBox`, `CheckBox`, `Button`, `ProgressBar`, `TextBlock`,
   `Ellipse`/`Border` (индикаторы), `ScrollViewer`, `Popup`/отдельный `Window` (доп. окна),
-  `ContextMenu`, `ToolTip`. Иконки — **Segoe Fluent Icons**.
+  `ContextMenu`, `ToolTip`. **Иконки — Segoe Fluent Icons**; уместны в действиях (печать,
+  выключение, открыть, настройки, показать preview) и в статусах — использовать там, где
+  повышают ясность. У приложения уже есть иконка окна (`printer-xp-icon.ico`).
 - **Тема:** ориентир — **Fluent / Windows 11** (планируется библиотека **WPF-UI**).
   Значит доступны: NavigationView, Card/InfoBar, современные кнопки/поля, аккордеоны,
   титульная панель в стиле Mica. Использовать эти паттерны там, где они уместны.

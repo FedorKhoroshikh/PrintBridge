@@ -11,9 +11,22 @@ namespace CanonPrintBridge;
 public sealed class AppConfig
 {
     public string QueueRoot { get; set; } = @"C:\Virtualization\Shared\Queue";
-    public string LauncherPath { get; set; } = @"T:\Program Files\Utils\Printer_Canon_lbp_1120\Print-Canon.ps1";
+
+    /// <summary>
+    /// Path to Print-Canon.ps1. Relative values (the default) resolve against the exe
+    /// directory, where the build copies the launcher — so the app stays portable.
+    /// </summary>
+    public string LauncherPath { get; set; } = "Print-Canon.ps1";
 
     public static AppConfig Load()
+    {
+        var cfg = LoadRaw();
+        if (!Path.IsPathRooted(cfg.LauncherPath))
+            cfg.LauncherPath = Path.Combine(AppContext.BaseDirectory, cfg.LauncherPath);
+        return cfg;
+    }
+
+    private static AppConfig LoadRaw()
     {
         try
         {

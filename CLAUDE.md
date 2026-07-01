@@ -43,7 +43,7 @@ dotnet publish CanonPrintBridge/src/CanonPrintBridge -c Release -r win-x64 --sel
 - XP-очередь печати: **`Canon LBP-1120 A4`** (A5/B5 пока не создавались).
 - Сторож в XP: `C:\CanonBridge\watcher.vbs`, автозапуск в Автозагрузке профиля `User`, автологин.
 - Мост-папка: хост `C:\Virtualization\Shared\Queue\` ↔ гость `\\vboxsvr\Shared\Queue`.
-- Лаунчер VM: `T:\Program Files\Utils\Printer_Canon_lbp_1120\Print-Canon.ps1` (папка `lbp`, не `ltp`).
+- Лаунчер VM: `Printer_Canon_lbp_1120\Print-Canon.ps1` (в корне репо; сборка копирует его рядом с exe, `LauncherPath` относительный — портируемость).
 
 ## Ограничения железа LBP-1120
 
