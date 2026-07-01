@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<!-- saved from url=(0333)https://eac598b3-1113-463b-a1b6-3fb0067eb885.claudeusercontent.com/v1/design/projects/eac598b3-1113-463b-a1b6-3fb0067eb885/serve/Canon%20Print%20Bridge-print-vhb04i.dc.html?t=c5a0b5fc593ab5906bef9b83dc18b634b903563e6ff2b31f6847c1dff0080724.4e7cbaa6-4441-4c3c-98f7-e854be735d85.861a1a1d-c436-42b7-a419-035bd965abb2.1782916669&direct=1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>
+    .sc-placeholder{background:color-mix(in srgb,currentColor 8%,transparent);
+      border:1px solid color-mix(in srgb,currentColor 50%,transparent);
+      border-radius:2px;box-sizing:border-box;overflow:hidden}
+    @keyframes sc-shine{0%{background-position:100% 50%}100%{background-position:0% 50%}}
+    html.sc-dc-streaming .sc-placeholder,
+    html.sc-dc-streaming .sc-interp.sc-missing{position:relative;
+      background:color-mix(in srgb,currentColor 5%,transparent);
+      border-color:transparent}
+    html.sc-dc-streaming .sc-placeholder::before,
+    html.sc-dc-streaming .sc-interp.sc-missing::before{content:'';
+      position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(90deg,rgba(217,119,87,0) 25%,rgba(247,225,211,.95) 37%,rgba(217,119,87,0) 63%);
+      background-size:400% 100%;animation:sc-shine 1.4s ease infinite}
+    html.sc-dc-streaming .sc-placeholder:nth-child(n+9 of .sc-placeholder)::before,
+    html.sc-dc-streaming .sc-interp.sc-missing:nth-child(n+9 of .sc-interp.sc-missing)::before{animation:none;
+      background:color-mix(in srgb,currentColor 8%,transparent)}
+    .sc-placeholder-error{padding:4px 8px;font:11px/1.4 ui-monospace,monospace;
+      color:color-mix(in srgb,currentColor 70%,transparent);word-break:break-word}
+    .sc-interp.sc-missing{display:inline-block;width:2em;height:1em;overflow:hidden;
+      vertical-align:text-bottom;background:rgba(255,255,255,.3);border:1px solid rgba(0,0,0,.5);
+      border-radius:2px;box-sizing:border-box;color:transparent;
+      user-select:none}
+    .sc-interp.sc-unresolved{font-family:ui-monospace,monospace;font-size:.85em;
+      color:color-mix(in srgb,currentColor 50%,transparent);
+      background:color-mix(in srgb,currentColor 10%,transparent);border-radius:3px;
+      padding:0 3px}
+    .sc-host.sc-has-error{position:relative}
+    .sc-logic-error{position:absolute;top:8px;left:8px;z-index:2147483647;max-width:60ch;
+      padding:6px 10px;background:#b00020;color:#fff;font:12px/1.4 ui-monospace,monospace;
+      border-radius:4px;white-space:pre-wrap;pointer-events:none}
+    /* Mirrors PRINT_BASELINE_CSS in apps/web deck-stage-export.ts — keep both
+       in sync until dc-runtime regains a build step. */
+    @media print {
+      @page { margin: 0.5cm; }
+      figure, table { break-inside: avoid; }
+      #dc-root, #dc-root > .sc-host { height: auto; }
+      *, *::before, *::after {
+        print-color-adjust: exact; -webkit-print-color-adjust: exact;
+        backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+        animation-delay: -99s !important; animation-duration: .001s !important;
+        animation-iteration-count: 1 !important; animation-fill-mode: both !important;
+        animation-play-state: running !important; transition-duration: 0s !important;
+      }
+    }
+  </style><style>@media print {
+  figure, table { break-inside: avoid; }
+  *, *::before, *::after {
+    print-color-adjust: exact; -webkit-print-color-adjust: exact;
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+    animation-delay: -99s !important; animation-duration: .001s !important;
+    animation-iteration-count: 1 !important; animation-fill-mode: both !important;
+    animation-play-state: running !important; transition-duration: 0s !important;
+  }
+}</style>
+<style data-omelette-injected="">html,body{background:transparent}</style><script data-omelette-injected="">(()=>{{const Y=new URLSearchParams(location.search).get("theme");if(Y==="light"||Y==="dark"){document.documentElement.dataset.theme=Y}}{const Y=()=>{try{if(document.querySelector('meta[name="color-scheme"]'))return;const k=getComputedStyle(document.documentElement).getPropertyValue("color-scheme").trim();if(k&&k!=="normal")return;const w=(X)=>{if(!X)return null;const F=getComputedStyle(X).backgroundColor.match(/^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+%?))?\s*\)$/);if(!F)return null;const K=F[4]==null?1:parseFloat(F[4])/(F[4].endsWith("%")?100:1);if(K<0.99)return null;return[+F[1],+F[2],+F[3]]};const U=w(document.body)||w(document.documentElement);if(!U)return;const x=(X)=>{const F=X/255;return F<=0.04045?F/12.92:((F+0.055)/1.055)**2.4};const D=0.2126*x(U[0])+0.7152*x(U[1])+0.0722*x(U[2]);document.documentElement.style.setProperty("color-scheme",D<0.4?"dark":"light")}catch{}};if(document.readyState==="complete")Y();else window.addEventListener("load",Y)}var _=["https://claude.ai","https://preview.claude.ai","https://eac598b3-1113-463b-a1b6-3fb0067eb885.claudeusercontent.com"];var v=true;var P=30000;var h=3000;document.addEventListener("DOMContentLoaded",()=>{const Y=window.Babel;const k="om-src-id";if(Y&&Y.registerPlugin&&!(Y.availablePlugins&&Y.availablePlugins[k])){Y.registerPlugin(k,({types:D})=>({visitor:{JSXOpeningElement(X,F){const K=X.node;if(K.name&&K.name.type==="JSXMemberExpression")return;for(let z=0;z<K.attributes.length;z++){const V=K.attributes[z];if(V.type==="JSXAttribute"&&V.name&&V.name.name==="data-om-id")return}const B=F.file&&F.file.opts&&F.file.opts.filename||"?";const A=K.loc&&K.loc.start;const J=`jsx:${B}:${K.start??0}:${A?A.line:0}:${A?A.column+1:0}`;K.attributes.push(D.jsxAttribute(D.jsxIdentifier("data-om-id"),D.stringLiteral(J)))}}}))}const w="om-text-extract";let U=false;if(v&&Y&&Y.registerPlugin&&!(Y.availablePlugins&&Y.availablePlugins[w])){const D=window.React;if(D&&D.useSyncExternalStore&&D.createElement){U=true;const X={};const F=new Set;let K=0;window.__omTextO=X;window.__omTextSet=(J)=>{for(const z in J){const V=J[z];if(V==null)delete X[z];else X[z]=V}K++;F.forEach((z)=>z())};const B=(J)=>{F.add(J);return()=>F.delete(J)};const A=()=>K;window.__OmT=function J(z){D.useSyncExternalStore(B,A,A);return D.createElement("span",{"data-om-text":z.i,className:"__om-t"},z.i in X?X[z.i]:z.children)};Y.registerPlugin(w,({types:J})=>{const z={style:1,script:1,noscript:1,textarea:1,title:1,option:1,text:1,tspan:1,textPath:1};const V={placeholder:1,alt:1,title:1,label:1,"aria-label":1,"aria-description":1,"aria-placeholder":1};const W=(Z,H)=>J.logicalExpression("??",J.memberExpression(J.logicalExpression("||",J.memberExpression(J.identifier("window"),J.identifier("__omTextO")),J.objectExpression([])),J.stringLiteral(Z),true),H);const Q=(Z)=>Z.file&&Z.file.opts&&Z.file.opts.filename||"?";const j=(Z)=>Z.file&&Z.file.code||"";const G=(Z,H)=>{const N=($)=>$&&$.start!=null&&$.end!=null&&($.type==="StringLiteral"||$.type==="TemplateLiteral"&&$.expressions.length===0)?[$.start,$.end]:null;const L=N(H);if(L)return L;if(H&&H.type==="Identifier"){const $=Z.scope.getBinding(H.name);if($&&$.constant&&$.path.node.type==="VariableDeclarator"){return N($.path.node.init)}}return null};const R=(Z,H,N)=>{const L=Z.node;let $=false;const M=(q,E)=>{$=true;return J.jsxElement(J.jsxOpeningElement(J.jsxIdentifier("__OmT"),[J.jsxAttribute(J.jsxIdentifier("i"),J.stringLiteral(q))],false),J.jsxClosingElement(J.jsxIdentifier("__OmT")),[E],false)};const C=L.children.map((q)=>{if(q.type==="JSXText"){if(q.start==null||q.end==null)return q;const E=N.slice(q.start,q.end);const f=E.length-E.trimStart().length;const I=E.length-E.trimEnd().length;if(f+I>=E.length)return q;return M(`txt:${H}:${q.start+f}:${q.end-I}`,q)}if(q.type==="JSXExpressionContainer"){const E=G(Z,q.expression);if(E)return M(`str:${H}:${E[0]}:${E[1]}`,q)}return q});if($)L.children=C};return{visitor:{JSXOpeningElement(Z,H){const N=Z.node;const L=Q(H);const $={};for(let M=0;M<N.attributes.length;M++){const C=N.attributes[M];if(C.type!=="JSXAttribute"||!C.name)continue;const q=C.name.name;if(!V[q])continue;if(!C.value||C.value.type!=="StringLiteral")continue;if(C.value.start==null||C.value.end==null)continue;const E=`txt:${L}:${C.value.start}:${C.value.end}`;$[q]=E;C.value=J.jsxExpressionContainer(W(E,J.stringLiteral(C.value.value)))}if(Object.keys($).length){N.attributes.push(J.jsxAttribute(J.jsxIdentifier("data-om-text-attrs"),J.stringLiteral(JSON.stringify($))))}},JSXElement(Z,H){const N=Z.node.openingElement;const L=N&&N.name&&N.name.name;if(L==="__OmT")return;if(typeof L==="string"&&z[L])return;R(Z,Q(H),j(H))},JSXFragment(Z,H){R(Z,Q(H),j(H))}}}})}}const x=U?["transform-react-jsx-source",k,w]:["transform-react-jsx-source",k];document.querySelectorAll('script[type="text/babel"],script[type="text/jsx"]').forEach((D,X)=>{const F=D.getAttribute("data-plugins")||"";const K=x.filter((B)=>F.indexOf(B)<0);if(K.length){D.setAttribute("data-plugins",F?`${F},${K.join(",")}`:K.join(","))}if(!D.hasAttribute("data-filename")){D.setAttribute("data-filename",D.getAttribute("src")||`inline-${X}`)}})});var S=window.parent;if(S&&S!==window){const Y=(J,z)=>{try{S.postMessage({__omelette_log:true,type:J,data:z},"*")}catch{}};["log","warn","error"].forEach((J)=>{const z=console[J];console[J]=(...V)=>{const W=V.map((Q)=>{try{return typeof Q==="object"?JSON.stringify(Q):String(Q)}catch{try{return String(Q)}catch{return"[unstringifiable]"}}}).join(" ");Y(J,W);z.apply(console,V)}});window.addEventListener("error",(J)=>{const z=J.target;if(z&&z!==window&&z.tagName){const V=z.src||z.href||"";Y("resource_error",`${z.tagName} failed to load: ${V}`)}else{Y("error",`${J.message||"Unknown error"} at ${J.filename||"?"}:${J.lineno||0}:${J.colno||0}`)}},true);window.addEventListener("unhandledrejection",(J)=>{const z=J.reason;const V=z instanceof Error?`${z.message} ${z.stack}`:String(z);Y("error",`Unhandled rejection: ${V}`)});const k=()=>{try{S.postMessage({type:"omelette:height",height:document.documentElement.scrollHeight},"*")}catch{}};if(window.ResizeObserver)new ResizeObserver(k).observe(document.documentElement);const w=()=>{k();if(!document.querySelector('script[type="text/babel"],script[type="text/jsx"]'))return;const J=()=>document.getElementById("root")||document.querySelector("body > div[id]");const z=J()?.firstElementChild??null;let V=0;const W=()=>{const Q=J();if(Q&&Q.firstElementChild!==z||++V>30){k();return}setTimeout(W,100)};setTimeout(W,100)};if(document.readyState==="complete")w();else window.addEventListener("load",w);const U={};let x=0;const D=(J)=>new Promise((z,V)=>{if(!_.length){V(new Error("claude.complete: no parent origin"));return}const W=`c${++x}`;const Q=()=>setTimeout(()=>{delete U[W];V(new Error(`claude.complete: no data for ${P/1000}s`))},P);const j=Q();U[W]={resolve:z,reject:V,text:"",t:j,arm:Q};try{for(const G of _){S.postMessage({__om_api:true,id:W,body:J},G)}}catch(G){clearTimeout(j);delete U[W];V(G)}});const X=8;const F=async(J,z)=>{if(!Array.isArray(J.messages)){throw new Error("claude.complete: tools require a messages array")}const V=J.messages.slice();const W={...J,tools:J.tools.map((G)=>{if(G===null||typeof G!=="object")return G;const R={};for(const Z of Object.keys(G)){if(typeof G[Z]!=="function")R[Z]=G[Z]}return R})};const Q=W.tool_choice;const j=Q!=null&&(Q.type==="any"||Q.type==="tool")?{...W,tool_choice:Q.disable_parallel_tool_use!==undefined?{type:"auto",disable_parallel_tool_use:Q.disable_parallel_tool_use}:{type:"auto"}}:W;for(let G=0;G<X;G++){const R=await D({...G===0?W:j,messages:V});const Z=R.message;const H=Z&&Array.isArray(Z.content)?Z.content:null;const N=H?H.filter(($)=>$?.type==="tool_use"):[];if(Z?.stop_reason!=="tool_use"||N.length===0){return R.text}const L=[];for(const $ of N){const M=z.get($.name);if(!M){L.push({type:"tool_result",tool_use_id:$.id,content:`no handler for tool "${$.name}"`,is_error:true});continue}try{const C=await M($.input);const q=typeof C==="string"?C:A(C)??"";L.push({type:"tool_result",tool_use_id:$.id,content:q})}catch(C){L.push({type:"tool_result",tool_use_id:$.id,content:String(C?.message??C??"tool handler failed"),is_error:true})}}V.push({role:"assistant",content:H},{role:"user",content:L})}throw new Error(`claude.complete: exceeded ${X} tool turns`)};window.claude={complete(J){const z=J;if(z!==null&&typeof z==="object"&&Array.isArray(z.tools)&&z.tools.some((V)=>V!==null&&typeof V==="object"&&typeof V.run==="function")){const V=new Map;for(const W of z.tools){if(W!==null&&typeof W==="object"&&typeof W.run==="function"){V.set(String(W.name),W.run)}}return F(z,V)}return D(J).then((V)=>V.text)}};const K={};let B=0;window.omelette={writeFile:(J,z)=>new Promise((V,W)=>{if(!_.length){V();return}const Q=`f${++B}`;const j=setTimeout(()=>{delete K[Q];V()},h);K[Q]={resolve:V,reject:W,t:j};try{for(const G of _){S.postMessage({__om_file:true,id:Q,op:"write",path:J,content:z},G)}}catch{clearTimeout(j);delete K[Q];V()}})};const A=(J)=>{try{return JSON.stringify(J)}catch{return JSON.stringify(String(J))}};window.addEventListener("message",(J)=>{if(_.indexOf(J.origin)<0)return;if(J.source!==S)return;const z=J.data;if(!z)return;if(z.type==="omelette-preview-refresh"){if(typeof z.token!=="string"||!/^[0-9a-f.-]+(\.(rc|pr-[0-9]+))?(\.[0-9]+\.[0-9a-f]{16})?$/.test(z.token))return;const Q=Math.max(1,Math.floor((z.expiresAt||0)-Date.now()/1000));document.cookie="__Host-omelette-preview="+z.token+"; Path=/; Secure; SameSite=None; Partitioned; Max-Age="+Q;return}if(z.__om_file_r){const Q=K[z.id];if(!Q)return;clearTimeout(Q.t);delete K[z.id];if(z.ok)Q.resolve();else Q.reject(new Error(z.error||"write failed"));return}if(z.__om_api_r){const Q=U[z.id];if(!Q)return;if(z.error!=null){clearTimeout(Q.t);delete U[z.id];Q.reject(new Error(z.error));return}if(z.chunk!=null){clearTimeout(Q.t);Q.t=Q.arm();Q.text+=z.chunk;return}if(z.done){clearTimeout(Q.t);delete U[z.id];Q.resolve({text:z.text!=null?z.text:Q.text,message:z.message});return}return}if(!z.__om_eval)return;const V=z;const W=(Q)=>{J.source.postMessage({...Q,__om_eval_r:1,id:V.id},J.origin)};try{const Q=(0,eval)(V.code);if(Q&&typeof Q.then==="function"){Q.then((j)=>W({ok:1,v:A(j)}),(j)=>W({ok:0,e:String(j)}))}else{W({ok:1,v:A(Q)})}}catch(Q){W({ok:0,e:String(Q)})}})}})();
+</script>
+
+<style data-omelette-print-defaults="">
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./Canon Print Bridge_files/support.js.загрузка"></script><style>x-dc{display:none!important}</style><script src="./Canon Print Bridge_files/react.production.min.js.загрузка" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script><script src="./Canon Print Bridge_files/react-dom.production.min.js.загрузка" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+<title>Canon Print Bridge</title><style data-dc-tpl="1">
+:root{
+ --bg:#f3f3f3; --mica:#f6f7f9; --card:#ffffff; --card2:#fbfbfb;
+ --stroke:#e6e8eb; --stroke2:#d4d7db; --line:#eef0f2;
+ --tx:#1a1a1a; --tx2:#5a5d61; --tx3:#8b8e92; --dis:#a9acb0;
+ --accent:#005FB8; --afg:#ffffff;
+ --ok:#0f7b0f; --okbg:#e6f4e6; --okbd:#a6dda3;
+ --warn:#9a6700; --warnbg:#fff4ce; --warnbd:#eed58a;
+ --off:#8b8e92; --offbg:#f1f2f4; --offbd:#dcdee1;
+ --lost:#c42b1c; --lostbg:#fdecec; --lostbd:#f0b5b0;
+ --infobg:#eff5fd; --infobd:#cadffa;
+ --btn:#fbfbfb; --btnbd:#d3d5d8;
+ --sh:0 24px 60px rgba(16,24,40,.20),0 4px 12px rgba(16,24,40,.10);
+ --shsm:0 8px 24px rgba(16,24,40,.14),0 1px 3px rgba(16,24,40,.08);
+ --font:'Segoe UI Variable Text','Segoe UI',system-ui,-apple-system,sans-serif;
+ --mono:'Cascadia Mono','Consolas','SF Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+@keyframes cpbspin{to{transform:rotate(360deg)}}
+@keyframes cpbbar{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
+@keyframes cpbpulse{0%,100%{opacity:1}50%{opacity:.4}}
+</style><style>*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}</style></head>
+<body data-om-frame-wrap="">
+<div id="dc-root" data-om-frame-wrap=""><div class="sc-host" data-sc-name="Canon Print Bridge-print-vhb04i" data-om-frame-wrap=""><div data-dc-tpl="2" data-om-frame="" style="--accent: #005FB8; min-width: 2760px; padding: 60px 64px 90px; background: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.043) 1px, transparent 0px) 0% 0% / 26px 26px rgb(231, 233, 237); font-family: var(--font); color: var(--tx);">
+
+  
+  <div data-dc-tpl="3" style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 14px; flex-wrap: wrap;">
+    <div data-dc-tpl="4" style="max-width: 760px;">
+      <div data-dc-tpl="5" style="display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+        <span data-dc-tpl="6" style="width: 30px; height: 30px; border-radius: 7px; background: linear-gradient(140deg,var(--accent),#003a72); display: inline-flex; align-items: center; justify-content: center; color: rgb(255, 255, 255); box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+          <svg data-dc-tpl="7" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="8" d="M7 9V4h10v5"></path><rect data-dc-tpl="9" x="4" y="9" width="16" height="7" rx="1.5"></rect><path data-dc-tpl="10" d="M7 14h10v6H7z"></path></svg>
+        </span>
+        <span data-dc-tpl="11" style="font: 600 14px var(--mono); color: rgb(58, 61, 65); letter-spacing: 0.02em;">Canon Print Bridge · Windows 11 / Fluent</span>
+      </div>
+      <h1 data-dc-tpl="12" style="margin: 0px 0px 10px; font: 650 34px var(--font); letter-spacing: -0.01em; color: rgb(22, 24, 27);">Утилита печати на Canon LBP‑1120</h1>
+      <p data-dc-tpl="13" style="margin: 0px; font: 400 15px/1.55 var(--font); color: var(--tx2);">Печать PDF через фоновую виртуальную машину с Windows XP. Одно окно, честные индикаторы готовности, минимум шагов. Ниже — главное окно (предпросмотр скрыт / открыт), окно настроек и раскадровка состояний. Язык интерфейса — русский, светлая тема Fluent.</p>
+    </div>
+    <div data-dc-tpl="14" style="display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 10px; box-shadow: none !important; min-width: 260px; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+      <div data-dc-tpl="15" style="font: 600 11px var(--mono); color: var(--tx3); text-transform: uppercase; letter-spacing: 0.08em;">Легенда индикаторов</div>
+      <div data-dc-tpl="16" style="display: flex; align-items: center; gap: 9px; font: 500 13px var(--font);"><span data-dc-tpl="17" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span>Ok — готов</div>
+      <div data-dc-tpl="18" style="display: flex; align-items: center; gap: 9px; font: 500 13px var(--font);"><span data-dc-tpl="19" style="width: 11px; height: 11px; border-radius: 50%; background: var(--warn); box-shadow: 0 0 0 3px color-mix(in srgb,var(--warn) 22%,transparent);"></span>Загрузка — идёт запуск</div>
+      <div data-dc-tpl="20" style="display: flex; align-items: center; gap: 9px; font: 500 13px var(--font);"><span data-dc-tpl="21" style="width: 11px; height: 11px; border-radius: 50%; background: var(--off); box-shadow: 0 0 0 3px color-mix(in srgb,var(--off) 22%,transparent);"></span>Off — не запущен</div>
+      <div data-dc-tpl="22" style="display: flex; align-items: center; gap: 9px; font: 500 13px var(--font);"><span data-dc-tpl="23" style="width: 11px; height: 11px; border-radius: 50%; background: var(--lost); box-shadow: 0 0 0 3px color-mix(in srgb,var(--lost) 22%,transparent);"></span>Lost — связь потеряна</div>
+    </div>
+  </div>
+
+  
+  
+  <div data-dc-tpl="25" style="margin: 8px 0px 40px; padding: 22px 26px; background: rgb(251, 252, 253); border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-left: 4px solid var(--accent); border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 10px; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+    <div data-dc-tpl="26" style="font: 650 15px var(--font); margin-bottom: 14px; color: rgb(22, 24, 27);">Ключевые решения</div>
+    <div data-dc-tpl="27" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 32px;">
+      <div data-dc-tpl="28"><div data-dc-tpl="29" style="font: 600 13px var(--font); color: var(--accent); margin-bottom: 4px;">Одно окно, без вкладок</div><div data-dc-tpl="30" style="font: 400 12.5px/1.5 var(--font); color: var(--tx2);">Сценарий редкий — «изредка напечатать один PDF». Навигация избыточна; всё умещается в один поток. Настройки вынесены в отдельный диалог.</div></div>
+      <div data-dc-tpl="31"><div data-dc-tpl="32" style="font: 600 13px var(--font); color: var(--accent); margin-bottom: 4px;">Готовность — всегда на виду</div><div data-dc-tpl="33" style="font: 400 12.5px/1.5 var(--font); color: var(--tx2);">Три индикатора (ВМ / ОС / Принтер) в постоянной карточке. Кнопка «Печать» активна только при VM=Ok, OS=Ok, Printer=Ok и выбранном файле — ошибка «нажал печать, а ВМ не поднята» невозможна.</div></div>
+      <div data-dc-tpl="34"><div data-dc-tpl="35" style="font: 600 13px var(--font); color: var(--accent); margin-bottom: 4px;">Предпросмотр — правый сплит</div><div data-dc-tpl="36" style="font: 400 12.5px/1.5 var(--font); color: var(--tx2);">GridSplitter справа, свёрнут по умолчанию, открывается кнопкой. Внутри — встроенный WebView2 (просмотрщик Edge), не своя отрисовка. Для «одного файла изредка» постоянная тяжёлая панель ни к чему.</div></div>
+      <div data-dc-tpl="37"><div data-dc-tpl="38" style="font: 600 13px var(--font); color: var(--accent); margin-bottom: 4px;">Журнал и «Дополнительно» — свёрнуты</div><div data-dc-tpl="39" style="font: 400 12.5px/1.5 var(--font); color: var(--tx2);">Технический лог и параметр «Страницы» спрятаны в Expander — по умолчанию свёрнуты, чтобы не шуметь. Ошибки — inline InfoBar, а не модалка. «Завершить работу» — с подтверждением (действие выключает ВМ).</div></div>
+    </div>
+  </div>
+  
+
+  
+  <div data-dc-tpl="40" style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 22px;">
+    <span data-dc-tpl="41" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: rgb(22, 24, 27); color: rgb(255, 255, 255); font: 700 14px var(--font);">1</span>
+    <span data-dc-tpl="42" style="font: 650 22px var(--font); color: rgb(22, 24, 27);">Главное окно</span>
+    <span data-dc-tpl="43" style="font: 400 14px var(--font); color: var(--tx3);">— состояния «предпросмотр скрыт» и «предпросмотр открыт»</span>
+  </div>
+
+  <div data-dc-tpl="44" style="display: flex; gap: 56px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 64px;">
+
+    
+    <div data-dc-tpl="45" style="width: 660px;">
+      <div data-dc-tpl="46" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 10px; letter-spacing: 0.03em;">A · ПРЕДПРОСМОТР СКРЫТ — готов к печати</div>
+      <div data-dc-tpl="47" style="border-radius: 9px; overflow: hidden; box-shadow: none !important; border: 1px solid rgba(0, 0, 0, 0.08); background: var(--bg); filter: drop-shadow(rgba(16, 24, 40, 0.2) 0px 24px 60px) drop-shadow(rgba(16, 24, 40, 0.1) 0px 4px 12px) !important;">
+        
+        <div data-dc-tpl="48" style="height: 40px; display: flex; align-items: center; background: var(--mica); border-bottom: 1px solid var(--stroke);">
+          <div data-dc-tpl="49" style="display: flex; align-items: center; gap: 9px; padding: 0px 12px; flex: 1 1 0%;">
+            <span data-dc-tpl="50" style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(140deg,var(--accent),#003a72); display: inline-flex; align-items: center; justify-content: center; color: rgb(255, 255, 255); font: 700 8px var(--font);">C</span>
+            <span data-dc-tpl="51" style="font: 600 12px var(--font); color: var(--tx2);">Canon Print Bridge — печать на LBP‑1120</span>
+          </div>
+          <div data-dc-tpl="52" style="display: flex;">
+            <div data-dc-tpl="53" style="width: 44px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="54" width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1"><line data-dc-tpl="55" x1="1" y1="5" x2="9" y2="5"></line></svg></div>
+            <div data-dc-tpl="56" style="width: 44px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="57" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><rect data-dc-tpl="58" x="1.2" y="1.2" width="7.6" height="7.6"></rect></svg></div>
+            <div data-dc-tpl="59" style="width: 46px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="60" width="11" height="11" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1"><line data-dc-tpl="61" x1="1.5" y1="1.5" x2="8.5" y2="8.5"></line><line data-dc-tpl="62" x1="8.5" y1="1.5" x2="1.5" y2="8.5"></line></svg></div>
+          </div>
+        </div>
+        
+        <div data-dc-tpl="63" style="height: 50px; display: flex; align-items: center; gap: 8px; padding: 0px 14px; background: var(--card2); border-bottom: 1px solid var(--stroke);">
+          <button data-dc-tpl="64" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); color: var(--tx); font: 600 13px var(--font); cursor: pointer;">
+            <svg data-dc-tpl="65" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="66" d="M3 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v1"></path><path data-dc-tpl="67" d="M3.5 10h16l-2 8a1 1 0 0 1-1 .8H4.7A1 1 0 0 1 3.7 18z"></path></svg>Открыть…</button>
+          <button data-dc-tpl="68" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 16px; border-radius: 5px; border: 1px solid var(--accent); background: var(--accent); color: rgb(255, 255, 255); font: 600 13px var(--font); cursor: pointer; box-shadow: none !important; filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 1px 1px) !important;">
+            <svg data-dc-tpl="69" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="70" d="M7 9V4h10v5"></path><rect data-dc-tpl="71" x="4" y="9" width="16" height="7" rx="1.5"></rect><path data-dc-tpl="72" d="M7 14h10v6H7z"></path></svg>Печать</button>
+          <div data-dc-tpl="73" style="flex: 1 1 0%;"></div>
+          <button data-dc-tpl="74" title="Показать предпросмотр" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 12px; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--tx2); font: 600 13px var(--font); cursor: pointer;">
+            <svg data-dc-tpl="75" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect data-dc-tpl="76" x="3" y="4" width="18" height="16" rx="2"></rect><path data-dc-tpl="77" d="M14 4v16"></path></svg>Предпросмотр</button>
+          <button data-dc-tpl="78" title="Настройки" style="width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--tx2); cursor: pointer;">
+            <svg data-dc-tpl="79" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle data-dc-tpl="80" cx="12" cy="12" r="3.2"></circle><path data-dc-tpl="81" d="M12 3.4v2.2M12 18.4v2.2M4.6 7.1l1.9 1.1M17.5 15.8l1.9 1.1M4.6 16.9l1.9-1.1M17.5 8.2l1.9-1.1M3.4 12h2.2M18.4 12h2.2"></path></svg></button>
+        </div>
+        
+        <div data-dc-tpl="82" style="padding: 16px; display: flex; flex-direction: column; gap: 14px; background: var(--bg);">
+
+          
+          <div data-dc-tpl="83" style="display: flex; align-items: center; gap: 12px; padding: 11px 13px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px;">
+            <span data-dc-tpl="84" style="width: 34px; height: 34px; border-radius: 6px; background: var(--lostbg); color: var(--lost); display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;">
+              <svg data-dc-tpl="85" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path data-dc-tpl="86" d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path data-dc-tpl="87" d="M14 3v5h5"></path></svg></span>
+            <div data-dc-tpl="88" style="flex: 1 1 0%; min-width: 0px;">
+              <div data-dc-tpl="89" style="font: 600 13.5px var(--font); color: var(--tx);">Test‑print.pdf</div>
+              <div data-dc-tpl="90" style="font: 400 12px var(--mono); color: var(--tx3);">4 стр. · 128 КБ · C:\Users\me\Documents</div>
+            </div>
+            <button data-dc-tpl="91" title="Убрать файл" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--tx3); cursor: pointer;">
+              <svg data-dc-tpl="92" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path data-dc-tpl="93" d="M6 6l12 12M18 6L6 18"></path></svg></button>
+          </div>
+
+          
+          <div data-dc-tpl="94" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 6px 14px;">
+            <div data-dc-tpl="95" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0px 8px; border-bottom: 1px solid var(--line);">
+              <span data-dc-tpl="96" style="font: 600 12.5px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Готовность</span>
+              <span data-dc-tpl="97" style="display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--font); color: var(--ok);"><svg data-dc-tpl="98" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="99" d="M5 12.5l4.5 4.5L19 7"></path></svg>Готов к печати</span>
+            </div>
+            <div data-dc-tpl="100" style="display: flex; align-items: center; gap: 12px; padding: 10px 0px; border-bottom: 1px solid var(--line);">
+              <span data-dc-tpl="101" style="width: 12px; height: 12px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent); flex: 0 0 auto;"></span>
+              <span data-dc-tpl="102" style="flex: 1 1 0%; font: 500 13.5px var(--font);">Виртуальная машина</span>
+              <span data-dc-tpl="103" style="font: 600 12.5px var(--font); color: var(--ok);">Запущена</span>
+            </div>
+            <div data-dc-tpl="104" style="display: flex; align-items: center; gap: 12px; padding: 10px 0px; border-bottom: 1px solid var(--line);">
+              <span data-dc-tpl="105" style="width: 12px; height: 12px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent); flex: 0 0 auto;"></span>
+              <span data-dc-tpl="106" style="flex: 1 1 0%; font: 500 13.5px var(--font);">Образ ОС <span data-dc-tpl="107" style="color: var(--tx3); font: 400 12.5px var(--mono);">(Windows XP)</span></span>
+              <span data-dc-tpl="108" style="font: 600 12.5px var(--font); color: var(--ok);">Готов</span>
+            </div>
+            <div data-dc-tpl="109" style="display: flex; align-items: center; gap: 12px; padding: 10px 0px;">
+              <span data-dc-tpl="110" style="width: 12px; height: 12px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent); flex: 0 0 auto;"></span>
+              <span data-dc-tpl="111" style="flex: 1 1 0%; font: 500 13.5px var(--font);">Принтер <span data-dc-tpl="112" style="color: var(--tx3); font: 400 12.5px var(--mono);">Canon LBP‑1120</span></span>
+              <span data-dc-tpl="113" style="font: 600 12.5px var(--font); color: var(--ok);">В сети</span>
+            </div>
+          </div>
+
+          
+          <div data-dc-tpl="114" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 14px;">
+            <div data-dc-tpl="115" style="font: 600 12.5px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">Параметры печати</div>
+            <div data-dc-tpl="116" style="display: grid; grid-template-columns: 96px 1fr; gap: 11px 12px; align-items: center;">
+              <label data-dc-tpl="117" style="font: 500 13px var(--font); color: var(--tx2);">Формат</label>
+              <div data-dc-tpl="118" style="display: flex; align-items: center; gap: 8px;">
+                <div data-dc-tpl="119" style="flex: 1 1 0%; height: 32px; border: 1px solid var(--stroke2); border-radius: 5px; background: rgb(244, 245, 246); color: var(--tx3); padding: 0px 10px; display: flex; align-items: center; gap: 7px; font: 500 13px var(--font);"><svg data-dc-tpl="120" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect data-dc-tpl="121" x="5" y="10" width="14" height="9" rx="2"></rect><path data-dc-tpl="122" d="M8 10V8a4 4 0 0 1 8 0v2"></path></svg>A4</div>
+                <span data-dc-tpl="123" style="font-style: ; font-variant-ligatures: ; font-variant-caps: ; font-variant-numeric: ; font-variant-east-asian: ; font-variant-alternates: ; font-variant-position: ; font-variant-emoji: ; font-weight: ; font-stretch: ; font-size: ; line-height: 1.3; font-family: ; font-optical-sizing: ; font-size-adjust: ; font-kerning: ; font-feature-settings: ; font-variation-settings: ; font-language-override: ; color: var(--tx3); max-width: 118px;">только A4 — очередь Canon LBP‑1120</span>
+              </div>
+              <label data-dc-tpl="124" style="font: 500 13px var(--font); color: var(--tx2);">Копии</label>
+              <div data-dc-tpl="125" style="display: flex; align-items: center; height: 32px; width: 118px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); overflow: hidden;">
+                <span data-dc-tpl="126" style="flex: 1 1 0%; padding: 0px 10px; font: 500 13px var(--font);">1</span>
+                <div data-dc-tpl="127" style="display: flex; flex-direction: column; border-left: 1px solid var(--line);">
+                  <button data-dc-tpl="128" style="width: 26px; height: 15px; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; background: transparent; color: var(--tx2); cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg data-dc-tpl="129" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path data-dc-tpl="130" d="M6 15l6-6 6 6"></path></svg></button>
+                  <button data-dc-tpl="131" style="width: 26px; height: 15px; border-top: 1px solid var(--line); border-right-width: medium; border-bottom-width: medium; border-left-width: medium; border-right-style: none; border-bottom-style: none; border-left-style: none; border-right-color: currentcolor; border-bottom-color: currentcolor; border-left-color: currentcolor; border-image: initial; background: transparent; color: var(--tx2); cursor: pointer; display: flex; align-items: center; justify-content: center;"><svg data-dc-tpl="132" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path data-dc-tpl="133" d="M6 9l6 6 6-6"></path></svg></button>
+                </div>
+              </div>
+              <label data-dc-tpl="134" style="font: 500 13px var(--font); color: var(--tx2);">Масштаб</label>
+              <div data-dc-tpl="135" style="height: 32px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; justify-content: space-between; font: 500 13px var(--font);">Вписать в страницу<svg data-dc-tpl="136" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="2"><path data-dc-tpl="137" d="M6 9l6 6 6-6"></path></svg></div>
+            </div>
+            
+            <div data-dc-tpl="138" style="margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px;">
+              <div data-dc-tpl="139" style="display: flex; align-items: center; gap: 8px; font: 600 12.5px var(--font); color: var(--tx2); cursor: pointer;">
+                <svg data-dc-tpl="140" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path data-dc-tpl="141" d="M9 6l6 6-6 6"></path></svg>Дополнительно
+                <span data-dc-tpl="142" style="font: 400 11.5px var(--mono); color: var(--tx3);">— страницы, порядок</span>
+              </div>
+            </div>
+          </div>
+
+          
+          <div data-dc-tpl="143" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--infobg); border: 1px solid var(--infobd); border-radius: 8px;">
+            <svg data-dc-tpl="144" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"><circle data-dc-tpl="145" cx="12" cy="12" r="8.5"></circle><path data-dc-tpl="146" d="M12 11v5"></path><path data-dc-tpl="147" d="M12 8h.01"></path></svg>
+            <span data-dc-tpl="148" style="font: 500 12.5px/1.4 var(--font); color: var(--tx2);">Всё готово. По кнопке «Печать» задание уйдёт в очередь; «Готово» покажется только после фактического окончания печати.</span>
+          </div>
+
+          
+          <div data-dc-tpl="149" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 11px 13px; display: flex; align-items: center; gap: 9px;">
+            <svg data-dc-tpl="150" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="2.2"><path data-dc-tpl="151" d="M9 6l6 6-6 6"></path></svg>
+            <span data-dc-tpl="152" style="font: 600 13px var(--font); color: var(--tx2); flex: 1 1 0%;">Журнал</span>
+            <span data-dc-tpl="153" style="font: 400 11.5px var(--mono); color: var(--tx3);">12 записей</span>
+          </div>
+        </div>
+        
+        <div data-dc-tpl="154" style="height: 28px; display: flex; align-items: center; gap: 8px; padding: 0px 14px; background: var(--mica); border-top: 1px solid var(--stroke); font: 400 11.5px var(--mono); color: var(--tx3);">
+          <span data-dc-tpl="155" style="width: 8px; height: 8px; border-radius: 50%; background: var(--ok);"></span>Готов · очередь: C:\Virtualization\Shared\Queue
+          <span data-dc-tpl="156" style="flex: 1 1 0%;"></span>v1.0
+        </div>
+      </div>
+      
+      <div data-dc-tpl="158" style="margin-top: 10px; font: 500 12px var(--mono); color: rgb(31, 138, 76);">↑ «Печать» активна только при трёх Ok + выбранном PDF — иначе disabled с тултипом.</div>
+      
+    </div>
+
+    
+    <div data-dc-tpl="159" style="width: 1120px;">
+      <div data-dc-tpl="160" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 10px; letter-spacing: 0.03em;">B · ПРЕДПРОСМОТР ОТКРЫТ — правый сплит (GridSplitter)</div>
+      <div data-dc-tpl="161" style="border-radius: 9px; overflow: hidden; box-shadow: none !important; border: 1px solid rgba(0, 0, 0, 0.08); background: var(--bg); filter: drop-shadow(rgba(16, 24, 40, 0.2) 0px 24px 60px) drop-shadow(rgba(16, 24, 40, 0.1) 0px 4px 12px) !important;">
+        
+        <div data-dc-tpl="162" style="height: 40px; display: flex; align-items: center; background: var(--mica); border-bottom: 1px solid var(--stroke);">
+          <div data-dc-tpl="163" style="display: flex; align-items: center; gap: 9px; padding: 0px 12px; flex: 1 1 0%;">
+            <span data-dc-tpl="164" style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(140deg,var(--accent),#003a72); display: inline-flex; align-items: center; justify-content: center; color: rgb(255, 255, 255); font: 700 8px var(--font);">C</span>
+            <span data-dc-tpl="165" style="font: 600 12px var(--font); color: var(--tx2);">Canon Print Bridge — печать на LBP‑1120</span>
+          </div>
+          <div data-dc-tpl="166" style="display: flex;">
+            <div data-dc-tpl="167" style="width: 44px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="168" width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1"><line data-dc-tpl="169" x1="1" y1="5" x2="9" y2="5"></line></svg></div>
+            <div data-dc-tpl="170" style="width: 44px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="171" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><rect data-dc-tpl="172" x="1.2" y="1.2" width="7.6" height="7.6"></rect></svg></div>
+            <div data-dc-tpl="173" style="width: 46px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="174" width="11" height="11" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1"><line data-dc-tpl="175" x1="1.5" y1="1.5" x2="8.5" y2="8.5"></line><line data-dc-tpl="176" x1="8.5" y1="1.5" x2="1.5" y2="8.5"></line></svg></div>
+          </div>
+        </div>
+        
+        <div data-dc-tpl="177" style="height: 50px; display: flex; align-items: center; gap: 8px; padding: 0px 14px; background: var(--card2); border-bottom: 1px solid var(--stroke);">
+          <button data-dc-tpl="178" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); color: var(--tx); font: 600 13px var(--font); cursor: pointer;">
+            <svg data-dc-tpl="179" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="180" d="M3 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v1"></path><path data-dc-tpl="181" d="M3.5 10h16l-2 8a1 1 0 0 1-1 .8H4.7A1 1 0 0 1 3.7 18z"></path></svg>Открыть…</button>
+          <button data-dc-tpl="182" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 16px; border-radius: 5px; border: 1px solid var(--accent); background: var(--accent); color: rgb(255, 255, 255); font: 600 13px var(--font); cursor: pointer; box-shadow: none !important; filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 1px 1px) !important;">
+            <svg data-dc-tpl="183" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="184" d="M7 9V4h10v5"></path><rect data-dc-tpl="185" x="4" y="9" width="16" height="7" rx="1.5"></rect><path data-dc-tpl="186" d="M7 14h10v6H7z"></path></svg>Печать</button>
+          <div data-dc-tpl="187" style="flex: 1 1 0%;"></div>
+          <button data-dc-tpl="188" title="Скрыть предпросмотр" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 12px; border-radius: 5px; border: 1px solid color-mix(in srgb,var(--accent) 35%,transparent); background: color-mix(in srgb,var(--accent) 10%,transparent); color: var(--accent); font: 600 13px var(--font); cursor: pointer;">
+            <svg data-dc-tpl="189" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect data-dc-tpl="190" x="3" y="4" width="18" height="16" rx="2"></rect><path data-dc-tpl="191" d="M14 4v16"></path></svg>Предпросмотр</button>
+          <button data-dc-tpl="192" title="Настройки" style="width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--tx2); cursor: pointer;">
+            <svg data-dc-tpl="193" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle data-dc-tpl="194" cx="12" cy="12" r="3.2"></circle><path data-dc-tpl="195" d="M12 3.4v2.2M12 18.4v2.2M4.6 7.1l1.9 1.1M17.5 15.8l1.9 1.1M4.6 16.9l1.9-1.1M17.5 8.2l1.9-1.1M3.4 12h2.2M18.4 12h2.2"></path></svg></button>
+        </div>
+        
+        <div data-dc-tpl="196" style="display: flex; height: 560px;">
+          
+          <div data-dc-tpl="197" style="width: 430px; flex: 0 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 13px; overflow: hidden; background: var(--bg);">
+            <div data-dc-tpl="198" style="display: flex; align-items: center; gap: 11px; padding: 10px 12px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px;">
+              <span data-dc-tpl="199" style="width: 30px; height: 30px; border-radius: 6px; background: var(--lostbg); color: var(--lost); display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;"><svg data-dc-tpl="200" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path data-dc-tpl="201" d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path data-dc-tpl="202" d="M14 3v5h5"></path></svg></span>
+              <div data-dc-tpl="203" style="flex: 1 1 0%; min-width: 0px;"><div data-dc-tpl="204" style="font: 600 13px var(--font);">Test‑print.pdf</div><div data-dc-tpl="205" style="font: 400 11.5px var(--mono); color: var(--tx3);">4 стр. · 128 КБ</div></div>
+            </div>
+            <div data-dc-tpl="206" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 4px 13px;">
+              <div data-dc-tpl="207" style="padding: 9px 0px 7px; border-bottom: 1px solid var(--line); font: 600 11.5px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Готовность</div>
+              <div data-dc-tpl="208" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="209" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="210" style="flex: 1 1 0%; font: 500 13px var(--font);">Виртуальная машина</span><span data-dc-tpl="211" style="font: 600 12px var(--font); color: var(--ok);">Запущена</span></div>
+              <div data-dc-tpl="212" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="213" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="214" style="flex: 1 1 0%; font: 500 13px var(--font);">Образ ОС <span data-dc-tpl="215" style="color: var(--tx3); font: 400 11.5px var(--mono);">(XP)</span></span><span data-dc-tpl="216" style="font: 600 12px var(--font); color: var(--ok);">Готов</span></div>
+              <div data-dc-tpl="217" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px;"><span data-dc-tpl="218" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="219" style="flex: 1 1 0%; font: 500 13px var(--font);">Принтер <span data-dc-tpl="220" style="color: var(--tx3); font: 400 11.5px var(--mono);">LBP‑1120</span></span><span data-dc-tpl="221" style="font: 600 12px var(--font); color: var(--ok);">В сети</span></div>
+            </div>
+            <div data-dc-tpl="222" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 13px;">
+              <div data-dc-tpl="223" style="font: 600 11.5px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 11px;">Параметры печати</div>
+              <div data-dc-tpl="224" style="display: grid; grid-template-columns: 74px 1fr; gap: 10px; align-items: center;">
+                <label data-dc-tpl="225" style="font: 500 12.5px var(--font); color: var(--tx2);">Формат</label>
+                <div data-dc-tpl="226" style="height: 31px; border: 1px solid var(--stroke2); border-radius: 5px; background: rgb(244, 245, 246); color: var(--tx3); padding: 0px 10px; display: flex; align-items: center; gap: 7px; font: 500 12.5px var(--font);"><svg data-dc-tpl="227" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect data-dc-tpl="228" x="5" y="10" width="14" height="9" rx="2"></rect><path data-dc-tpl="229" d="M8 10V8a4 4 0 0 1 8 0v2"></path></svg>A4 <span data-dc-tpl="230" style="color: var(--tx3); font: 400 11px var(--font); margin-left: auto;">заблокировано</span></div>
+                <label data-dc-tpl="231" style="font: 500 12.5px var(--font); color: var(--tx2);">Копии</label>
+                <div data-dc-tpl="232" style="height: 31px; width: 100px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; font: 500 12.5px var(--font);">1</div>
+                <label data-dc-tpl="233" style="font: 500 12.5px var(--font); color: var(--tx2);">Масштаб</label>
+                <div data-dc-tpl="234" style="height: 31px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; justify-content: space-between; font: 500 12.5px var(--font);">Вписать в страницу<svg data-dc-tpl="235" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="2"><path data-dc-tpl="236" d="M6 9l6 6 6-6"></path></svg></div>
+              </div>
+            </div>
+            <div data-dc-tpl="237" style="flex: 1 1 0%;"></div>
+            <div data-dc-tpl="238" style="display: flex; align-items: center; gap: 9px; padding: 10px 12px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px;"><svg data-dc-tpl="239" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="2.2"><path data-dc-tpl="240" d="M9 6l6 6-6 6"></path></svg><span data-dc-tpl="241" style="font: 600 12.5px var(--font); color: var(--tx2); flex: 1 1 0%;">Журнал</span><span data-dc-tpl="242" style="font: 400 11px var(--mono); color: var(--tx3);">12</span></div>
+          </div>
+          
+          <div data-dc-tpl="243" style="width: 6px; background: var(--stroke); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; cursor: col-resize;"><div data-dc-tpl="244" style="width: 2px; height: 30px; border-radius: 2px; background: rgb(195, 198, 202);"></div></div>
+          
+          <div data-dc-tpl="245" style="flex: 1 1 0%; display: flex; flex-direction: column; background: rgb(255, 255, 255);">
+            <div data-dc-tpl="246" style="height: 42px; display: flex; align-items: center; gap: 10px; padding: 0px 14px; border-bottom: 1px solid var(--stroke); background: var(--card2);">
+              <svg data-dc-tpl="247" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="1.6" stroke-linejoin="round"><path data-dc-tpl="248" d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"></path><path data-dc-tpl="249" d="M14 3v5h5"></path></svg>
+              <span data-dc-tpl="250" style="flex: 1 1 0%; font: 600 12.5px var(--font); color: var(--tx2);">Предпросмотр — Test‑print.pdf</span>
+              <span data-dc-tpl="251" style="font: 400 11px var(--mono); color: var(--tx3); padding: 2px 8px; background: var(--offbg); border-radius: 4px;">WebView2 · Edge</span>
+              <button data-dc-tpl="252" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; border: 1px solid transparent; background: transparent; color: var(--tx3); cursor: pointer;"><svg data-dc-tpl="253" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path data-dc-tpl="254" d="M6 6l12 12M18 6L6 18"></path></svg></button>
+            </div>
+            <div data-dc-tpl="255" style="flex: 1 1 0%; padding: 26px; display: flex; justify-content: center; overflow: auto; background: repeating-linear-gradient(135deg, rgb(244, 245, 247) 0px, rgb(244, 245, 247) 11px, rgb(238, 240, 242) 11px, rgb(238, 240, 242) 22px);">
+              <div data-dc-tpl="256" style="width: 340px; background: rgb(255, 255, 255); box-shadow: none !important; padding: 34px 30px; display: flex; flex-direction: column; gap: 11px; height: max-content; filter: drop-shadow(rgba(0, 0, 0, 0.18) 0px 6px 22px) !important;">
+                <div data-dc-tpl="257" style="width: 60%; height: 15px; border-radius: 2px; background: rgb(42, 42, 42);"></div>
+                <div data-dc-tpl="258" style="width: 40%; height: 9px; border-radius: 2px; background: rgb(201, 203, 206); margin-bottom: 8px;"></div>
+                <div data-dc-tpl="259" style="width: 100%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+                <div data-dc-tpl="260" style="width: 96%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+                <div data-dc-tpl="261" style="width: 100%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+                <div data-dc-tpl="262" style="width: 70%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+                <div data-dc-tpl="263" style="width: 100%; height: 64px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgb(236, 238, 241) 0px, rgb(236, 238, 241) 8px, rgb(246, 247, 248) 8px, rgb(246, 247, 248) 16px); border: 1px solid rgb(226, 228, 231); margin: 8px 0px;"></div>
+                <div data-dc-tpl="264" style="width: 100%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+                <div data-dc-tpl="265" style="width: 88%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+                <div data-dc-tpl="266" style="width: 94%; height: 7px; border-radius: 2px; background: rgb(226, 228, 231);"></div>
+              </div>
+            </div>
+            <div data-dc-tpl="267" style="height: 34px; display: flex; align-items: center; justify-content: center; gap: 14px; border-top: 1px solid var(--stroke); background: var(--card2); font: 400 11.5px var(--mono); color: var(--tx3);">Стр. 1 / 4 · 100%</div>
+          </div>
+        </div>
+      </div>
+      
+      <div data-dc-tpl="269" style="margin-top: 10px; font: 500 12px var(--mono); color: rgb(31, 138, 76);">↑ Предпросмотр — встроенный WebView2 (просмотрщик Edge), свой рендер не пишем. Панель сворачивается кнопкой в командной строке.</div>
+      
+    </div>
+  </div>
+
+  
+  <div data-dc-tpl="270" style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 22px;">
+    <span data-dc-tpl="271" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: rgb(22, 24, 27); color: rgb(255, 255, 255); font: 700 14px var(--font);">2</span>
+    <span data-dc-tpl="272" style="font: 650 22px var(--font); color: rgb(22, 24, 27);">Настройки</span>
+    <span data-dc-tpl="273" style="font: 400 14px var(--font); color: var(--tx3);">— отдельное диалоговое окно (для будущей переносимости)</span>
+  </div>
+
+  <div data-dc-tpl="274" style="display: flex; gap: 56px; flex-wrap: wrap; align-items: flex-start; margin-bottom: 64px;">
+    
+    <div data-dc-tpl="275" style="width: 660px;">
+      <div data-dc-tpl="276" style="border-radius: 9px; overflow: hidden; box-shadow: none !important; border: 1px solid rgba(0, 0, 0, 0.08); background: var(--bg); filter: drop-shadow(rgba(16, 24, 40, 0.2) 0px 24px 60px) drop-shadow(rgba(16, 24, 40, 0.1) 0px 4px 12px) !important;">
+        <div data-dc-tpl="277" style="height: 40px; display: flex; align-items: center; background: var(--mica); border-bottom: 1px solid var(--stroke);">
+          <div data-dc-tpl="278" style="display: flex; align-items: center; gap: 9px; padding: 0px 12px; flex: 1 1 0%;">
+            <svg data-dc-tpl="279" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle data-dc-tpl="280" cx="12" cy="12" r="3.2"></circle><path data-dc-tpl="281" d="M12 3.4v2.2M12 18.4v2.2M4.6 7.1l1.9 1.1M17.5 15.8l1.9 1.1M4.6 16.9l1.9-1.1M17.5 8.2l1.9-1.1M3.4 12h2.2M18.4 12h2.2"></path></svg>
+            <span data-dc-tpl="282" style="font: 600 12px var(--font); color: var(--tx2);">Настройки</span>
+          </div>
+          <div data-dc-tpl="283" style="width: 46px; height: 40px; display: flex; align-items: center; justify-content: center; color: var(--tx2);"><svg data-dc-tpl="284" width="11" height="11" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1"><line data-dc-tpl="285" x1="1.5" y1="1.5" x2="8.5" y2="8.5"></line><line data-dc-tpl="286" x1="8.5" y1="1.5" x2="1.5" y2="8.5"></line></svg></div>
+        </div>
+        <div data-dc-tpl="287" style="padding: 20px; background: var(--bg); display: flex; flex-direction: column; gap: 16px;">
+          <div data-dc-tpl="288" style="display: flex; align-items: center; gap: 10px; padding: 11px 13px; background: var(--infobg); border: 1px solid var(--infobd); border-radius: 8px;">
+            <svg data-dc-tpl="289" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8"><circle data-dc-tpl="290" cx="12" cy="12" r="8.5"></circle><path data-dc-tpl="291" d="M12 11v5"></path><path data-dc-tpl="292" d="M12 8h.01"></path></svg>
+            <span data-dc-tpl="293" style="font: 500 12px/1.4 var(--font); color: var(--tx2);">Пути нужны для переносимости на другую машину. Меняйте, только если менялось расположение папок или VirtualBox.</span>
+          </div>
+
+          <div data-dc-tpl="294" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 15px;">
+            <div data-dc-tpl="295" style="font: 600 12.5px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 13px;">Общие папки</div>
+            <div data-dc-tpl="296" style="display: flex; flex-direction: column; gap: 13px;">
+              <div data-dc-tpl="297">
+                <label data-dc-tpl="298" style="display: block; font: 500 12.5px var(--font); color: var(--tx2); margin-bottom: 5px;">Общая папка (Shared)</label>
+                <div data-dc-tpl="299" style="display: flex; gap: 8px;"><div data-dc-tpl="300" style="flex: 1 1 0%; height: 32px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; font: 400 12.5px var(--mono); color: var(--tx);">C:\Virtualization\Shared</div><button data-dc-tpl="301" style="height: 32px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;">Обзор…</button></div>
+              </div>
+              <div data-dc-tpl="302">
+                <label data-dc-tpl="303" style="display: block; font: 500 12.5px var(--font); color: var(--tx2); margin-bottom: 5px;">Папка очереди (Queue)</label>
+                <div data-dc-tpl="304" style="display: flex; gap: 8px;"><div data-dc-tpl="305" style="flex: 1 1 0%; height: 32px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; font: 400 12.5px var(--mono); color: var(--tx);">C:\Virtualization\Shared\Queue</div><button data-dc-tpl="306" style="height: 32px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;">Обзор…</button></div>
+              </div>
+            </div>
+          </div>
+
+          <div data-dc-tpl="307" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 8px; padding: 15px;">
+            <div data-dc-tpl="308" style="font: 600 12.5px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 13px;">Виртуальная машина</div>
+            <div data-dc-tpl="309" style="display: flex; flex-direction: column; gap: 13px;">
+              <div data-dc-tpl="310">
+                <label data-dc-tpl="311" style="display: block; font: 500 12.5px var(--font); color: var(--tx2); margin-bottom: 5px;">Имя ВМ</label>
+                <div data-dc-tpl="312" style="height: 32px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; font: 400 12.5px var(--mono); color: var(--tx);">WinXP‑Print</div>
+              </div>
+              <div data-dc-tpl="313">
+                <label data-dc-tpl="314" style="display: block; font: 500 12.5px var(--font); color: var(--tx2); margin-bottom: 5px;">Путь к VBoxManage</label>
+                <div data-dc-tpl="315" style="display: flex; gap: 8px;"><div data-dc-tpl="316" style="flex: 1 1 0%; height: 32px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; font: 400 12.5px var(--mono); color: var(--tx);">C:\Program Files\Oracle\VirtualBox\VBoxManage.exe</div><button data-dc-tpl="317" style="height: 32px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;">Обзор…</button></div>
+              </div>
+              <div data-dc-tpl="318">
+                <label data-dc-tpl="319" style="display: block; font: 500 12.5px var(--font); color: var(--tx2); margin-bottom: 5px;">Скрипт запуска (launcher)</label>
+                <div data-dc-tpl="320" style="display: flex; gap: 8px;"><div data-dc-tpl="321" style="flex: 1 1 0%; height: 32px; border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom: 2px solid rgb(185, 188, 192); border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-radius: 5px; background: rgb(255, 255, 255); padding: 0px 10px; display: flex; align-items: center; font: 400 12.5px var(--mono); color: var(--tx);">C:\Virtualization\start-headless.cmd</div><button data-dc-tpl="322" style="height: 32px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;">Обзор…</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div data-dc-tpl="323" style="display: flex; align-items: center; gap: 10px; padding: 14px 20px; background: var(--mica); border-top: 1px solid var(--stroke);">
+          <button data-dc-tpl="324" style="height: 34px; padding: 0px 14px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 13px var(--font); cursor: pointer;">Проверить пути</button>
+          <div data-dc-tpl="325" style="flex: 1 1 0%;"></div>
+          <button data-dc-tpl="326" style="height: 34px; padding: 0px 18px; border-radius: 5px; border: 1px solid var(--accent); background: var(--accent); color: rgb(255, 255, 255); font: 600 13px var(--font); cursor: pointer;">Сохранить</button>
+          <button data-dc-tpl="327" style="height: 34px; padding: 0px 16px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 13px var(--font); cursor: pointer;">Отмена</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div data-dc-tpl="328" style="width: 430px;">
+      <div data-dc-tpl="329" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 10px; letter-spacing: 0.03em;">Подтверждение — «Завершить работу» (деструктивно)</div>
+      <div data-dc-tpl="330" style="border-radius: 9px; overflow: hidden; box-shadow: none !important; border: 1px solid rgba(0, 0, 0, 0.08); background: rgb(255, 255, 255); filter: drop-shadow(rgba(16, 24, 40, 0.2) 0px 24px 60px) drop-shadow(rgba(16, 24, 40, 0.1) 0px 4px 12px) !important;">
+        <div data-dc-tpl="331" style="padding: 24px 24px 18px;">
+          <div data-dc-tpl="332" style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+            <span data-dc-tpl="333" style="width: 38px; height: 38px; border-radius: 50%; background: var(--warnbg); color: var(--warn); display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;"><svg data-dc-tpl="334" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="335" d="M12 4l9 16H3z"></path><path data-dc-tpl="336" d="M12 10v4"></path><path data-dc-tpl="337" d="M12 17.5h.01"></path></svg></span>
+            <div data-dc-tpl="338" style="font: 650 16px var(--font); color: rgb(22, 24, 27);">Завершить работу?</div>
+          </div>
+          <p data-dc-tpl="339" style="margin: 0px; font: 400 13.5px/1.55 var(--font); color: var(--tx2);">Фоновая виртуальная машина и Windows XP будут выключены, принтер станет недоступен. Незавершённое задание печати будет прервано. Индикаторы вернутся в исходное (серое) состояние.</p>
+        </div>
+        <div data-dc-tpl="340" style="display: flex; gap: 10px; padding: 14px 24px 20px; justify-content: flex-end;">
+          <button data-dc-tpl="341" style="height: 34px; padding: 0px 16px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 13px var(--font); cursor: pointer;">Отмена</button>
+          <button data-dc-tpl="342" style="display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0px 16px; border-radius: 5px; border: 1px solid var(--lost); background: var(--lost); color: rgb(255, 255, 255); font: 600 13px var(--font); cursor: pointer;"><svg data-dc-tpl="343" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path data-dc-tpl="344" d="M12 4v8"></path><path data-dc-tpl="345" d="M7.5 7a7 7 0 1 0 9 0"></path></svg>Завершить работу</button>
+        </div>
+      </div>
+      
+      <div data-dc-tpl="347" style="margin-top: 10px; font: 500 12px var(--mono); color: rgb(31, 138, 76);">↑ «Завершить работу» выключает ВМ и сбрасывает UI в исходное состояние — потому подтверждаем.</div>
+      
+    </div>
+  </div>
+
+  
+  <div data-dc-tpl="348" style="display: flex; align-items: center; gap: 12px; margin: 0px 0px 22px;">
+    <span data-dc-tpl="349" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: rgb(22, 24, 27); color: rgb(255, 255, 255); font: 700 14px var(--font);">3</span>
+    <span data-dc-tpl="350" style="font: 650 22px var(--font); color: rgb(22, 24, 27);">Раскадровка состояний</span>
+  </div>
+
+  
+  <div data-dc-tpl="351" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 12px; letter-spacing: 0.03em;">ИНДИКАТОРЫ ГОТОВНОСТИ — четыре состояния</div>
+  <div data-dc-tpl="352" style="display: flex; gap: 22px; flex-wrap: wrap; margin-bottom: 36px;">
+
+    
+    <div data-dc-tpl="353" style="width: 330px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 6px 15px; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+      <div data-dc-tpl="354" style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0px 8px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="355" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Ok — готов</span><span data-dc-tpl="356" style="display: inline-flex; align-items: center; gap: 5px; font: 600 11.5px var(--font); color: var(--ok);"><svg data-dc-tpl="357" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="358" d="M5 12.5l4.5 4.5L19 7"></path></svg>Печать доступна</span></div>
+      <div data-dc-tpl="359" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="360" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="361" style="flex: 1 1 0%; font: 500 13px var(--font);">Виртуальная машина</span><span data-dc-tpl="362" style="font: 600 11.5px var(--font); color: var(--ok);">Запущена</span></div>
+      <div data-dc-tpl="363" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="364" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="365" style="flex: 1 1 0%; font: 500 13px var(--font);">Образ ОС (XP)</span><span data-dc-tpl="366" style="font: 600 11.5px var(--font); color: var(--ok);">Готов</span></div>
+      <div data-dc-tpl="367" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px;"><span data-dc-tpl="368" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="369" style="flex: 1 1 0%; font: 500 13px var(--font);">Принтер</span><span data-dc-tpl="370" style="font: 600 11.5px var(--font); color: var(--ok);">В сети</span></div>
+    </div>
+
+    
+    <div data-dc-tpl="371" style="width: 330px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 6px 15px; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+      <div data-dc-tpl="372" style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0px 8px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="373" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Загрузка</span><span data-dc-tpl="374" style="font: 600 11.5px var(--font); color: var(--warn);">XP поднимается…</span></div>
+      <div data-dc-tpl="375" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="376" style="width: 11px; height: 11px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent);"></span><span data-dc-tpl="377" style="flex: 1 1 0%; font: 500 13px var(--font);">Виртуальная машина</span><span data-dc-tpl="378" style="font: 600 11.5px var(--font); color: var(--ok);">Запущена</span></div>
+      <div data-dc-tpl="379" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="380" style="width: 11px; height: 11px; border-radius: 50%; background: var(--warn); box-shadow: 0 0 0 3px color-mix(in srgb,var(--warn) 22%,transparent); animation: 1.4s ease-in-out 0s infinite normal none running cpbpulse;"></span><span data-dc-tpl="381" style="flex: 1 1 0%; font: 500 13px var(--font);">Образ ОС (XP)</span><span data-dc-tpl="382" style="font: 600 11.5px var(--font); color: var(--warn);">Загрузка гостя…</span></div>
+      <div data-dc-tpl="383" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px;"><span data-dc-tpl="384" style="width: 11px; height: 11px; border-radius: 50%; background: var(--off); box-shadow: 0 0 0 3px color-mix(in srgb,var(--off) 22%,transparent);"></span><span data-dc-tpl="385" style="flex: 1 1 0%; font: 500 13px var(--font);">Принтер</span><span data-dc-tpl="386" style="font: 600 11.5px var(--font); color: var(--off);">Неизвестно</span></div>
+    </div>
+
+    
+    <div data-dc-tpl="387" style="width: 330px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 6px 15px; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+      <div data-dc-tpl="388" style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0px 8px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="389" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Off — не запущен</span><span data-dc-tpl="390" style="font: 600 11.5px var(--font); color: var(--off);">Исходное</span></div>
+      <div data-dc-tpl="391" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="392" style="width: 11px; height: 11px; border-radius: 50%; background: var(--off); box-shadow: 0 0 0 3px color-mix(in srgb,var(--off) 22%,transparent);"></span><span data-dc-tpl="393" style="flex: 1 1 0%; font: 500 13px var(--font);">Виртуальная машина</span><span data-dc-tpl="394" style="font: 600 11.5px var(--font); color: var(--off);">Остановлена</span></div>
+      <div data-dc-tpl="395" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="396" style="width: 11px; height: 11px; border-radius: 50%; background: var(--off); box-shadow: 0 0 0 3px color-mix(in srgb,var(--off) 22%,transparent);"></span><span data-dc-tpl="397" style="flex: 1 1 0%; font: 500 13px var(--font);">Образ ОС (XP)</span><span data-dc-tpl="398" style="font: 600 11.5px var(--font); color: var(--off);">Не запущен</span></div>
+      <div data-dc-tpl="399" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px;"><span data-dc-tpl="400" style="width: 11px; height: 11px; border-radius: 50%; background: var(--off); box-shadow: 0 0 0 3px color-mix(in srgb,var(--off) 22%,transparent);"></span><span data-dc-tpl="401" style="flex: 1 1 0%; font: 500 13px var(--font);">Принтер</span><span data-dc-tpl="402" style="font: 600 11.5px var(--font); color: var(--off);">Неизвестно</span></div>
+    </div>
+
+    
+    <div data-dc-tpl="403" style="width: 330px; background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 6px 15px; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+      <div data-dc-tpl="404" style="display: flex; align-items: center; justify-content: space-between; padding: 11px 0px 8px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="405" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Lost — потеряна</span><span data-dc-tpl="406" style="font: 600 11.5px var(--font); color: var(--lost);">Печать заблокирована</span></div>
+      <div data-dc-tpl="407" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="408" style="width: 11px; height: 11px; border-radius: 50%; background: var(--lost); box-shadow: 0 0 0 3px color-mix(in srgb,var(--lost) 22%,transparent);"></span><span data-dc-tpl="409" style="flex: 1 1 0%; font: 500 13px var(--font);">Виртуальная машина</span><span data-dc-tpl="410" style="font: 600 11.5px var(--font); color: var(--lost);">Потеряна</span></div>
+      <div data-dc-tpl="411" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px; border-bottom: 1px solid var(--line);"><span data-dc-tpl="412" style="width: 11px; height: 11px; border-radius: 50%; background: var(--lost); box-shadow: 0 0 0 3px color-mix(in srgb,var(--lost) 22%,transparent);"></span><span data-dc-tpl="413" style="flex: 1 1 0%; font: 500 13px var(--font);">Образ ОС (XP)</span><span data-dc-tpl="414" style="font: 600 11.5px var(--font); color: var(--lost);">Связь потеряна</span></div>
+      <div data-dc-tpl="415" style="display: flex; align-items: center; gap: 11px; padding: 9px 0px;"><span data-dc-tpl="416" style="width: 11px; height: 11px; border-radius: 50%; background: var(--lost); box-shadow: 0 0 0 3px color-mix(in srgb,var(--lost) 22%,transparent);"></span><span data-dc-tpl="417" style="flex: 1 1 0%; font: 500 13px var(--font);">Принтер</span><span data-dc-tpl="418" style="font: 600 11.5px var(--font); color: var(--lost);">Не найден</span></div>
+    </div>
+  </div>
+
+  
+  <div data-dc-tpl="419" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 12px; letter-spacing: 0.03em;">ДЕЙСТВИЯ И ПОТОК ПЕЧАТИ</div>
+  <div data-dc-tpl="420" style="display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start;">
+
+    
+    <div data-dc-tpl="421" style="width: 330px;">
+      <div data-dc-tpl="422" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 18px; box-shadow: none !important; height: 172px; display: flex; flex-direction: column; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+        <div data-dc-tpl="423" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: auto;">«Печать» недоступна</div>
+        <div data-dc-tpl="424" style="position: relative; align-self: flex-start;">
+          <div data-dc-tpl="425" style="position: absolute; bottom: calc(100% + 9px); left: 0px; background: rgb(43, 43, 43); color: rgb(255, 255, 255); font: 500 12px/1.4 var(--font); padding: 8px 11px; border-radius: 6px; width: 220px; box-shadow: none !important; filter: drop-shadow(rgba(0, 0, 0, 0.28) 0px 6px 18px) !important;">Недоступно: дождитесь готовности Windows XP (образ ОС ещё загружается)<span data-dc-tpl="426" style="position: absolute; top: 100%; left: 22px; width: 0px; height: 0px; border-width: 6px; border-style: solid; border-color: rgb(43, 43, 43) transparent transparent; border-image: initial;"></span></div>
+          <button data-dc-tpl="427" style="display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0px 18px; border-radius: 5px; border: 1px solid rgb(227, 228, 230); background: rgb(233, 234, 236); color: rgb(168, 171, 174); font: 600 13.5px var(--font); cursor: not-allowed;"><svg data-dc-tpl="428" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="429" d="M7 9V4h10v5"></path><rect data-dc-tpl="430" x="4" y="9" width="16" height="7" rx="1.5"></rect><path data-dc-tpl="431" d="M7 14h10v6H7z"></path></svg>Печать</button>
+        </div>
+      </div>
+      <div data-dc-tpl="432" style="margin-top: 8px; font: 400 11.5px/1.4 var(--font); color: var(--tx3);">Кнопка disabled, тултип называет недостающее условие (нет файла / ВМ / XP / принтера).</div>
+    </div>
+
+    
+    <div data-dc-tpl="433" style="width: 330px;">
+      <div data-dc-tpl="434" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 18px; box-shadow: none !important; height: 172px; display: flex; flex-direction: column; gap: 13px; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+        <div data-dc-tpl="435" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Идёт печать</div>
+        <div data-dc-tpl="436" style="display: flex; align-items: center; gap: 10px;">
+          <span data-dc-tpl="437" style="width: 18px; height: 18px; border-radius: 50%; border-top-color: var(--accent); border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; animation: 0.8s linear 0s infinite normal none running cpbspin; flex: 0 0 auto;"></span>
+          <span data-dc-tpl="438" style="font: 600 14px var(--font); color: var(--tx);">Печать… <span data-dc-tpl="439" style="color: var(--accent);">0:03</span></span>
+        </div>
+        <div data-dc-tpl="440" style="height: 6px; border-radius: 3px; background: var(--offbg); overflow: hidden; position: relative;"><div data-dc-tpl="441" style="position: absolute; top: 0px; left: 0px; width: 30%; height: 100%; border-radius: 3px; background: var(--accent); animation: 1.3s ease-in-out 0s infinite normal none running cpbbar;"></div></div>
+        <div data-dc-tpl="442" style="font: 400 12px/1.4 var(--font); color: var(--tx3);">Задание в очереди XP. «Готово» — только по факту опустошения очереди спулера.</div>
+        <button data-dc-tpl="443" style="align-self: flex-start; margin-top: auto; height: 30px; padding: 0px 13px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;">Отменить</button>
+      </div>
+      <div data-dc-tpl="444" style="margin-top: 8px; font: 400 11.5px/1.4 var(--font); color: var(--tx3);">Прогресс + таймер живут всё время задания. «Отменить» — опциональный QoL.</div>
+    </div>
+
+    
+    <div data-dc-tpl="445" style="width: 330px;">
+      <div data-dc-tpl="446" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 18px; box-shadow: none !important; height: 172px; display: flex; flex-direction: column; gap: 13px; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+        <div data-dc-tpl="447" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Готово</div>
+        <div data-dc-tpl="448" style="display: flex; align-items: flex-start; gap: 11px; padding: 12px 13px; background: var(--okbg); border: 1px solid var(--okbd); border-radius: 8px;">
+          <span data-dc-tpl="449" style="width: 22px; height: 22px; border-radius: 50%; background: var(--ok); color: rgb(255, 255, 255); display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;"><svg data-dc-tpl="450" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="451" d="M5 12.5l4.5 4.5L19 7"></path></svg></span>
+          <div data-dc-tpl="452"><div data-dc-tpl="453" style="font: 600 13px var(--font); color: rgb(18, 96, 15);">Готово за 0:04</div><div data-dc-tpl="454" style="font: 400 12px/1.4 var(--font); color: var(--tx2); margin-top: 2px;">Test‑print.pdf напечатан — A4, 1 копия.</div></div>
+        </div>
+        <div data-dc-tpl="455" style="font: 400 12px/1.4 var(--font); color: var(--tx3); margin-top: auto;">«Готово» появляется только после фактического окончания физической печати.</div>
+      </div>
+      <div data-dc-tpl="456" style="margin-top: 8px; font: 400 11.5px/1.4 var(--font); color: var(--tx3);">Успех — зелёный InfoBar, не модалка.</div>
+    </div>
+
+    
+    <div data-dc-tpl="457" style="width: 330px;">
+      <div data-dc-tpl="458" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; padding: 18px; box-shadow: none !important; height: 172px; display: flex; flex-direction: column; gap: 13px; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+        <div data-dc-tpl="459" style="font: 600 12px var(--font); color: var(--tx2); text-transform: uppercase; letter-spacing: 0.05em;">Ошибка</div>
+        <div data-dc-tpl="460" style="display: flex; align-items: flex-start; gap: 11px; padding: 12px 13px; background: var(--lostbg); border: 1px solid var(--lostbd); border-radius: 8px;">
+          <span data-dc-tpl="461" style="width: 22px; height: 22px; border-radius: 50%; background: var(--lost); color: rgb(255, 255, 255); display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;"><svg data-dc-tpl="462" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path data-dc-tpl="463" d="M6 6l12 12M18 6L6 18"></path></svg></span>
+          <div data-dc-tpl="464" style="flex: 1 1 0%;"><div data-dc-tpl="465" style="font: 600 13px var(--font); color: rgb(164, 29, 17);">Печать не удалась</div><div data-dc-tpl="466" style="font: 400 12px/1.4 var(--font); color: var(--tx2); margin-top: 2px;">Очередь XP недоступна — принтер отключён от USB.</div></div>
+        </div>
+        <div data-dc-tpl="467" style="display: flex; gap: 9px; margin-top: auto;">
+          <button data-dc-tpl="468" style="display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0px 12px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;"><svg data-dc-tpl="469" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="470" d="M4 12a8 8 0 0 1 13.5-5.8L20 8"></path><path data-dc-tpl="471" d="M20 4v4h-4"></path><path data-dc-tpl="472" d="M20 12a8 8 0 0 1-13.5 5.8L4 16"></path><path data-dc-tpl="473" d="M4 20v-4h4"></path></svg>Повторить</button>
+          <button data-dc-tpl="474" style="height: 30px; padding: 0px 12px; border-radius: 5px; border: 1px solid var(--btnbd); background: var(--btn); font: 600 12.5px var(--font); cursor: pointer;">Открыть журнал</button>
+        </div>
+      </div>
+      <div data-dc-tpl="475" style="margin-top: 8px; font: 400 11.5px/1.4 var(--font); color: var(--tx3);">Ошибка — красный InfoBar с «Повторить» и ссылкой в журнал.</div>
+    </div>
+  </div>
+
+  
+  <div data-dc-tpl="476" style="display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; margin-top: 36px;">
+    
+    <div data-dc-tpl="477" style="width: 500px;">
+      <div data-dc-tpl="478" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 12px; letter-spacing: 0.03em;">ПУСТОЕ СОСТОЯНИЕ — файл не выбран</div>
+      <div data-dc-tpl="479" style="background: var(--bg); border: 1px solid var(--stroke); border-radius: 9px; padding: 16px; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+        <div data-dc-tpl="480" style="border: 2px dashed var(--stroke2); border-radius: 10px; background: rgb(255, 255, 255); padding: 34px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+          <span data-dc-tpl="481" style="width: 52px; height: 52px; border-radius: 12px; background: var(--infobg); color: var(--accent); display: inline-flex; align-items: center; justify-content: center;"><svg data-dc-tpl="482" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="483" d="M12 16V4"></path><path data-dc-tpl="484" d="M8 8l4-4 4 4"></path><path data-dc-tpl="485" d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"></path></svg></span>
+          <div data-dc-tpl="486"><div data-dc-tpl="487" style="font: 600 15px var(--font); color: var(--tx);">Перетащите PDF сюда</div><div data-dc-tpl="488" style="font: 400 13px var(--font); color: var(--tx3); margin-top: 3px;">или выберите файл на диске — только *.pdf</div></div>
+          <button data-dc-tpl="489" style="height: 34px; padding: 0px 18px; border-radius: 5px; border: 1px solid var(--accent); background: var(--accent); color: rgb(255, 255, 255); font: 600 13px var(--font); cursor: pointer;">Выбрать файл…</button>
+        </div>
+        <div data-dc-tpl="490" style="display: flex; align-items: center; gap: 9px; margin-top: 13px; padding: 10px 12px; background: var(--warnbg); border: 1px solid var(--warnbd); border-radius: 8px;">
+          <svg data-dc-tpl="491" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path data-dc-tpl="492" d="M12 4l9 16H3z"></path><path data-dc-tpl="493" d="M12 10v4"></path><path data-dc-tpl="494" d="M12 17.5h.01"></path></svg>
+          <span data-dc-tpl="495" style="font: 500 12px/1.4 var(--font); color: var(--tx2);">Принтер не запущен. Нажмите «Запустить принтер (VM)», пока выбираете файл — XP поднимется за ~30–60 с.</span>
+        </div>
+        <button data-dc-tpl="496" style="display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center; margin-top: 11px; height: 38px; border-radius: 6px; border: 1px solid var(--accent); background: color-mix(in srgb,var(--accent) 10%,#fff); color: var(--accent); font: 600 13.5px var(--font); cursor: pointer;"><svg data-dc-tpl="497" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path data-dc-tpl="498" d="M12 4v8"></path><path data-dc-tpl="499" d="M7.5 7a7 7 0 1 0 9 0"></path></svg>Запустить принтер (VM)</button>
+      </div>
+    </div>
+
+    
+    <div data-dc-tpl="500" style="width: 594px;">
+      <div data-dc-tpl="501" style="font: 600 12px var(--mono); color: var(--tx2); margin-bottom: 12px; letter-spacing: 0.03em;">ЖУРНАЛ — раскрытый Expander (по умолчанию свёрнут)</div>
+      <div data-dc-tpl="502" style="background: rgb(255, 255, 255); border: 1px solid var(--stroke); border-radius: 9px; overflow: hidden; box-shadow: none !important; filter: drop-shadow(rgba(16, 24, 40, 0.14) 0px 8px 24px) drop-shadow(rgba(16, 24, 40, 0.08) 0px 1px 3px) !important;">
+        <div data-dc-tpl="503" style="display: flex; align-items: center; gap: 9px; padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--card2);"><svg data-dc-tpl="504" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="2.2"><path data-dc-tpl="505" d="M6 9l6 6 6-6"></path></svg><span data-dc-tpl="506" style="font: 600 13px var(--font); color: var(--tx2); flex: 1 1 0%;">Журнал</span><span data-dc-tpl="507" style="font: 400 11px var(--mono); color: var(--tx3);">C:\Virtualization\Shared\Queue</span></div>
+        <div data-dc-tpl="508" style="padding: 14px; font: 400 12px/1.75 var(--mono); color: var(--tx2); background: rgb(252, 252, 253); max-height: 220px; overflow: auto;">
+          <div data-dc-tpl="509"><span data-dc-tpl="510" style="color: var(--tx3);">11:11:40</span>  Очередь: C:\Virtualization\Shared\Queue</div>
+          <div data-dc-tpl="511"><span data-dc-tpl="512" style="color: var(--tx3);">11:12:27</span>  Выбран файл: Test‑print.pdf</div>
+          <div data-dc-tpl="513"><span data-dc-tpl="514" style="color: var(--tx3);">11:12:29</span>  Запуск принтера (VM)…</div>
+          <div data-dc-tpl="515"><span data-dc-tpl="516" style="color: var(--tx3);">11:12:56</span>  Команда отправлена. XP грузится (~30–60 с); принтер прицепится сам.</div>
+          <div data-dc-tpl="517"><span data-dc-tpl="518" style="color: var(--tx3);">11:13:38</span>  <span data-dc-tpl="519" style="color: var(--ok);">Образ ОС готов</span> — watcher на связи.</div>
+          <div data-dc-tpl="520"><span data-dc-tpl="521" style="color: var(--tx3);">11:14:02</span>  Задание 20260701‑111402‑2bee: A4, копий 1, дуплекс нет</div>
+          <div data-dc-tpl="522"><span data-dc-tpl="523" style="color: var(--tx3);">11:14:02</span>  Отправлено в очередь, жду печать…</div>
+          <div data-dc-tpl="524"><span data-dc-tpl="525" style="color: var(--tx3);">11:14:03</span>  Статус: печать — paper A4, copies 1</div>
+          <div data-dc-tpl="526"><span data-dc-tpl="527" style="color: var(--tx3);">11:14:06</span>  <span data-dc-tpl="528" style="color: var(--ok);">Статус: готово ✓</span></div>
+        </div>
+      </div>
+      
+      <div data-dc-tpl="530" style="margin-top: 10px; font: 500 12px var(--mono); color: rgb(31, 138, 76);">↑ Технические подписи — моноширинный шрифт. Свёрнут по умолчанию: для редкого сценария лог — это шум.</div>
+      
+    </div>
+  </div></div></div></div>
+<script type="text/x-dc" data-dc-script="" data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1400, &quot;height&quot;: 900 },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#005FB8&quot;, &quot;options&quot;: [&quot;#005FB8&quot;, &quot;#038387&quot;, &quot;#8764B8&quot;, &quot;#c42b1c&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Тема&quot; },
+  &quot;showGuides&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Показ&quot; },
+  &quot;showRationale&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Показ&quot; }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#005FB8',
+      showGuides: this.props.showGuides ?? true,
+      showRationale: this.props.showRationale ?? true,
+    };
+  }
+}
+</script>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "Canon Print Bridge";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…}. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: ≥2 visible non-fixed children, each with authored px width
+  // AND height, all within ±2px of each other. Off unless the page opts in
+  // via data-om-multi-frame on the stop element — guards against card grids
+  // and pricing tables that match the geometry but aren't separate canvases.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var cands = [];
+    for (var k = 0; k < el.children.length; k++) {
+      var ch = el.children[k];
+      var cs; try { cs = getComputedStyle(ch); } catch (e) { continue; }
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') continue;
+      var rc = rectOf(ch);
+      if (rc.width < 2 || rc.height < 2) continue;
+      if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+      cands.push(rc);
+    }
+    if (cands.length >= 2) {
+      var w0 = cands[0].width, h0 = cands[0].height, ok = true;
+      for (var q = 1; q < cands.length; q++)
+        if (Math.abs(cands[q].width - w0) > 2 || Math.abs(cands[q].height - h0) > 2) ok = false;
+      if (ok) return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (__m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+
+
+<style>@media print{@page{size:2760px 3165px;margin:0}html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}[data-om-frame]{margin:0!important}}</style></body></html>

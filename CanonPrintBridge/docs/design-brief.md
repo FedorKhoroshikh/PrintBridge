@@ -53,7 +53,9 @@ shown; the UI merely reflects state and controls starting/stopping the backgroun
 
 The designer decides **where and how** to place this; the list is what exists at all.
 
-1. **File selection** — a drop zone + selection via a dialog. Only `*.pdf`.
+1. **File selection** — a drop zone + selection via a dialog. Accepts PDF **and formats
+   convertible to PDF** (Word `.docx/.doc`, images `.png/.jpg/…`; optionally `.xlsx/.pptx`).
+   Non-PDF inputs are converted to PDF on the host before printing (see `implementation-plan.md`).
 2. **Three status indicators** (see §3): Virtual Machine / OS image (Windows XP) / Printer.
 3. **Actions:** «Запустить принтер (VM)» (Start printer (VM)), «Печать» (Print), «Завершить работу» (Shut down) — the last
    one properly powers off the background VM/XP and **resets the UI to its initial state** (preview closed,

@@ -19,6 +19,7 @@ Phases are ordered by dependencies and so that each can be verified separately.
 | 9 | Single-file publish | impl-1 | `csproj`, publish script |
 | 10 | Headless startup + «Завершить работу» | background, teardown | launcher/`AppConfig`, `MainWindow` |
 | 11 | Settings screen (design now, implementation later) | portability | new `Window` + `AppConfig` |
+| 12 | Input formats → PDF (docx/images) | broaden supported inputs | `MainWindow`, new converter service, `csproj` |
 
 Phases 1–2 (XP side) are independent of 3–8 (WPF side) and can proceed in parallel.
 Recommended build-verify order: 1 → 2 → 3 → 4 → 6 → 5 → 7 → 8 → 9.
@@ -214,6 +215,30 @@ PowerShell window. The goal is for **nothing to flicker**:
 
 ---
 
+## Phase 12 — Input formats → PDF (print files that convert to PDF)
+
+Support not only PDF but files that convert to PDF: Word `.docx/.doc`, images `.png/.jpg/…`
+(optionally `.xlsx/.pptx`).
+
+**Architecture.** Keep the queue **PDF-only** (`job-contract.md` stays unchanged). Convert on the
+**Win11 host** before `SubmitAsync`: detect by extension; if the input is not PDF, produce a temp
+PDF and queue that. The preview shows the converted PDF.
+
+**Converters (driven by what is installed on this host — Office present, no LibreOffice):**
+- **Office** (`.docx/.doc/.xlsx/.pptx/.rtf`): Microsoft Office COM automation —
+  `Word.Application` / `Excel.Application` / `PowerPoint.Application` `ExportAsFixedFormat` to PDF.
+  Run invisibly; guarantee process cleanup (no orphan `WINWORD.EXE`).
+- **Images** (`.png/.jpg/.jpeg/.bmp/.tif`): render into a PDF (a lightweight library —
+  PdfSharp / QuestPDF — one image per page, fit to A4). Alternative: SumatraPDF on XP prints
+  images directly, but host-side conversion keeps preview + queue uniform.
+
+**UI:** widen the file-picker filter and the drop-zone accept list; add a "Converting…" status/log
+line; on failure surface a clear error.
+
+**Verification:** print a `.docx` and a `.png` — each converts and prints; preview shows the PDF.
+
+---
+
 ## Risks and caveats
 
 - **CAPT output delay** (phase 2): spooler drain ≠ the moment the last page comes out;
@@ -222,4 +247,6 @@ PowerShell window. The goal is for **nothing to flicker**:
 - **WMI in XP** (phases 1–2): `Win32_PrintJob`/`Win32_Printer` must be available; if not —
   a fallback for print completion: a small pause after SumatraPDF (worse, but not blocking).
 - **Paths in the config** are machine-specific (the portability topic is separate, in `STATUS.md`).
+- **Office dependency** (phase 12): host-side `.docx`→PDF uses Office COM (installed here); absent on
+  another machine → needs a fallback converter (LibreOffice headless or a bundled lib) — portability.
 - **PowerShell 5.1 / non-ASCII** — follow the rules from `CLAUDE.md` on any script edit.
