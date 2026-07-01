@@ -13,3 +13,8 @@ appsettings.local.json
 
 ## Publish output
 publish/
+
+## Browser download temp files
+*.загрузка
+*.crdownload
+*.part
