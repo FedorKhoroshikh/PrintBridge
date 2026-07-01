@@ -232,6 +232,14 @@ PDF and queue that. The preview shows the converted PDF.
   PdfSharp / QuestPDF — one image per page, fit to A4). Alternative: SumatraPDF on XP prints
   images directly, but host-side conversion keeps preview + queue uniform.
 
+**Portability (Office-less machine) — pluggable `IPdfConverter` with fallback:**
+(1) **Word COM** when Office is present (0 bundle, best fidelity — the default on this host);
+(2) else a **bundled pure-.NET library** — **Syncfusion DocIO + PDF** (free Community License for
+this project; +tens of MB, fully offline); (3) images always via PdfSharp/QuestPDF. Size is not the
+blocker — a bundled library is tens of MB on a ~150 MB base; only LibreOffice-portable would be heavy
+(~hundreds of MB). **External cloud converters are avoided** (need internet + send documents off-box);
+a self-hosted Gotenberg is possible but adds infra. Pick the best available at runtime.
+
 **UI:** widen the file-picker filter and the drop-zone accept list; add a "Converting…" status/log
 line; on failure surface a clear error.
 

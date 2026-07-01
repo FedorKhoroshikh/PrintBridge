@@ -65,6 +65,28 @@ queued ─► printing ─►[ awaiting-flip ─► printing ]─► done
 | `done` | success |
 | `error` | error (see `message`) |
 
+> `done` is written only after the printer's **spooler queue drains** (real completion of the
+> host-based CAPT job), not right after SumatraPDF exits — see `implementation-plan.md` §2.
+
+## `status\bridge.health.json` — guest heartbeat (written by the watcher, read by WPF)
+
+Rewritten by the watcher on **every** poll cycle (~2 s). The WPF app uses it to drive the three
+readiness indicators (VM / OS image / Printer) and to gate the «Печать» button.
+
+```json
+{ "watcher": true, "printerPresent": true, "printerName": "Canon LBP-1120 A4", "tick": "..." }
+```
+
+| Field | Meaning |
+|---|---|
+| `watcher` | always `true` while the watcher runs (its presence proves liveness) |
+| `printerPresent` | a `Canon LBP-1120 …` printer exists in XP and is not offline (WMI `Win32_Printer`) |
+| `printerName` | the matched queue name |
+| `tick` | guest-local timestamp (diagnostic only) |
+
+**Freshness is judged by the file's host-side mtime**, not by `tick` — the guest XP clock is
+unreliable. A file older than ~20 s means the guest/watcher is down.
+
 ## Continue signal (manual duplex)
 
 After the stack is flipped, WPF creates an empty file `Queue\<id>.continue`.

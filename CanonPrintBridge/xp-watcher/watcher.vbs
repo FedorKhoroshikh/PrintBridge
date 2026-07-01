@@ -17,6 +17,9 @@ Const SUMATRA        = "C:\Program Files\SumatraPDF\SumatraPDF.exe"
 Const PRINTER_BASE   = "Canon LBP-1120"   ' queues: "Canon LBP-1120 A4" / "...A5" / "...B5"
 Const POLL_MS        = 2000               ' how often to scan the queue
 Const FLIP_TIMEOUT_S = 300                ' max wait for the manual-duplex "continue" flag
+Const SPOOL_TIMEOUT_S = 180               ' max wait for the print spooler queue to drain
+Const POLL_SPOOL_MS   = 1000              ' how often to poll the spooler while draining
+Const SPOOL_SETTLE_MS = 2000              ' spooler must read empty this long before "done"
 ' ----------------------------------------------------------------------------
 
 Dim fso, sh, statusDir, printedDir
@@ -31,6 +34,7 @@ EnsureDir printedDir
 
 ' Main loop -- runs forever (placed in XP Startup folder).
 Do
+    WriteHealth
     If fso.FolderExists(QUEUE_DIR) Then
         Dim f
         For Each f In fso.GetFolder(QUEUE_DIR).Files
@@ -70,6 +74,7 @@ Sub ProcessJob(jobPath)
         ' Pass 1 -- odd pages
         rc = RunPrint(printer, BuildSettings("odd", copies, scale, pages), pdfPath)
         If rc <> 0 Then FailJob id, jobPath, "SumatraPDF rc=" & rc & " (odd)" : Exit Sub
+        WaitForSpoolDrain printer   ' let odd pages finish before prompting the flip
 
         WriteStatus id, "awaiting-flip", "flip the stack, then continue"
         If Not WaitForContinue(id) Then FailJob id, jobPath, "flip timeout" : Exit Sub
@@ -78,9 +83,11 @@ Sub ProcessJob(jobPath)
         WriteStatus id, "printing", "even pages"
         rc = RunPrint(printer, BuildSettings("even", copies, scale, pages), pdfPath)
         If rc <> 0 Then FailJob id, jobPath, "SumatraPDF rc=" & rc & " (even)" : Exit Sub
+        WaitForSpoolDrain printer
     Else
         rc = RunPrint(printer, BuildSettings("", copies, scale, pages), pdfPath)
         If rc <> 0 Then FailJob id, jobPath, "SumatraPDF rc=" & rc : Exit Sub
+        WaitForSpoolDrain printer   ' wait for real completion, not just SumatraPDF exit
     End If
 
     MoveAside pdfPath, printedDir
@@ -131,6 +138,84 @@ Sub FailJob(id, jobPath, msg)
     WriteStatus id, "error", msg
     DeleteFile jobPath
 End Sub
+
+' ---- health heartbeat ------------------------------------------------------
+
+' Rewrite status\bridge.health.json every loop so the Win11 app can gauge guest
+' liveness (by the file's host-side mtime, since the XP clock is unreliable) and
+' whether the printer is online. Atomic write, like WriteStatus.
+Sub WriteHealth()
+    On Error Resume Next
+    Dim present, pname, p, tmp, ts
+    pname = ""
+    If PrinterOnline(pname) Then present = "true" Else present = "false"
+    p   = statusDir & "\bridge.health.json"
+    tmp = p & ".tmp"
+    Set ts = fso.CreateTextFile(tmp, True)
+    ts.Write "{""watcher"":true,""printerPresent"":" & present & _
+             ",""printerName"":""" & JsonEsc(pname) & """,""tick"":""" & Now & """}"
+    ts.Close
+    If fso.FileExists(p) Then fso.DeleteFile p, True
+    fso.MoveFile tmp, p
+End Sub
+
+' True if a "Canon LBP-1120 ..." printer exists and is not marked offline.
+' Sets outName to the matched queue name. WMI failures leave it False (unknown).
+Function PrinterOnline(ByRef outName)
+    On Error Resume Next
+    Dim wmi, items, prn
+    outName = ""
+    PrinterOnline = False
+    Set wmi = GetObject("winmgmts:\\.\root\cimv2")
+    If Err.Number <> 0 Then Exit Function
+    Set items = wmi.ExecQuery("SELECT Name, WorkOffline FROM Win32_Printer")
+    If Err.Number <> 0 Then Exit Function
+    For Each prn In items
+        If InStr(1, prn.Name, PRINTER_BASE, 1) = 1 Then
+            outName = prn.Name
+            If prn.WorkOffline = False Then PrinterOnline = True
+            Exit Function
+        End If
+    Next
+End Function
+
+' ---- real print completion -------------------------------------------------
+
+' Block until the printer's Windows spooler queue drains (the best available
+' proxy for physical completion of a host-based CAPT job) plus a short settle.
+' A WMI failure makes the count 0, so this returns at once -- no worse than before.
+Sub WaitForSpoolDrain(printer)
+    On Error Resume Next
+    Dim waited, settle
+    waited = 0 : settle = 0
+    Do While waited < SPOOL_TIMEOUT_S * 1000
+        WriteHealth   ' keep the heartbeat fresh while this blocks the main loop
+        If SpoolJobCount(printer) = 0 Then
+            settle = settle + POLL_SPOOL_MS
+            If settle >= SPOOL_SETTLE_MS Then Exit Sub
+        Else
+            settle = 0
+        End If
+        WScript.Sleep POLL_SPOOL_MS
+        waited = waited + POLL_SPOOL_MS
+    Loop
+End Sub
+
+' Count spooler jobs belonging to the given printer. Win32_PrintJob.Name is
+' formatted "<printer name>, <job id>", so a prefix match selects our jobs.
+Function SpoolJobCount(printer)
+    On Error Resume Next
+    Dim wmi, jobs, j, c
+    c = 0
+    Set wmi = GetObject("winmgmts:\\.\root\cimv2")
+    If Err.Number <> 0 Then SpoolJobCount = 0 : Exit Function
+    Set jobs = wmi.ExecQuery("SELECT Name FROM Win32_PrintJob")
+    If Err.Number <> 0 Then SpoolJobCount = 0 : Exit Function
+    For Each j In jobs
+        If InStr(1, j.Name, printer, 1) = 1 Then c = c + 1
+    Next
+    SpoolJobCount = c
+End Function
 
 ' ---- helpers ---------------------------------------------------------------
 
