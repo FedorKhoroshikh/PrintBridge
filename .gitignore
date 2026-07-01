@@ -1,0 +1,15 @@
+## .NET build output
+bin/
+obj/
+
+## Rider / IDE
+.idea/
+*.user
+*.suo
+.vs/
+
+## Local overrides
+appsettings.local.json
+
+## Publish output
+publish/

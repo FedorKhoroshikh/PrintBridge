@@ -1,0 +1,101 @@
+<Window x:Class="CanonPrintBridge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Canon LBP-1120 — печать"
+        Height="600" Width="470" MinWidth="430" MinHeight="560"
+        AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop"
+        FontFamily="Segoe UI" FontSize="13"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Документ -->
+        <GroupBox Header="Документ" Grid.Row="0" Padding="8" Margin="0,0,0,10">
+            <DockPanel>
+                <Button x:Name="BrowseButton" Content="Обзор…" DockPanel.Dock="Right"
+                        Width="80" Margin="8,0,0,0" Click="Browse_Click"/>
+                <TextBox x:Name="PdfPathBox" IsReadOnly="True" VerticalContentAlignment="Center"
+                         Text="Перетащи сюда PDF или нажми «Обзор…»"/>
+            </DockPanel>
+        </GroupBox>
+
+        <!-- Параметры -->
+        <GroupBox Header="Параметры" Grid.Row="1" Padding="8" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Формат:" Grid.Row="0" Grid.Column="0" Margin="0,6,10,6" VerticalAlignment="Center"/>
+                <ComboBox x:Name="PaperBox" Grid.Row="0" Grid.Column="1" Margin="0,4" SelectedIndex="0">
+                    <ComboBoxItem Content="A4"/>
+                    <ComboBoxItem Content="A5"/>
+                    <ComboBoxItem Content="B5"/>
+                </ComboBox>
+
+                <TextBlock Text="Копии:" Grid.Row="1" Grid.Column="0" Margin="0,6,10,6" VerticalAlignment="Center"/>
+                <TextBox x:Name="CopiesBox" Grid.Row="1" Grid.Column="1" Margin="0,4" Text="1"/>
+
+                <TextBlock Text="Масштаб:" Grid.Row="2" Grid.Column="0" Margin="0,6,10,6" VerticalAlignment="Center"/>
+                <ComboBox x:Name="ScaleBox" Grid.Row="2" Grid.Column="1" Margin="0,4" SelectedIndex="0">
+                    <ComboBoxItem Content="Вписать в страницу" Tag="fit"/>
+                    <ComboBoxItem Content="Как есть (100%)" Tag="noscale"/>
+                    <ComboBoxItem Content="Уменьшить при необходимости" Tag="shrink"/>
+                </ComboBox>
+
+                <TextBlock Text="Страницы:" Grid.Row="3" Grid.Column="0" Margin="0,6,10,6" VerticalAlignment="Center"/>
+                <TextBox x:Name="PagesBox" Grid.Row="3" Grid.Column="1" Margin="0,4"
+                         ToolTip="Пусто = все. Примеры: 1-4 или 1,3,5-8"/>
+
+                <CheckBox x:Name="DuplexBox" Grid.Row="4" Grid.Column="1" Margin="0,8,0,2"
+                          Content="Ручная двусторонняя печать"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- Кнопки -->
+        <Grid Grid.Row="2" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="LauncherButton" Grid.Column="0" Content="Запустить принтер (VM)"
+                    Height="34" Margin="0,0,5,0" Click="Launcher_Click"/>
+            <Button x:Name="PrintButton" Grid.Column="1" Content="Печать"
+                    Height="34" Margin="5,0,0,0" FontWeight="SemiBold" Click="Print_Click"/>
+        </Grid>
+
+        <!-- Прогресс -->
+        <Grid Grid.Row="3" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ProgressBar x:Name="Busy" Grid.Column="0" Height="8"
+                         IsIndeterminate="False" VerticalAlignment="Center"/>
+            <TextBlock x:Name="StatusText" Grid.Column="1" Margin="10,0,2,0"
+                       VerticalAlignment="Center" MinWidth="120" TextAlignment="Right"
+                       Foreground="#555" FontFamily="Consolas" Text=""/>
+        </Grid>
+
+        <!-- Журнал -->
+        <GroupBox Header="Журнал" Grid.Row="4" Padding="4">
+            <TextBox x:Name="LogBox" IsReadOnly="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     FontFamily="Consolas" FontSize="12" Background="#FAFAFA"/>
+        </GroupBox>
+    </Grid>
+</Window>
