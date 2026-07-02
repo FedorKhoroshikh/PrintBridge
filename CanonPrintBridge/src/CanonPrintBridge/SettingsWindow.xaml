@@ -34,7 +34,7 @@
                 </Border>
 
                 <!-- Общие папки -->
-                <Border Style="{StaticResource Card}" Padding="15" Margin="0,16,0,0">
+                <Border Style="{StaticResource CardPanel}" Padding="15" Margin="0,16,0,0">
                     <StackPanel>
                         <TextBlock Text="ОБЩИЕ ПАПКИ" Style="{StaticResource SectionHeader}" Margin="0,0,0,13"/>
                         <TextBlock Text="Общая папка (Shared)" Style="{StaticResource Fld}"/>
@@ -62,7 +62,7 @@
                 </Border>
 
                 <!-- Виртуальная машина -->
-                <Border Style="{StaticResource Card}" Padding="15" Margin="0,16,0,0">
+                <Border Style="{StaticResource CardPanel}" Padding="15" Margin="0,16,0,0">
                     <StackPanel>
                         <TextBlock Text="ВИРТУАЛЬНАЯ МАШИНА" Style="{StaticResource SectionHeader}" Margin="0,0,0,13"/>
                         <TextBlock Text="Имя ВМ" Style="{StaticResource Fld}"/>
