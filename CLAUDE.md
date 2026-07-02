@@ -14,12 +14,12 @@ The repository root is `T:\Dev\`. The main code is in `CanonPrintBridge/`.
 | `CanonPrintBridge/` | .NET 8 solution (`net8.0-windows`, WPF) |
 | `CanonPrintBridge/src/CanonPrintBridge/` | WPF application (Win11 side) |
 | `CanonPrintBridge/xp-watcher/` | watcher `watcher.vbs` + one-time XP setup |
-| `CanonPrintBridge/docs/` | contracts and specs (see below) |
+| `misc/docs/` | contracts and specs, design drafts (non-source, see below) |
 | `CanonPrintBridge/README.md` | overview and build |
 | `CanonPrintBridge/STATUS.md` | current status and actual environment (host+XP) |
 | `printer-xp-icon.ico` | application icon (embedded resource) |
 
-Documents in `docs/`:
+Documents in `misc/docs/` (moved out of the source tree; kept for reference):
 - `job-contract.md` — file contract `job.json` / `status.json` (this is the "API").
 - `ui-spec.md` — UI/UX spec and look&feel brief (the redesign task).
 - `implementation-plan.md` — redesign implementation plan.
