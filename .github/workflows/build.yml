@@ -34,15 +34,27 @@ jobs:
         shell: pwsh
         run: Compress-Archive -Path publish/* -DestinationPath CanonPrintBridge-win-x64.zip -Force
 
-      - name: Upload build artifact
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+
+      - name: Build installer (Setup PrintBridge <version>.exe)
+        shell: pwsh
+        run: '& "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer\PrintBridge.iss'
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: CanonPrintBridge-win-x64
-          path: CanonPrintBridge-win-x64.zip
+          path: |
+            CanonPrintBridge-win-x64.zip
+            dist/*.exe
           retention-days: 30
 
       - name: Attach to release (tags only)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: CanonPrintBridge-win-x64.zip
+          files: |
+            CanonPrintBridge-win-x64.zip
+            dist/*.exe
