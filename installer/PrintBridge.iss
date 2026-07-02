@@ -18,7 +18,9 @@ DisableProgramGroupPage=yes
 ; Per-user install to a writable location so the app can rewrite appsettings.json
 ; without elevation; the user can still switch to Program Files in the wizard.
 PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=dialog
+; Allow both the interactive mode dialog and command-line override (/CURRENTUSER,
+; /ALLUSERS) so scripted/silent installs aren't blocked by the mode prompt.
+PrivilegesRequiredOverridesAllowed=commandline dialog
 WizardStyle=modern
 Compression=lzma2
 SolidCompression=yes
