@@ -24,6 +24,9 @@ public sealed class AppConfig
     /// <summary>Full path to VBoxManage.exe (used for status polling and shutdown).</summary>
     public string VBoxManagePath { get; set; } = @"C:\Program Files\Oracle\VirtualBox\VBoxManage.exe";
 
+    /// <summary>UI language code: "ru" or "en".</summary>
+    public string Language { get; set; } = "ru";
+
     public static AppConfig Load()
     {
         var cfg = LoadRaw();

@@ -1,13 +1,18 @@
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Win32;
+using CanonPrintBridge.Services;
+using static CanonPrintBridge.Services.LocalizationManager;
 
 namespace CanonPrintBridge;
 
 public partial class SettingsWindow : Window
 {
     private readonly AppConfig _cfg;
+    private readonly string _originalLanguage;
+    private bool _ready;
 
     public SettingsWindow(AppConfig cfg)
     {
@@ -20,27 +25,42 @@ public partial class SettingsWindow : Window
         VmNameBox.IsReadOnly = false;
         VBoxBox.Text = _cfg.VBoxManagePath;
         LauncherBox.Text = _cfg.LauncherPath;
+
+        _originalLanguage = Instance.Language;
+        foreach (ComboBoxItem it in LanguageBox.Items)
+        {
+            if (it.Tag as string == _originalLanguage) { LanguageBox.SelectedItem = it; break; }
+        }
+        _ready = true;
+    }
+
+    // Live-switch the UI language as the user picks; persisted on Save, reverted on Cancel.
+    private void Language_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!_ready) return;
+        if (LanguageBox.SelectedItem is ComboBoxItem { Tag: string code })
+            Instance.SetLanguage(code);
     }
 
     private void BrowseShared_Click(object sender, RoutedEventArgs e) => BrowseFolder(SharedBox);
     private void BrowseQueue_Click(object sender, RoutedEventArgs e) => BrowseFolder(QueueBox);
 
-    private void BrowseFolder(System.Windows.Controls.TextBox target)
+    private void BrowseFolder(TextBox target)
     {
-        var dlg = new OpenFolderDialog { Title = "Выберите папку" };
+        var dlg = new OpenFolderDialog { Title = T("settings_choose_folder") };
         if (Directory.Exists(target.Text)) dlg.InitialDirectory = target.Text;
         if (dlg.ShowDialog() == true) target.Text = dlg.FolderName;
     }
 
     private void BrowseVBox_Click(object sender, RoutedEventArgs e) =>
-        BrowseFile(VBoxBox, "VBoxManage.exe|VBoxManage.exe|Программы (*.exe)|*.exe");
+        BrowseFile(VBoxBox, $"VBoxManage.exe|VBoxManage.exe|{T("filter_programs")}");
 
     private void BrowseLauncher_Click(object sender, RoutedEventArgs e) =>
-        BrowseFile(LauncherBox, "Скрипты (*.ps1;*.cmd;*.bat)|*.ps1;*.cmd;*.bat|Все файлы (*.*)|*.*");
+        BrowseFile(LauncherBox, T("filter_scripts"));
 
-    private void BrowseFile(System.Windows.Controls.TextBox target, string filter)
+    private void BrowseFile(TextBox target, string filter)
     {
-        var dlg = new OpenFileDialog { Filter = filter, Title = "Выберите файл" };
+        var dlg = new OpenFileDialog { Filter = filter, Title = T("settings_choose_file") };
         try
         {
             var dir = Path.GetDirectoryName(target.Text);
@@ -53,11 +73,11 @@ public partial class SettingsWindow : Window
     private void Verify_Click(object sender, RoutedEventArgs e)
     {
         var sb = new StringBuilder();
-        sb.AppendLine($"Общая папка:      {Check(Directory.Exists(SharedBox.Text))}  {SharedBox.Text}");
-        sb.AppendLine($"Папка очереди:    {Check(Directory.Exists(QueueBox.Text))}  {QueueBox.Text}");
-        sb.AppendLine($"VBoxManage:       {Check(File.Exists(VBoxBox.Text))}  {VBoxBox.Text}");
-        sb.AppendLine($"Скрипт запуска:   {Check(File.Exists(LauncherBox.Text))}  {LauncherBox.Text}");
-        MessageBox.Show(sb.ToString(), "Проверка путей", MessageBoxButton.OK, MessageBoxImage.Information);
+        sb.AppendLine($"{T("verify_shared"),-18}{Check(Directory.Exists(SharedBox.Text))}  {SharedBox.Text}");
+        sb.AppendLine($"{T("verify_queue"),-18}{Check(Directory.Exists(QueueBox.Text))}  {QueueBox.Text}");
+        sb.AppendLine($"{T("verify_vbox"),-18}{Check(File.Exists(VBoxBox.Text))}  {VBoxBox.Text}");
+        sb.AppendLine($"{T("verify_launcher"),-18}{Check(File.Exists(LauncherBox.Text))}  {LauncherBox.Text}");
+        MessageBox.Show(sb.ToString(), T("verify_title"), MessageBoxButton.OK, MessageBoxImage.Information);
     }
 
     private static string Check(bool ok) => ok ? "✓" : "✗";
@@ -68,18 +88,23 @@ public partial class SettingsWindow : Window
         _cfg.VmName = VmNameBox.Text.Trim();
         _cfg.VBoxManagePath = VBoxBox.Text.Trim();
         _cfg.LauncherPath = LauncherBox.Text.Trim();
+        _cfg.Language = Instance.Language;
         try
         {
             _cfg.Save();
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Не удалось сохранить настройки:\n{ex.Message}", "Настройки",
+            MessageBox.Show(T("settings_save_failed", ex.Message), T("settings_title"),
                 MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
         DialogResult = true;
     }
 
-    private void Cancel_Click(object sender, RoutedEventArgs e) => DialogResult = false;
+    private void Cancel_Click(object sender, RoutedEventArgs e)
+    {
+        Instance.SetLanguage(_originalLanguage); // revert the live preview
+        DialogResult = false;
+    }
 }

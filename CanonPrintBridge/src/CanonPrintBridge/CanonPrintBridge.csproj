@@ -18,6 +18,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Localization dictionaries: copied next to the exe, loaded by LocalizationManager.
+         Use None Update (not Include) because the SDK already globs them as None items. -->
+    <None Update="Resources\Strings.ru.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Strings.en.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

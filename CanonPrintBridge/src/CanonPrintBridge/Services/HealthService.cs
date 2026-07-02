@@ -101,25 +101,26 @@ public sealed class HealthService
         // --- VM ---
         IndicatorState vm;
         string vmLabel;
-        if (vmRunning) { vm = IndicatorState.Ok; vmLabel = "Запущена"; }
-        else if (wasVmRunning) { vm = IndicatorState.Lost; vmLabel = "Потеряна"; }
-        else { vm = IndicatorState.Off; vmLabel = "Остановлена"; }
+        // Labels are localization keys resolved by the UI (see MainWindow.SetDot).
+        if (vmRunning) { vm = IndicatorState.Ok; vmLabel = "vm_running"; }
+        else if (wasVmRunning) { vm = IndicatorState.Lost; vmLabel = "vm_lost"; }
+        else { vm = IndicatorState.Off; vmLabel = "vm_off"; }
 
         // --- OS (guest heartbeat) ---
         IndicatorState os;
         string osLabel;
-        if (!vmRunning) { os = IndicatorState.Off; osLabel = "Не запущен"; }
-        else if (fresh) { os = IndicatorState.Ok; osLabel = "Готов"; }
-        else if (health is not null) { os = IndicatorState.Lost; osLabel = "Связь потеряна"; }
-        else { os = IndicatorState.Booting; osLabel = "Загрузка гостя…"; }
+        if (!vmRunning) { os = IndicatorState.Off; osLabel = "os_off"; }
+        else if (fresh) { os = IndicatorState.Ok; osLabel = "os_ok"; }
+        else if (health is not null) { os = IndicatorState.Lost; osLabel = "os_lost"; }
+        else { os = IndicatorState.Booting; osLabel = "os_booting"; }
 
         // --- Printer ---
         IndicatorState printer;
         string printerLabel;
-        if (fresh && health is { PrinterPresent: true }) { printer = IndicatorState.Ok; printerLabel = "В сети"; }
-        else if (fresh && health?.PrinterStatus == "offline") { printer = IndicatorState.Lost; printerLabel = "Выключен или оффлайн"; }
-        else if (fresh && health is not null) { printer = IndicatorState.Lost; printerLabel = "Не найден"; }
-        else { printer = IndicatorState.Off; printerLabel = "Неизвестно"; }
+        if (fresh && health is { PrinterPresent: true }) { printer = IndicatorState.Ok; printerLabel = "pr_online"; }
+        else if (fresh && health?.PrinterStatus == "offline") { printer = IndicatorState.Lost; printerLabel = "pr_offline"; }
+        else if (fresh && health is not null) { printer = IndicatorState.Lost; printerLabel = "pr_absent"; }
+        else { printer = IndicatorState.Off; printerLabel = "pr_unknown"; }
 
         return new HealthSnapshot
         {

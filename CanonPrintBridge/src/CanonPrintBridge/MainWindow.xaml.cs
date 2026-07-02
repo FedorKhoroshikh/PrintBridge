@@ -9,6 +9,7 @@ using Ellipse = System.Windows.Shapes.Ellipse;
 using CanonPrintBridge.Models;
 using CanonPrintBridge.Services;
 using Microsoft.Win32;
+using static CanonPrintBridge.Services.LocalizationManager;
 
 namespace CanonPrintBridge;
 
@@ -45,10 +46,14 @@ public partial class MainWindow : Window
         _queue = new QueueService(_cfg.QueueRoot);
         _health = new HealthService(_cfg);
 
-        FooterText.Text = $"Готово · очередь: {_cfg.QueueRoot}";
+        Instance.SetLanguage(_cfg.Language);
+        Instance.LanguageChanged += OnLanguageChanged;
+
+        FooterText.Text = T("footer_ready", _cfg.QueueRoot);
+        UpdateLogCount();
         var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
         if (ver is not null) VersionText.Text = $"v{ver.Major}.{ver.Minor}";
-        Log($"Очередь: {_cfg.QueueRoot}");
+        Log(T("msg_queue", _cfg.QueueRoot));
 
         _tick = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _tick.Tick += (_, _) => StatusText.Text = $"{_opLabel}… {Elapsed():m\\:ss}";
@@ -86,15 +91,34 @@ public partial class MainWindow : Window
         LogBox.AppendText($"{DateTime.Now:HH:mm:ss}  {msg}{Environment.NewLine}");
         LogBox.ScrollToEnd();
         _logCount++;
-        LogCount.Text = $"{_logCount} " + (_logCount == 1 ? "запись" : _logCount is >= 2 and <= 4 ? "записи" : "записей");
+        UpdateLogCount();
         Services.Logger.Write(msg);
+    }
+
+    private void UpdateLogCount()
+    {
+        var n = _logCount;
+        var word = n % 10 == 1 && n % 100 != 11 ? T("rec_one")
+                 : n % 10 is >= 2 and <= 4 && n % 100 is < 12 or > 14 ? T("rec_few")
+                 : T("rec_many");
+        LogCount.Text = $"{n} {word}";
+    }
+
+    // Re-render code-set text after a live language switch (XAML {loc:Loc} refreshes itself).
+    private void OnLanguageChanged()
+    {
+        FooterText.Text = T("footer_ready", _cfg.QueueRoot);
+        UpdateLogCount();
+        PreviewButton.ToolTip = T(_previewOpen ? "tip_preview_hide" : "tip_preview_show");
+        RefreshHealth();
+        if (_previewOpen) LoadPreview();
     }
 
     // ================= File selection =================
 
     private void Browse_Click(object sender, RoutedEventArgs e)
     {
-        var dlg = new OpenFileDialog { Filter = "PDF (*.pdf)|*.pdf", Title = "Выберите PDF для печати" };
+        var dlg = new OpenFileDialog { Filter = "PDF (*.pdf)|*.pdf", Title = T("dlg_choose_pdf") };
         if (dlg.ShowDialog() == true) SetPdf(dlg.FileName);
     }
 
@@ -119,7 +143,7 @@ public partial class MainWindow : Window
     {
         if (!path.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) || !File.Exists(path))
         {
-            MessageBox.Show("Нужен существующий PDF-файл.", "Canon Print Bridge",
+            MessageBox.Show(T("msg_need_existing_pdf"), T("app_title"),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -132,7 +156,7 @@ public partial class MainWindow : Window
         EmptyState.Visibility = Visibility.Collapsed;
         FileCard.Visibility = Visibility.Visible;
 
-        Log($"Выбран файл: {Path.GetFileName(path)}");
+        Log(T("log_file_selected", Path.GetFileName(path)));
         if (_previewOpen) LoadPreview();
         RefreshHealth();
     }
@@ -149,9 +173,9 @@ public partial class MainWindow : Window
 
     private static string FormatSize(long bytes)
     {
-        if (bytes < 1024) return $"{bytes} Б";
-        if (bytes < 1024 * 1024) return $"{bytes / 1024.0:0.#} КБ";
-        return $"{bytes / (1024.0 * 1024):0.#} МБ";
+        if (bytes < 1024) return $"{bytes} {T("unit_b")}";
+        if (bytes < 1024 * 1024) return $"{bytes / 1024.0:0.#} {T("unit_kb")}";
+        return $"{bytes / (1024.0 * 1024):0.#} {T("unit_mb")}";
     }
 
     private void Integer_PreviewTextInput(object sender, TextCompositionEventArgs e) =>
@@ -163,17 +187,17 @@ public partial class MainWindow : Window
     {
         if (!File.Exists(_cfg.LauncherPath))
         {
-            MessageBox.Show($"Лаунчер не найден:\n{_cfg.LauncherPath}", "Canon Print Bridge",
+            MessageBox.Show(T("launcher_not_found", _cfg.LauncherPath), T("app_title"),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         var btn = sender as Button;
         if (btn is not null) btn.IsEnabled = false;
-        StartBusy("Запуск VM");
+        StartBusy(T("busy_start_vm"));
         try
         {
-            Log("Запуск принтера (VM)…");
+            Log(T("log_start_printer"));
             var p = Process.Start(new ProcessStartInfo
             {
                 FileName = "powershell.exe",
@@ -181,13 +205,13 @@ public partial class MainWindow : Window
                 UseShellExecute = true,
             });
             if (p is not null) await p.WaitForExitAsync();
-            Log("Команда отправлена. XP грузится (~30–60 c); принтер прицепится сам.");
-            Log("Можно сразу ставить «Печать» — задание подождёт в очереди, пока сторож не поднимется.");
-            StopBusy("VM запускается");
+            Log(T("log_cmd_sent"));
+            Log(T("log_can_print_now"));
+            StopBusy(T("busy_vm_starting"));
         }
         catch (Exception ex)
         {
-            Log($"Ошибка запуска лаунчера: {ex.Message}");
+            Log(T("log_launcher_error", ex.Message));
             StopBusy();
         }
         finally
@@ -202,7 +226,7 @@ public partial class MainWindow : Window
     {
         if (_pdfPath is null || !File.Exists(_pdfPath))
         {
-            MessageBox.Show("Сначала выберите PDF.", "Canon Print Bridge",
+            MessageBox.Show(T("msg_select_pdf_first"), T("app_title"),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -223,19 +247,19 @@ public partial class MainWindow : Window
 
         _printing = true;
         PrintButton.IsEnabled = false;
-        StartBusy("Печать");
+        StartBusy(T("busy_print"));
         var result = "timeout";
         try
         {
-            Log($"Задание {job.Id}: {job.Paper}, копий {job.Copies}, дуплекс нет");
+            Log(T("log_job", job.Id, job.Paper, job.Copies));
             await _queue.SubmitAsync(_pdfPath, job);
-            Log("Отправлено в очередь, жду печать…");
+            Log(T("log_sent_queue"));
             result = await WaitForCompletionAsync(job.Id);
         }
         catch (Exception ex)
         {
             result = "error";
-            Log($"Ошибка: {ex.Message}");
+            Log(T("log_error", ex.Message));
             MessageBox.Show(ex.Message, "Canon Print Bridge", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
@@ -243,9 +267,9 @@ public partial class MainWindow : Window
             var total = Elapsed();
             StopBusy(result switch
             {
-                "done" => $"Готово за {total:m\\:ss}",
-                "error" => "Ошибка",
-                "timeout" => "Таймаут",
+                "done" => T("done_in", total.ToString(@"m\:ss")),
+                "error" => T("status_error"),
+                "timeout" => T("status_timeout"),
                 _ => "",
             });
             _printing = false;
@@ -268,16 +292,16 @@ public partial class MainWindow : Window
                 lastState = st.State;
                 _opLabel = Translate(st.State);
                 var suffix = string.IsNullOrEmpty(st.Message) ? "" : " — " + st.Message;
-                Log($"Статус: {Translate(st.State)}{suffix}");
+                Log(T("log_status", Translate(st.State), suffix));
             }
 
             switch (st?.State)
             {
                 case "done":
-                    Log("Готово ✓");
+                    Log(T("log_done_check"));
                     return "done";
                 case "error":
-                    MessageBox.Show($"Печать не удалась: {st.Message}", "Canon Print Bridge",
+                    MessageBox.Show(T("msg_print_failed", st.Message), T("app_title"),
                         MessageBoxButton.OK, MessageBoxImage.Error);
                     return "error";
             }
@@ -285,17 +309,17 @@ public partial class MainWindow : Window
             await Task.Delay(800);
         }
 
-        Log("Таймаут ожидания статуса (10 мин). Проверь, запущена ли VM и сторож в XP.");
+        Log(T("log_status_timeout"));
         return "timeout";
     }
 
     private static string Translate(string state) => state switch
     {
-        "queued" => "в очереди",
-        "printing" => "печать",
-        "awaiting-flip" => "жду переворот стопки",
-        "done" => "готово",
-        "error" => "ошибка",
+        "queued" => T("state_queued"),
+        "printing" => T("state_printing"),
+        "awaiting-flip" => T("state_awaiting_flip"),
+        "done" => T("state_done"),
+        "error" => T("state_error"),
         _ => state,
     };
 
@@ -327,7 +351,7 @@ public partial class MainWindow : Window
         {
             if (_bootStart is { } start)
             {
-                Log($"Готово к печати. Загрузка заняла {FormatMs(DateTime.Now - start)}.");
+                Log(T("log_ready_took", FormatMs(DateTime.Now - start)));
                 _bootStart = null;
                 _bootTimer.Stop();
             }
@@ -349,7 +373,7 @@ public partial class MainWindow : Window
         {
             _bootStart = DateTime.Now;
             _bootTimer.Start();
-            Log("Загрузка: жду готовности гостя и принтера…");
+            Log(T("log_boot_wait"));
         }
         BootElapsed.Visibility = Visibility.Visible;
         UpdateBootElapsed();
@@ -358,7 +382,7 @@ public partial class MainWindow : Window
     private void UpdateBootElapsed()
     {
         if (_bootStart is { } start)
-            BootElapsed.Text = $"загрузка… {FormatMs(DateTime.Now - start)}";
+            BootElapsed.Text = T("boot_loading", FormatMs(DateTime.Now - start));
     }
 
     private static string FormatMs(TimeSpan t) => $"{(int)t.TotalMinutes}:{t.Seconds:00}";
@@ -373,7 +397,7 @@ public partial class MainWindow : Window
             _ => ("DotOff", "Off"),
         };
         dot.Style = (Style)FindRes(styleKey);
-        label.Text = text;
+        label.Text = T(text); // text is a localization key (see HealthService)
         label.Foreground = (Brush)FindRes(brushKey);
     }
 
@@ -386,20 +410,20 @@ public partial class MainWindow : Window
         }
 
         var missing = new List<string>();
-        if (_pdfPath is null) missing.Add("выберите PDF");
-        if (snap.Vm != IndicatorState.Ok) missing.Add("запустите виртуальную машину");
-        else if (snap.Os != IndicatorState.Ok) missing.Add("дождитесь готовности Windows XP");
-        else if (snap.Printer != IndicatorState.Ok) missing.Add("принтер не найден");
+        if (_pdfPath is null) missing.Add(T("gate_select_pdf"));
+        if (snap.Vm != IndicatorState.Ok) missing.Add(T("gate_start_vm"));
+        else if (snap.Os != IndicatorState.Ok) missing.Add(T("gate_wait_xp"));
+        else if (snap.Printer != IndicatorState.Ok) missing.Add(T("gate_printer_not_found"));
 
         if (missing.Count == 0)
         {
             PrintButton.IsEnabled = true;
-            PrintButton.ToolTip = "Отправить задание в очередь печати";
+            PrintButton.ToolTip = T("tip_print_ready");
         }
         else
         {
             PrintButton.IsEnabled = false;
-            PrintButton.ToolTip = "Недоступно: " + string.Join("; ", missing) + ".";
+            PrintButton.ToolTip = T("gate_unavailable", string.Join("; ", missing));
         }
     }
 
@@ -422,7 +446,7 @@ public partial class MainWindow : Window
         PreviewPanel.Visibility = Visibility.Visible;
         MinWidth = 900;
         Width = Math.Min(_normalWidth + 700, SystemParameters.WorkArea.Width - 40);
-        PreviewButton.ToolTip = "Скрыть предпросмотр";
+        PreviewButton.ToolTip = T("tip_preview_hide");
         LoadPreview();
     }
 
@@ -434,7 +458,7 @@ public partial class MainWindow : Window
         PreviewPanel.Visibility = Visibility.Collapsed;
         MinWidth = 446;
         if (_normalWidth > 0) Width = _normalWidth;
-        PreviewButton.ToolTip = "Показать предпросмотр";
+        PreviewButton.ToolTip = T("tip_preview_show");
         SetPreviewTemp(null); // drop the filtered temp PDF
     }
 
@@ -442,9 +466,9 @@ public partial class MainWindow : Window
     {
         if (_pdfPath is null)
         {
-            PreviewTitle.Text = "Предпросмотр";
+            PreviewTitle.Text = T("preview_title");
             PreviewFooter.Text = "";
-            ShowPreviewPlaceholder("Файл не выбран");
+            ShowPreviewPlaceholder(T("preview_file_not_selected"));
             return;
         }
 
@@ -462,23 +486,23 @@ public partial class MainWindow : Window
                 {
                     SetPreviewTemp(temp);
                     sourcePath = temp;
-                    footer = $"{Path.GetFileName(_pdfPath)} — стр. {FormatSelection(sel)} ({sel.Count} из {total})";
+                    footer = $"{Path.GetFileName(_pdfPath)} — {T("preview_pages")} {FormatSelection(sel)} ({sel.Count} {T("preview_of")} {total})";
                 }
             }
             else
             {
                 SetPreviewTemp(null);
-                footer = $"{Path.GetFileName(_pdfPath)} — все {total} стр.";
+                footer = $"{Path.GetFileName(_pdfPath)} — {T("preview_all", total)}";
             }
         }
         catch (Exception ex)
         {
             SetPreviewTemp(null);
-            Services.Logger.Write($"Фильтр страниц для предпросмотра не сработал: {ex.Message}");
+            Services.Logger.Write($"Preview page filter failed: {ex.Message}");
             // fall through and show the whole file
         }
 
-        PreviewTitle.Text = $"Предпросмотр — {Path.GetFileName(_pdfPath)}";
+        PreviewTitle.Text = T("preview_title_file", Path.GetFileName(_pdfPath));
         PreviewFooter.Text = footer;
         try
         {
@@ -491,7 +515,7 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             // TODO WebView2 — runtime unavailable; fall back to placeholder.
-            ShowPreviewPlaceholder($"Предпросмотр недоступен: {ex.Message}");
+            ShowPreviewPlaceholder(T("preview_unavailable", ex.Message));
         }
     }
 
@@ -550,7 +574,7 @@ public partial class MainWindow : Window
     private void OnWebViewInit(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
     {
         if (!e.IsSuccess)
-            ShowPreviewPlaceholder("Предпросмотр недоступен (не установлен WebView2 Runtime).");
+            ShowPreviewPlaceholder(T("preview_no_webview2"));
     }
 
     private void ShowPreviewPlaceholder(string text)
@@ -601,8 +625,8 @@ public partial class MainWindow : Window
         var dlg = new SettingsWindow(_cfg) { Owner = this };
         if (dlg.ShowDialog() == true)
         {
-            FooterText.Text = $"Готово · очередь: {_cfg.QueueRoot}";
-            Log("Настройки сохранены.");
+            FooterText.Text = T("footer_ready", _cfg.QueueRoot);
+            Log(T("log_settings_saved"));
             RefreshHealth();
         }
     }
@@ -616,18 +640,18 @@ public partial class MainWindow : Window
 
         if (!File.Exists(_cfg.VBoxManagePath))
         {
-            Log($"VBoxManage не найден: {_cfg.VBoxManagePath}");
+            Log(T("vbox_not_found", _cfg.VBoxManagePath));
             ResetToInitial();
             return;
         }
 
         var btn = sender as Button;
         if (btn is not null) btn.IsEnabled = false;
-        StartBusy("Выключение");
+        StartBusy(T("busy_shutdown"));
         try
         {
             // 1) Graceful: ask XP to shut down via the ACPI power button.
-            Log("Завершение работы: мягкое выключение XP (ACPI)…");
+            Log(T("log_shutdown_soft"));
             await RunVBoxAsync($"controlvm \"{_cfg.VmName}\" acpipowerbutton");
 
             // 2) Wait for the guest to power off on its own (window closes when it does).
@@ -637,7 +661,7 @@ public partial class MainWindow : Window
                 await Task.Delay(1500);
                 if (!await Task.Run(_health.IsVmRunning))
                 {
-                    Log("ВМ выключена.");
+                    Log(T("log_vm_off"));
                     await KillVmWindowAsync();   // close the lingering VirtualBox window, if any
                     ResetToInitial();
                     return;
@@ -645,15 +669,15 @@ public partial class MainWindow : Window
             }
 
             // 3) Still up -> force power off so the machine stops and the window closes.
-            Log("XP не завершилась за 30 с — принудительное выключение машины…");
+            Log(T("log_force_off"));
             await RunVBoxAsync($"controlvm \"{_cfg.VmName}\" poweroff");
             await Task.Delay(1500);
             await KillVmWindowAsync();
-            Log("ВМ принудительно выключена, окно VirtualBox закрыто.");
+            Log(T("log_forced_off"));
         }
         catch (Exception ex)
         {
-            Log($"Ошибка выключения ВМ: {ex.Message}");
+            Log(T("log_shutdown_error", ex.Message));
         }
         finally
         {
@@ -731,13 +755,13 @@ public partial class MainWindow : Window
         LauncherPanel.Visibility = Visibility.Visible;
         FooterDot.Fill = (Brush)FindRes("Off");
         PrintButton.IsEnabled = false;
-        PrintButton.ToolTip = "Недоступно: запустите виртуальную машину.";
+        PrintButton.ToolTip = T("tip_unavailable_start_vm");
     }
 
     private static HealthSnapshot HealthSnapshotOff() => new()
     {
-        Vm = IndicatorState.Off, VmLabel = "Остановлена",
-        Os = IndicatorState.Off, OsLabel = "Не запущен",
-        Printer = IndicatorState.Off, PrinterLabel = "Неизвестно",
+        Vm = IndicatorState.Off, VmLabel = "vm_off",
+        Os = IndicatorState.Off, OsLabel = "os_off",
+        Printer = IndicatorState.Off, PrinterLabel = "pr_unknown",
     };
 }
