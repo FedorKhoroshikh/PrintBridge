@@ -9,7 +9,13 @@
     <AssemblyName>CanonPrintBridge</AssemblyName>
     <RootNamespace>CanonPrintBridge</RootNamespace>
     <Version>0.1.0</Version>
+    <ApplicationIcon>..\..\..\printer-xp-icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- App icon: exe icon (ApplicationIcon) + resource for Window.Icon (title bar / taskbar). -->
+    <Resource Include="..\..\..\printer-xp-icon.ico" Link="printer-xp-icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings.json">
@@ -23,6 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4022.49" />
+    <PackageReference Include="PdfSharp" Version="6.1.1" />
   </ItemGroup>
 
 </Project>

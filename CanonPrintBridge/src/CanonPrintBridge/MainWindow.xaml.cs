@@ -24,12 +24,19 @@ public partial class MainWindow : Window
     private DateTime _opStart;
     private string _opLabel = "";
 
+    private readonly DispatcherTimer _bootTimer; // overall VM+XP+printer readiness timer
+    private DateTime? _bootStart;                // when the current boot sequence began (null = idle/ready)
+
     private bool _wasVmRunning;   // VM has been seen running (=> disappearance is "Lost")
     private bool _printing;       // a print job is in flight (keeps the gate honest)
     private int _logCount;
 
     private double _normalWidth;
     private bool _previewOpen;
+    private DispatcherTimer? _previewResizeTimer; // debounces WebView2 repaint after resize
+    private DispatcherTimer? _pagesDebounce;      // debounces re-filtering the preview on Pages edits
+    private string? _previewTempPdf;              // temp filtered PDF currently shown (null = whole file)
+    private int _previewSeq;                      // unique temp-file counter (avoids WebView2 URL caching)
 
     public MainWindow()
     {
@@ -48,6 +55,10 @@ public partial class MainWindow : Window
 
         _healthTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(2500) };
         _healthTimer.Tick += (_, _) => RefreshHealth();
+
+        _bootTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+        _bootTimer.Tick += (_, _) => UpdateBootElapsed();
+
         Loaded += (_, _) => { RefreshHealth(); _healthTimer.Start(); };
     }
 
@@ -76,6 +87,7 @@ public partial class MainWindow : Window
         LogBox.ScrollToEnd();
         _logCount++;
         LogCount.Text = $"{_logCount} " + (_logCount == 1 ? "запись" : _logCount is >= 2 and <= 4 ? "записи" : "записей");
+        Services.Logger.Write(msg);
     }
 
     // ================= File selection =================
@@ -204,7 +216,7 @@ public partial class MainWindow : Window
             Copies = copies,
             Paper = (PaperBox.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "A4",
             Scale = (ScaleBox.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "fit",
-            Pages = PagesBox.Text.Trim(),
+            Pages = PageSelection.NormalizeForPrint(PagesBox.Text),
             Duplex = "none",
             CreatedAt = DateTime.Now.ToString("s"),
         };
@@ -303,8 +315,53 @@ public partial class MainWindow : Window
 
         FooterDot.Fill = (Brush)FindRes(snap.AllOk ? "Ok" : "Off");
 
+        TrackBootProgress(snap);
         UpdatePrintGate(snap);
     }
+
+    // One shared timer for the whole readiness sequence (VM -> XP guest -> printer).
+    // Runs from the moment the VM appears until everything is Ok.
+    private void TrackBootProgress(HealthSnapshot snap)
+    {
+        if (snap.AllOk)
+        {
+            if (_bootStart is { } start)
+            {
+                Log($"Готово к печати. Загрузка заняла {FormatMs(DateTime.Now - start)}.");
+                _bootStart = null;
+                _bootTimer.Stop();
+            }
+            BootElapsed.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        if (snap.Vm == IndicatorState.Off || snap.Vm == IndicatorState.Lost)
+        {
+            // No VM (or lost) -> nothing is loading; drop the timer.
+            _bootStart = null;
+            _bootTimer.Stop();
+            BootElapsed.Visibility = Visibility.Collapsed;
+            return;
+        }
+
+        // VM present but not everything ready yet -> loading.
+        if (_bootStart is null)
+        {
+            _bootStart = DateTime.Now;
+            _bootTimer.Start();
+            Log("Загрузка: жду готовности гостя и принтера…");
+        }
+        BootElapsed.Visibility = Visibility.Visible;
+        UpdateBootElapsed();
+    }
+
+    private void UpdateBootElapsed()
+    {
+        if (_bootStart is { } start)
+            BootElapsed.Text = $"загрузка… {FormatMs(DateTime.Now - start)}";
+    }
+
+    private static string FormatMs(TimeSpan t) => $"{(int)t.TotalMinutes}:{t.Seconds:00}";
 
     private void SetDot(Ellipse dot, TextBlock label, IndicatorState state, string text)
     {
@@ -378,6 +435,7 @@ public partial class MainWindow : Window
         MinWidth = 446;
         if (_normalWidth > 0) Width = _normalWidth;
         PreviewButton.ToolTip = "Показать предпросмотр";
+        SetPreviewTemp(null); // drop the filtered temp PDF
     }
 
     private void LoadPreview()
@@ -390,21 +448,103 @@ public partial class MainWindow : Window
             return;
         }
 
+        // Show only the selected pages (Windows-style range). Empty/all => whole file.
+        var sourcePath = _pdfPath;
+        var footer = Path.GetFileName(_pdfPath);
+        try
+        {
+            var total = PdfPageExtractor.PageCount(_pdfPath);
+            var sel = PageSelection.Parse(PagesBox.Text, total);
+            if (sel is { Count: > 0 } && sel.Count < total)
+            {
+                var temp = NextPreviewTempPath();
+                if (PdfPageExtractor.ExtractTo(_pdfPath, sel, temp))
+                {
+                    SetPreviewTemp(temp);
+                    sourcePath = temp;
+                    footer = $"{Path.GetFileName(_pdfPath)} — стр. {FormatSelection(sel)} ({sel.Count} из {total})";
+                }
+            }
+            else
+            {
+                SetPreviewTemp(null);
+                footer = $"{Path.GetFileName(_pdfPath)} — все {total} стр.";
+            }
+        }
+        catch (Exception ex)
+        {
+            SetPreviewTemp(null);
+            Services.Logger.Write($"Фильтр страниц для предпросмотра не сработал: {ex.Message}");
+            // fall through and show the whole file
+        }
+
         PreviewTitle.Text = $"Предпросмотр — {Path.GetFileName(_pdfPath)}";
-        PreviewFooter.Text = Path.GetFileName(_pdfPath);
+        PreviewFooter.Text = footer;
         try
         {
             PreviewPlaceholder.Visibility = Visibility.Collapsed;
             PreviewWeb.Visibility = Visibility.Visible;
             PreviewWeb.CoreWebView2InitializationCompleted -= OnWebViewInit;
             PreviewWeb.CoreWebView2InitializationCompleted += OnWebViewInit;
-            PreviewWeb.Source = new Uri(_pdfPath);
+            PreviewWeb.Source = new Uri(sourcePath);
         }
         catch (Exception ex)
         {
             // TODO WebView2 — runtime unavailable; fall back to placeholder.
             ShowPreviewPlaceholder($"Предпросмотр недоступен: {ex.Message}");
         }
+    }
+
+    // Re-filter the preview when the Pages field changes (debounced), while it is open.
+    private void PagesBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (!_previewOpen) return;
+        _pagesDebounce ??= CreatePagesDebounce();
+        _pagesDebounce.Stop();
+        _pagesDebounce.Start();
+    }
+
+    private DispatcherTimer CreatePagesDebounce()
+    {
+        var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
+        t.Tick += (_, _) =>
+        {
+            t.Stop();
+            if (_previewOpen) LoadPreview();
+        };
+        return t;
+    }
+
+    /// <summary>Tracks the temp filtered PDF, deleting the previous one when it changes.</summary>
+    private void SetPreviewTemp(string? path)
+    {
+        if (_previewTempPdf is not null && !string.Equals(_previewTempPdf, path, StringComparison.OrdinalIgnoreCase))
+        {
+            try { File.Delete(_previewTempPdf); } catch { /* best-effort cleanup */ }
+        }
+        _previewTempPdf = path;
+    }
+
+    private string NextPreviewTempPath()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "CanonPrintBridge");
+        Directory.CreateDirectory(dir);
+        return Path.Combine(dir, $"preview-{++_previewSeq}.pdf");
+    }
+
+    /// <summary>Compresses an ascending page list to a compact label: 1,2,3,5 -> "1-3, 5".</summary>
+    private static string FormatSelection(IReadOnlyList<int> pages)
+    {
+        var sb = new System.Text.StringBuilder();
+        for (var i = 0; i < pages.Count;)
+        {
+            var j = i;
+            while (j + 1 < pages.Count && pages[j + 1] == pages[j] + 1) j++;
+            if (sb.Length > 0) sb.Append(", ");
+            sb.Append(pages[i] == pages[j] ? $"{pages[i]}" : $"{pages[i]}-{pages[j]}");
+            i = j + 1;
+        }
+        return sb.ToString();
     }
 
     private void OnWebViewInit(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2InitializationCompletedEventArgs e)
@@ -418,6 +558,40 @@ public partial class MainWindow : Window
         PreviewPlaceholder.Text = text;
         PreviewPlaceholder.Visibility = Visibility.Visible;
         PreviewWeb.Visibility = Visibility.Collapsed;
+    }
+
+    // WebView2 sometimes drops its composition surface after a large resize / window maximize
+    // and stays blank until re-navigation. Debounce resize events and nudge it back.
+    private void PreviewPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        if (!_previewOpen || PreviewWeb.Visibility != Visibility.Visible) return;
+
+        _previewResizeTimer ??= CreatePreviewResizeTimer();
+        _previewResizeTimer.Stop();
+        _previewResizeTimer.Start();
+    }
+
+    private DispatcherTimer CreatePreviewResizeTimer()
+    {
+        var t = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(150) };
+        t.Tick += (_, _) =>
+        {
+            t.Stop();
+            NudgePreviewRepaint();
+        };
+        return t;
+    }
+
+    private void NudgePreviewRepaint()
+    {
+        if (!_previewOpen || PreviewWeb.Visibility != Visibility.Visible) return;
+
+        // Toggle visibility to force WebView2 to re-create its surface — no PDF reload, no scroll jump.
+        PreviewWeb.Visibility = Visibility.Collapsed;
+        Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+        {
+            if (_previewOpen) PreviewWeb.Visibility = Visibility.Visible;
+        }));
     }
 
     // ================= Settings =================
@@ -435,36 +609,113 @@ public partial class MainWindow : Window
 
     // ================= Shutdown VM =================
 
-    private void Shutdown_Click(object sender, RoutedEventArgs e)
+    private async void Shutdown_Click(object sender, RoutedEventArgs e)
     {
         var dlg = new ConfirmShutdownWindow { Owner = this };
         if (dlg.ShowDialog() != true) return;
 
+        if (!File.Exists(_cfg.VBoxManagePath))
+        {
+            Log($"VBoxManage не найден: {_cfg.VBoxManagePath}");
+            ResetToInitial();
+            return;
+        }
+
+        var btn = sender as Button;
+        if (btn is not null) btn.IsEnabled = false;
+        StartBusy("Выключение");
         try
         {
-            Log("Завершение работы: выключаю ВМ…");
-            if (File.Exists(_cfg.VBoxManagePath))
+            // 1) Graceful: ask XP to shut down via the ACPI power button.
+            Log("Завершение работы: мягкое выключение XP (ACPI)…");
+            await RunVBoxAsync($"controlvm \"{_cfg.VmName}\" acpipowerbutton");
+
+            // 2) Wait for the guest to power off on its own (window closes when it does).
+            var deadline = DateTime.Now + TimeSpan.FromSeconds(30);
+            while (DateTime.Now < deadline)
             {
-                Process.Start(new ProcessStartInfo
+                await Task.Delay(1500);
+                if (!await Task.Run(_health.IsVmRunning))
                 {
-                    FileName = _cfg.VBoxManagePath,
-                    Arguments = $"controlvm \"{_cfg.VmName}\" acpipowerbutton",
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                });
+                    Log("ВМ выключена.");
+                    await KillVmWindowAsync();   // close the lingering VirtualBox window, if any
+                    ResetToInitial();
+                    return;
+                }
             }
-            else
-            {
-                Log($"VBoxManage не найден: {_cfg.VBoxManagePath}");
-            }
+
+            // 3) Still up -> force power off so the machine stops and the window closes.
+            Log("XP не завершилась за 30 с — принудительное выключение машины…");
+            await RunVBoxAsync($"controlvm \"{_cfg.VmName}\" poweroff");
+            await Task.Delay(1500);
+            await KillVmWindowAsync();
+            Log("ВМ принудительно выключена, окно VirtualBox закрыто.");
         }
         catch (Exception ex)
         {
             Log($"Ошибка выключения ВМ: {ex.Message}");
         }
-
-        ResetToInitial();
+        finally
+        {
+            if (btn is not null) btn.IsEnabled = true;
+            StopBusy("");
+            ResetToInitial();
+        }
     }
+
+    /// <summary>
+    /// Closes the leftover VirtualBox GUI window for this VM. A GUI-started VM
+    /// (<c>startvm --type gui</c>) is hosted by VirtualBoxVM.exe; on some power-off
+    /// paths that window survives. Match it by command line (--comment/--startvm
+    /// carry the VM name) so other VMs' windows are left alone.
+    /// </summary>
+    private Task KillVmWindowAsync() => Task.Run(() =>
+    {
+        try
+        {
+            var script =
+                "Get-CimInstance Win32_Process -Filter 'Name=''VirtualBoxVM.exe''' | " +
+                $"Where-Object {{ $_.CommandLine -like '*{_cfg.VmName}*' }} | " +
+                "ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }";
+            using var p = Process.Start(new ProcessStartInfo
+            {
+                FileName = "powershell.exe",
+                Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"{script}\"",
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            });
+            p?.WaitForExit(8000);
+        }
+        catch (Exception ex)
+        {
+            Services.Logger.Write($"KillVmWindow threw: {ex.Message}");
+        }
+    });
+
+    /// <summary>Runs VBoxManage with the given args off the UI thread; logs stderr on failure.</summary>
+    private Task RunVBoxAsync(string args) => Task.Run(() =>
+    {
+        try
+        {
+            using var p = Process.Start(new ProcessStartInfo
+            {
+                FileName = _cfg.VBoxManagePath,
+                Arguments = args,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+            });
+            if (p is null) return;
+            var err = p.StandardError.ReadToEnd();
+            p.WaitForExit(8000);
+            if (p.ExitCode != 0 && !string.IsNullOrWhiteSpace(err))
+                Services.Logger.Write($"VBoxManage {args} -> rc={p.ExitCode}: {err.Trim()}");
+        }
+        catch (Exception ex)
+        {
+            Services.Logger.Write($"VBoxManage {args} threw: {ex.Message}");
+        }
+    });
 
     private void ResetToInitial()
     {

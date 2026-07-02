@@ -146,26 +146,31 @@ End Sub
 ' whether the printer is online. Atomic write, like WriteStatus.
 Sub WriteHealth()
     On Error Resume Next
-    Dim present, pname, p, tmp, ts
+    Dim present, pstatus, pname, p, tmp, ts
     pname = ""
-    If PrinterOnline(pname) Then present = "true" Else present = "false"
+    pstatus = PrinterStatus(pname)               ' "online" | "offline" | "absent"
+    If pstatus = "online" Then present = "true" Else present = "false"
     p   = statusDir & "\bridge.health.json"
     tmp = p & ".tmp"
     Set ts = fso.CreateTextFile(tmp, True)
     ts.Write "{""watcher"":true,""printerPresent"":" & present & _
+             ",""printerStatus"":""" & pstatus & """" & _
              ",""printerName"":""" & JsonEsc(pname) & """,""tick"":""" & Now & """}"
     ts.Close
     If fso.FileExists(p) Then fso.DeleteFile p, True
     fso.MoveFile tmp, p
 End Sub
 
-' True if a "Canon LBP-1120 ..." printer exists and is not marked offline.
-' Sets outName to the matched queue name. WMI failures leave it False (unknown).
-Function PrinterOnline(ByRef outName)
+' Classify the "Canon LBP-1120 ..." queue:
+'   "online"  -- present and not marked offline (ready to print)
+'   "offline" -- present but WorkOffline (printer powered off / USB dropped)
+'   "absent"  -- no matching queue at all, OR WMI failed (unknown)
+' Sets outName to the matched queue name when found.
+Function PrinterStatus(ByRef outName)
     On Error Resume Next
     Dim wmi, items, prn
     outName = ""
-    PrinterOnline = False
+    PrinterStatus = "absent"
     Set wmi = GetObject("winmgmts:\\.\root\cimv2")
     If Err.Number <> 0 Then Exit Function
     Set items = wmi.ExecQuery("SELECT Name, WorkOffline FROM Win32_Printer")
@@ -173,7 +178,7 @@ Function PrinterOnline(ByRef outName)
     For Each prn In items
         If InStr(1, prn.Name, PRINTER_BASE, 1) = 1 Then
             outName = prn.Name
-            If prn.WorkOffline = False Then PrinterOnline = True
+            If prn.WorkOffline = False Then PrinterStatus = "online" Else PrinterStatus = "offline"
             Exit Function
         End If
     Next

@@ -67,6 +67,8 @@ public sealed class HealthService
     private sealed class HealthFile
     {
         [JsonPropertyName("printerPresent")] public bool PrinterPresent { get; set; }
+        // "online" | "offline" | "absent"; empty when written by a pre-tri-state watcher.
+        [JsonPropertyName("printerStatus")] public string PrinterStatus { get; set; } = "";
         [JsonPropertyName("printerName")] public string PrinterName { get; set; } = "";
     }
 
@@ -115,6 +117,7 @@ public sealed class HealthService
         IndicatorState printer;
         string printerLabel;
         if (fresh && health is { PrinterPresent: true }) { printer = IndicatorState.Ok; printerLabel = "В сети"; }
+        else if (fresh && health?.PrinterStatus == "offline") { printer = IndicatorState.Lost; printerLabel = "Выключен или оффлайн"; }
         else if (fresh && health is not null) { printer = IndicatorState.Lost; printerLabel = "Не найден"; }
         else { printer = IndicatorState.Off; printerLabel = "Неизвестно"; }
 

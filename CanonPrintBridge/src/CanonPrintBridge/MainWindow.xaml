@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         Title="Canon Print Bridge — печать на LBP-1120"
+        Icon="pack://application:,,,/printer-xp-icon.ico"
         Height="640" Width="470" MinWidth="446" MinHeight="560"
         AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop"
         FontFamily="{StaticResource Font}" FontSize="13" Foreground="{StaticResource Tx}"
@@ -105,30 +106,30 @@
                                         HorizontalAlignment="Center" Padding="18,0" Click="Browse_Click"/>
                             </StackPanel>
                         </Border>
+                    </StackPanel>
 
-                        <!-- warn + launcher (shown while VM not running) -->
-                        <StackPanel x:Name="LauncherPanel" Margin="0,13,0,0">
-                            <Border Background="{StaticResource WarnBg}" BorderBrush="{StaticResource WarnBd}"
-                                    BorderThickness="1" CornerRadius="8" Padding="12,10">
-                                <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IcoWarn}" Stroke="{StaticResource Warn}" StrokeThickness="1.8"
-                                          Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Top" Margin="0,1,0,0"/>
-                                    <TextBlock TextWrapping="Wrap" Margin="9,0,0,0" MaxWidth="330"
-                                               FontSize="12" Foreground="{StaticResource Tx2}"
-                                               Text="Принтер не запущен. Нажмите «Запустить принтер (VM)», пока выбираете файл — XP поднимется за ~30–60 с."/>
-                                </StackPanel>
-                            </Border>
-                            <Button x:Name="LauncherButton" Click="Launcher_Click" Margin="0,11,0,0" Height="38"
-                                    HorizontalContentAlignment="Center"
-                                    Background="{StaticResource InfoBg}" BorderBrush="{StaticResource Accent}"
-                                    Foreground="{StaticResource Accent}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IcoPower}" Stroke="{StaticResource Accent}" StrokeThickness="1.8"
-                                          Width="17" Height="17" Stretch="Uniform"/>
-                                    <TextBlock Text="Запустить принтер (VM)" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
+                    <!-- warn + launcher (shown while VM not running) — independent of file state -->
+                    <StackPanel x:Name="LauncherPanel" Margin="0,13,0,0">
+                        <Border Background="{StaticResource WarnBg}" BorderBrush="{StaticResource WarnBd}"
+                                BorderThickness="1" CornerRadius="8" Padding="12,10">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IcoWarn}" Stroke="{StaticResource Warn}" StrokeThickness="1.8"
+                                      Width="16" Height="16" Stretch="Uniform" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                                <TextBlock TextWrapping="Wrap" Margin="9,0,0,0" MaxWidth="330"
+                                           FontSize="12" Foreground="{StaticResource Tx2}"
+                                           Text="Принтер не запущен. Нажмите «Запустить принтер (VM)», пока выбираете файл — XP поднимется за ~30–60 с."/>
+                            </StackPanel>
+                        </Border>
+                        <Button x:Name="LauncherButton" Click="Launcher_Click" Margin="0,11,0,0" Height="38"
+                                HorizontalContentAlignment="Center"
+                                Background="{StaticResource InfoBg}" BorderBrush="{StaticResource Accent}"
+                                Foreground="{StaticResource Accent}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Data="{StaticResource IcoPower}" Stroke="{StaticResource Accent}" StrokeThickness="1.8"
+                                      Width="17" Height="17" Stretch="Uniform"/>
+                                <TextBlock Text="Запустить принтер (VM)" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
                     <!-- File card (file chosen) -->
@@ -166,6 +167,9 @@
                         <StackPanel>
                             <Grid Margin="0,10,0,8">
                                 <TextBlock Text="ГОТОВНОСТЬ" Style="{StaticResource SectionHeader}"/>
+                                <TextBlock x:Name="BootElapsed" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                           Visibility="Collapsed" FontFamily="{StaticResource Mono}" FontSize="12"
+                                           Foreground="{StaticResource Warn}"/>
                                 <StackPanel x:Name="ReadyBadge" Orientation="Horizontal" HorizontalAlignment="Right"
                                             Visibility="Collapsed">
                                     <Path Data="{StaticResource IcoCheck}" Stroke="{StaticResource Ok}" StrokeThickness="2.2"
@@ -284,7 +288,7 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="Страницы" Style="{StaticResource FieldLabel}"/>
-                                    <TextBox x:Name="PagesBox" Grid.Column="1"
+                                    <TextBox x:Name="PagesBox" Grid.Column="1" TextChanged="PagesBox_TextChanged"
                                              ToolTip="Пусто = все. Примеры: 1-4 или 1,3,5-8"/>
                                 </Grid>
                             </Expander>
@@ -338,7 +342,8 @@
                           VerticalAlignment="Stretch" Background="{StaticResource Stroke}" ResizeBehavior="PreviousAndNext"/>
 
             <!-- Preview panel -->
-            <Grid x:Name="PreviewPanel" Grid.Column="2" Background="{StaticResource Card}" Visibility="Collapsed">
+            <Grid x:Name="PreviewPanel" Grid.Column="2" Background="{StaticResource Card}" Visibility="Collapsed"
+                  SizeChanged="PreviewPanel_SizeChanged">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>

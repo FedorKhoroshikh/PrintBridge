@@ -358,6 +358,7 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <ToggleButton x:Name="hdr" Grid.Row="0" Cursor="Hand"
+                                                  Content="{TemplateBinding Header}"
                                                   IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                                         <ToggleButton.Template>
                                             <ControlTemplate TargetType="ToggleButton">
@@ -371,8 +372,7 @@
                                                                 <RotateTransform Angle="0"/>
                                                             </Path.RenderTransform>
                                                         </Path>
-                                                        <ContentPresenter Margin="9,0,0,0" VerticalAlignment="Center"
-                                                                          ContentSource="Header"/>
+                                                        <ContentPresenter Margin="9,0,0,0" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
