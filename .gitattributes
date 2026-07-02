@@ -6,6 +6,7 @@
 *.ico  binary
 *.pdf  binary
 *.docx binary
+*.exe  binary
 
 # Windows / XP scripts — keep CRLF on checkout.
 *.ps1 text eol=crlf

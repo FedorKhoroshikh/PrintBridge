@@ -27,11 +27,19 @@ public sealed class AppConfig
     /// <summary>UI language code: "ru" or "en".</summary>
     public string Language { get; set; } = "ru";
 
+    /// <summary>
+    /// Path to OfficeToPDF.exe (converts Word/Office docs to PDF via installed Office).
+    /// Relative values resolve against the exe directory, where the build copies it.
+    /// </summary>
+    public string OfficeToPdfPath { get; set; } = "OfficeToPDF.exe";
+
     public static AppConfig Load()
     {
         var cfg = LoadRaw();
         if (!Path.IsPathRooted(cfg.LauncherPath))
             cfg.LauncherPath = Path.Combine(AppContext.BaseDirectory, cfg.LauncherPath);
+        if (!Path.IsPathRooted(cfg.OfficeToPdfPath))
+            cfg.OfficeToPdfPath = Path.Combine(AppContext.BaseDirectory, cfg.OfficeToPdfPath);
         return cfg;
     }
 

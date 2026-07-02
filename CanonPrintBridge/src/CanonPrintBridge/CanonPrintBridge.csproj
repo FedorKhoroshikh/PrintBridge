@@ -36,6 +36,13 @@
     <None Include="..\..\..\Printer_Canon_lbp_1120\Print-Canon.ps1" Link="Print-Canon.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <!-- Bundled Office->PDF converter (see externals/OfficeToPDF), shipped next to the exe. -->
+    <None Include="..\..\..\externals\OfficeToPDF\OfficeToPDF.exe" Link="OfficeToPDF.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\externals\OfficeToPDF\OfficeToPDF.exe.config" Link="OfficeToPDF.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

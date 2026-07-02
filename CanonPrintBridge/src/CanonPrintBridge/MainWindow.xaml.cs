@@ -18,7 +18,10 @@ public partial class MainWindow : Window
     private readonly AppConfig _cfg;
     private readonly QueueService _queue;
     private readonly HealthService _health;
-    private string? _pdfPath;
+    private readonly PdfConversionService _converter;
+    private string? _pdfPath;        // effective PDF to preview/print (converted when input isn't PDF)
+    private string? _originalPath;   // the file the user actually picked (for display)
+    private string? _convertedTemp;  // temp PDF produced by conversion, if any (cleaned up)
 
     private readonly DispatcherTimer _tick;      // print operation elapsed timer
     private readonly DispatcherTimer _healthTimer; // readiness poller
@@ -45,6 +48,11 @@ public partial class MainWindow : Window
         _cfg = AppConfig.Load();
         _queue = new QueueService(_cfg.QueueRoot);
         _health = new HealthService(_cfg);
+        _converter = new PdfConversionService(new IPdfConverter[]
+        {
+            new ImagePdfConverter(),
+            new OfficeToPdfConverter(_cfg),
+        });
 
         Instance.SetLanguage(_cfg.Language);
         Instance.LanguageChanged += OnLanguageChanged;
@@ -118,57 +126,110 @@ public partial class MainWindow : Window
 
     private void Browse_Click(object sender, RoutedEventArgs e)
     {
-        var dlg = new OpenFileDialog { Filter = "PDF (*.pdf)|*.pdf", Title = T("dlg_choose_pdf") };
+        var dlg = new OpenFileDialog { Filter = BuildOpenFilter(), Title = T("dlg_choose_file") };
         if (dlg.ShowDialog() == true) SetPdf(dlg.FileName);
+    }
+
+    // "Printable files|*.pdf;*.docx;...|All files|*.*" from the converter's supported set.
+    private string BuildOpenFilter()
+    {
+        var mask = string.Join(";", _converter.SupportedExtensions.Select(x => "*" + x));
+        return $"{T("filter_printable_files")}|{mask}|{T("filter_all_files")}|*.*";
     }
 
     private void Window_DragOver(object sender, DragEventArgs e)
     {
-        e.Effects = IsPdfDrop(e) ? DragDropEffects.Copy : DragDropEffects.None;
+        e.Effects = IsSupportedDrop(e) ? DragDropEffects.Copy : DragDropEffects.None;
         e.Handled = true;
     }
 
     private void Window_Drop(object sender, DragEventArgs e)
     {
-        if (IsPdfDrop(e) && e.Data.GetData(DataFormats.FileDrop) is string[] files)
+        if (IsSupportedDrop(e) && e.Data.GetData(DataFormats.FileDrop) is string[] files)
             SetPdf(files[0]);
     }
 
-    private static bool IsPdfDrop(DragEventArgs e) =>
+    private bool IsSupportedDrop(DragEventArgs e) =>
         e.Data.GetDataPresent(DataFormats.FileDrop)
         && e.Data.GetData(DataFormats.FileDrop) is string[] { Length: > 0 } f
-        && f[0].EndsWith(".pdf", StringComparison.OrdinalIgnoreCase);
+        && _converter.IsSupported(f[0]);
 
-    private void SetPdf(string path)
+    private async void SetPdf(string path)
     {
-        if (!path.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) || !File.Exists(path))
+        if (!File.Exists(path) || !_converter.IsSupported(path))
         {
-            MessageBox.Show(T("msg_need_existing_pdf"), T("app_title"),
+            MessageBox.Show(T("msg_need_supported"), T("app_title"),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
-        _pdfPath = path;
-        PdfPathBox.Text = path;
+
+        SetPreviewTemp(null);
+        ClearConvertedTemp();
+        _originalPath = path;
 
         FileName.Text = Path.GetFileName(path);
         FileMeta.Text = $"{FormatSize(new FileInfo(path).Length)} · {Path.GetDirectoryName(path)}";
-
         EmptyState.Visibility = Visibility.Collapsed;
         FileCard.Visibility = Visibility.Visible;
-
         Log(T("log_file_selected", Path.GetFileName(path)));
+
+        if (PdfConversionService.IsPdf(path))
+        {
+            _pdfPath = path;
+        }
+        else
+        {
+            // Convert to PDF host-side before the file can be previewed or queued.
+            StartBusy(T("busy_converting"));
+            Log(T("log_converting", Path.GetFileName(path)));
+            PrintButton.IsEnabled = false;
+            try
+            {
+                var pdf = await _converter.ToPdfAsync(path);
+                _convertedTemp = pdf;
+                _pdfPath = pdf;
+                FileMeta.Text += "  ·  → PDF";
+                Log(T("log_converted", Path.GetFileName(path)));
+                StopBusy("");
+            }
+            catch (Exception ex)
+            {
+                StopBusy("");
+                Log(T("log_convert_failed", ex.Message));
+                MessageBox.Show(T("msg_convert_failed", ex.Message), T("app_title"),
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                ResetFileState();
+                return;
+            }
+        }
+
+        PdfPathBox.Text = _pdfPath ?? "";
         if (_previewOpen) LoadPreview();
         RefreshHealth();
     }
 
-    private void ClearFile_Click(object sender, RoutedEventArgs e)
+    private void ClearFile_Click(object sender, RoutedEventArgs e) => ResetFileState();
+
+    private void ResetFileState()
     {
+        SetPreviewTemp(null);
+        ClearConvertedTemp();
         _pdfPath = null;
+        _originalPath = null;
         PdfPathBox.Text = "";
         FileCard.Visibility = Visibility.Collapsed;
         EmptyState.Visibility = Visibility.Visible;
         if (_previewOpen) LoadPreview();
         RefreshHealth();
+    }
+
+    private void ClearConvertedTemp()
+    {
+        if (_convertedTemp is not null)
+        {
+            try { File.Delete(_convertedTemp); } catch { /* best-effort */ }
+            _convertedTemp = null;
+        }
     }
 
     private static string FormatSize(long bytes)
@@ -474,7 +535,8 @@ public partial class MainWindow : Window
 
         // Show only the selected pages (Windows-style range). Empty/all => whole file.
         var sourcePath = _pdfPath;
-        var footer = Path.GetFileName(_pdfPath);
+        var name = Path.GetFileName(_originalPath ?? _pdfPath);
+        var footer = name;
         try
         {
             var total = PdfPageExtractor.PageCount(_pdfPath);
@@ -486,13 +548,13 @@ public partial class MainWindow : Window
                 {
                     SetPreviewTemp(temp);
                     sourcePath = temp;
-                    footer = $"{Path.GetFileName(_pdfPath)} — {T("preview_pages")} {FormatSelection(sel)} ({sel.Count} {T("preview_of")} {total})";
+                    footer = $"{name} — {T("preview_pages")} {FormatSelection(sel)} ({sel.Count} {T("preview_of")} {total})";
                 }
             }
             else
             {
                 SetPreviewTemp(null);
-                footer = $"{Path.GetFileName(_pdfPath)} — {T("preview_all", total)}";
+                footer = $"{name} — {T("preview_all", total)}";
             }
         }
         catch (Exception ex)
@@ -502,7 +564,7 @@ public partial class MainWindow : Window
             // fall through and show the whole file
         }
 
-        PreviewTitle.Text = T("preview_title_file", Path.GetFileName(_pdfPath));
+        PreviewTitle.Text = T("preview_title_file", name);
         PreviewFooter.Text = footer;
         try
         {

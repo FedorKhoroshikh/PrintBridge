@@ -91,6 +91,17 @@
                             <Button Grid.Column="1" Content="{loc:Loc btn_browse}" Margin="8,0,0,0" Height="32"
                                     Click="BrowseLauncher_Click"/>
                         </Grid>
+
+                        <TextBlock Text="{loc:Loc settings_officetopdf}" Style="{StaticResource Fld}" Margin="0,13,0,5"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="OfficeToPdfBox" Style="{StaticResource PathField}"/>
+                            <Button Grid.Column="1" Content="{loc:Loc btn_browse}" Margin="8,0,0,0" Height="32"
+                                    Click="BrowseOfficeToPdf_Click"/>
+                        </Grid>
                     </StackPanel>
                 </Border>
 

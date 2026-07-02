@@ -25,6 +25,7 @@ public partial class SettingsWindow : Window
         VmNameBox.IsReadOnly = false;
         VBoxBox.Text = _cfg.VBoxManagePath;
         LauncherBox.Text = _cfg.LauncherPath;
+        OfficeToPdfBox.Text = _cfg.OfficeToPdfPath;
 
         _originalLanguage = Instance.Language;
         foreach (ComboBoxItem it in LanguageBox.Items)
@@ -58,6 +59,9 @@ public partial class SettingsWindow : Window
     private void BrowseLauncher_Click(object sender, RoutedEventArgs e) =>
         BrowseFile(LauncherBox, T("filter_scripts"));
 
+    private void BrowseOfficeToPdf_Click(object sender, RoutedEventArgs e) =>
+        BrowseFile(OfficeToPdfBox, $"OfficeToPDF.exe|OfficeToPDF.exe|{T("filter_programs")}");
+
     private void BrowseFile(TextBox target, string filter)
     {
         var dlg = new OpenFileDialog { Filter = filter, Title = T("settings_choose_file") };
@@ -88,6 +92,7 @@ public partial class SettingsWindow : Window
         _cfg.VmName = VmNameBox.Text.Trim();
         _cfg.VBoxManagePath = VBoxBox.Text.Trim();
         _cfg.LauncherPath = LauncherBox.Text.Trim();
+        _cfg.OfficeToPdfPath = OfficeToPdfBox.Text.Trim();
         _cfg.Language = Instance.Language;
         try
         {
