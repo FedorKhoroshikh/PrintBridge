@@ -8,8 +8,19 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>CanonPrintBridge</AssemblyName>
     <RootNamespace>CanonPrintBridge</RootNamespace>
-    <Version>0.1.0</Version>
     <ApplicationIcon>..\..\..\printer-xp-icon.ico</ApplicationIcon>
+
+    <!-- Assembly metadata (shown in the exe's Details tab). No copyright. -->
+    <Product>Canon Print Bridge</Product>
+    <AssemblyTitle>Canon Print Bridge</AssemblyTitle>
+    <Description>Print to the Canon LASER SHOT LBP-1120 from Windows 11 via a Windows XP VirtualBox guest.</Description>
+    <Authors>Fedor Khoroshikh</Authors>
+    <Company></Company>
+    <Copyright></Copyright>
+    <NeutralLanguage>ru</NeutralLanguage>
+    <Version>0.1.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
