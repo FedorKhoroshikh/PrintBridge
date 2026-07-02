@@ -9,8 +9,8 @@
   "tip_shutdown": "Завершить работу (выключить ВМ)",
   "tip_settings": "Настройки",
 
-  "empty_drop_title": "Перетащите PDF сюда",
-  "empty_drop_sub": "или выберите файл на диске — только *.pdf",
+  "empty_drop_title": "Перетащите файл сюда",
+  "empty_drop_sub": "или выберите на диске — PDF, Word, изображения, текст",
   "empty_choose_file": "Выбрать файл…",
 
   "launcher_warn": "Принтер не запущен. Нажмите «Запустить принтер (VM)», пока выбираете файл — XP поднимется за ~30–60 с.",
@@ -95,8 +95,8 @@
   "unit_b": "Б",
   "unit_kb": "КБ",
   "unit_mb": "МБ",
-  "msg_need_supported": "Нужен PDF, документ Word (.docx/.doc/.rtf) или изображение.",
-  "filter_printable_files": "Печатаемые файлы",
+  "msg_need_supported": "Нужен PDF, документ Word (.docx/.doc/.rtf), изображение или текст (.txt).",
+  "filter_printable_files": "Печатаемые файлы (PDF, Word, изображения, текст)",
   "filter_all_files": "Все файлы",
   "busy_converting": "Конвертация",
   "log_converting": "Конвертация {0} → PDF…",

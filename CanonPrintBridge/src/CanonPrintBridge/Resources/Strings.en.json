@@ -9,8 +9,8 @@
   "tip_shutdown": "Shut down (power off the VM)",
   "tip_settings": "Settings",
 
-  "empty_drop_title": "Drop a PDF here",
-  "empty_drop_sub": "or pick a file on disk — *.pdf only",
+  "empty_drop_title": "Drop a file here",
+  "empty_drop_sub": "or pick from disk — PDF, Word, images, text",
   "empty_choose_file": "Choose file…",
 
   "launcher_warn": "The printer isn't running. Click “Start printer (VM)” while you pick a file — XP boots in ~30–60 s.",
@@ -95,8 +95,8 @@
   "unit_b": "B",
   "unit_kb": "KB",
   "unit_mb": "MB",
-  "msg_need_supported": "A PDF, Word document (.docx/.doc/.rtf), or image is required.",
-  "filter_printable_files": "Printable files",
+  "msg_need_supported": "A PDF, Word document (.docx/.doc/.rtf), image, or text (.txt) is required.",
+  "filter_printable_files": "Printable files (PDF, Word, images, text)",
   "filter_all_files": "All files",
   "busy_converting": "Converting",
   "log_converting": "Converting {0} → PDF…",

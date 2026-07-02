@@ -51,6 +51,7 @@ public partial class MainWindow : Window
         _converter = new PdfConversionService(new IPdfConverter[]
         {
             new ImagePdfConverter(),
+            new TextPdfConverter(),
             new OfficeToPdfConverter(_cfg),
         });
 
