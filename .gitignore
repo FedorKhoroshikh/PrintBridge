@@ -18,3 +18,9 @@ publish/
 *.загрузка
 *.crdownload
 *.part
+
+## Private / local-only (not part of the public repo)
+/CLAUDE.md
+/.claude/
+/misc/
+/CanonPrintBridge/STATUS.md
