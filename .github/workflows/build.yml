@@ -10,6 +10,10 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+# Needed so the tag build can create a GitHub Release and attach assets.
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
