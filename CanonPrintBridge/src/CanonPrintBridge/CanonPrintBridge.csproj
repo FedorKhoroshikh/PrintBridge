@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>CanonPrintBridge</AssemblyName>
+    <RootNamespace>CanonPrintBridge</RootNamespace>
+    <ApplicationIcon>..\..\..\printer-xp-icon.ico</ApplicationIcon>
+
+    <!-- Assembly metadata (shown in the exe's Details tab). No copyright. -->
+    <Product>Canon Print Bridge</Product>
+    <AssemblyTitle>Canon Print Bridge</AssemblyTitle>
+    <Description>Print to the Canon LASER SHOT LBP-1120 from Windows 11 via a Windows XP VirtualBox guest.</Description>
+    <Authors>Fedor Khoroshikh</Authors>
+    <Company></Company>
+    <Copyright></Copyright>
+    <NeutralLanguage>ru</NeutralLanguage>
+    <Version>0.1.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- App icon: exe icon (ApplicationIcon) + resource for Window.Icon (title bar / taskbar). -->
+    <Resource Include="..\..\..\printer-xp-icon.ico" Link="printer-xp-icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Localization dictionaries: copied next to the exe, loaded by LocalizationManager.
+         Use None Update (not Include) because the SDK already globs them as None items. -->
+    <None Update="Resources\Strings.ru.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Strings.en.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <!-- VM launcher: lives at repo root, ships next to the exe (portable). -->
+    <None Include="..\..\..\Printer_Canon_lbp_1120\Print-Canon.ps1" Link="Print-Canon.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <!-- Bundled Office->PDF converter (see externals/OfficeToPDF), shipped next to the exe.
+         ExcludeFromSingleFile keeps it a loose file (it's an external process, not a managed
+         reference) so PublishSingleFile doesn't swallow the .exe. -->
+    <None Include="..\..\..\externals\OfficeToPDF\OfficeToPDF.exe" Link="OfficeToPDF.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </None>
+    <None Include="..\..\..\externals\OfficeToPDF\OfficeToPDF.exe.config" Link="OfficeToPDF.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4022.49" />
+    <PackageReference Include="PdfSharp" Version="6.1.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

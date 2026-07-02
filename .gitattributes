@@ -1,0 +1,14 @@
+# Normalize text line endings in the repo (stored as LF, checked out native).
+* text=auto
+
+# Binary assets — never touch line endings.
+*.png  binary
+*.ico  binary
+*.pdf  binary
+*.docx binary
+*.exe  binary
+
+# Windows / XP scripts — keep CRLF on checkout.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.vbs text eol=crlf
