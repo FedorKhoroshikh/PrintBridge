@@ -63,6 +63,10 @@ Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags
 
 [UninstallDelete]
 Type: files; Name: "{app}\appsettings.json"
+; WebView2 creates this user-data folder at runtime; remove it, then drop the
+; install folder if nothing else is left.
+Type: filesandordirs; Name: "{app}\CanonPrintBridge.exe.WebView2"
+Type: dirifempty; Name: "{app}"
 
 [Code]
 var
