@@ -10,7 +10,7 @@ Part 2 of the manual VM track (after `VirtualBox-setup.md`). Imports the pre-con
 
 **Producing it (author, once):** power the VM off, then export it — `VBoxManage export Microelectronics -o Microelectronics.ova --ovf20` (or GUI: **File → Export Appliance → OVF 2.0**). One `Microelectronics.ova` file.
 
-**Getting it (deployer):** download `Microelectronics.ova` from the private link you were given, then copy it to the target machine.
+**Getting it (deployer):** download `Microelectronics.ova` from the shared Google Drive folder — <https://drive.google.com/drive/folders/1jXaIFZQi8pWcPw98zz9iFhFckAuUXkUS?usp=sharing> — then copy it to the target machine. (Access is limited to this folder; keep the link private — it carries a Windows XP image.)
 
 ## 1. Import the appliance
 
